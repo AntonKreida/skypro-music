@@ -10,6 +10,7 @@ module.exports = {
         aliases: {
           '@style': './src/style',
           '@assets': './src/assets',
+          '@shared': './src/shared',
           '@components': './src/components',
           '@layouts': './src/layouts',
           '@pages': './src/pages',

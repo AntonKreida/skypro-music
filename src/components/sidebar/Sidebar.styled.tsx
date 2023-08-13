@@ -12,7 +12,6 @@ export const SidebarWrapper = styled.div`
     max-width: 300px;
     width: 100%;
     height: 100vh;
-    padding: 36px;
 `;
 
 export const SidebarLogo = styled(Logo)`
