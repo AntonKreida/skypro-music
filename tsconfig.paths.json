@@ -1,16 +1,10 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
+        "baseUrl": ".",
         "paths": {
             "@/*": [
-                "src/*"
+                "./src/*"
             ],
-            "@style/": [
-                "./src/style/"
-            ],
-            "@shared/": [
-                "src/shared/"
-            ]
         }
     },
   }

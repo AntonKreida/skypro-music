@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://antonkreida.github.io/skypro-music/",
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -28,7 +29,6 @@
     "lint:fix": "npm run lint -- --fix",
     "eslint": "npm run lint && npm run lint:fix",
     "stylelint": "npx stylelint \"**/*.tsx\"",
-    "prepare": "husky install",
     "deploy": "npm run build && gh-pages -d build"
   },
   "eslintConfig": {
@@ -50,9 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
-    "craco-alias": "^3.0.1",
-    "eslint": "^8.47.0",
+    "eslint": "^8.22.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.1",
     "eslint-import-resolver-typescript": "^3.6.0",
@@ -62,7 +60,6 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "gh-pages": "^6.0.0",
-    "husky": "^8.0.3",
     "prettier": "3.0.1",
     "scss": "^0.2.4",
     "stylelint": "^15.10.2",
