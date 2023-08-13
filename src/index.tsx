@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { GlobalStyle } from '@/style/';
+import { GlobalStyle } from '@style/';
 
 import App from './App';
 
