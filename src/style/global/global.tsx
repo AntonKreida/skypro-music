@@ -2,6 +2,10 @@ import { createGlobalStyle } from 'styled-components';
 
 
 export const GlobalStyle = createGlobalStyle`
+    html {
+        background: #181818;
+    }
+
     body {
         width: 100vw;
         height: 100vh;
