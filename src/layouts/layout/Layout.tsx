@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 import { Search } from '@shared/';
-import { Sidebar } from '@components/';
+import { Sidebar, Panel } from '@components/';
 
 import * as Styled from './Layout.styled';
 
@@ -17,5 +17,6 @@ export const Layout: FC<ILayoutProps> = ({ children }) => (
       <Search />
       { children }
     </Styled.LayoutMainContainer>
+    <Panel />
   </Styled.LayoutWrapper>
 );
