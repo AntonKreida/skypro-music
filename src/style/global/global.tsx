@@ -3,11 +3,11 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     html {
-        font-family: "StratosSkyeng";
         background: #181818;
     }
 
     body {
+        font-family: "Stratos-Regular";
         width: 100vw;
         height: 100vh;
     }
@@ -51,5 +51,5 @@ export const GlobalStyle = createGlobalStyle`
         width: 100%;
         height: 100%;
         overflow: hidden;
-    } 
+    }
 `;

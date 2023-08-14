@@ -9,7 +9,8 @@ export const SearchWrapper = styled.div`
     gap: 15px;
     width: 100%;
     height: 50px;
-    padding: 5px 10px 14px 10px;
+    margin-bottom: 51px;
+    padding: 0px 10px 14px 10px;
     border-bottom: 1px solid #4E4E4E;
 `;
 
@@ -24,18 +25,14 @@ export const SearchInput = styled.input`
     width: 100%;
     height: 100%;
     border: none;
-    font-family: "StratosSkyeng";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: normal;  
+    font-family: "Stratos-Regular";
+    font-size: 16px; 
     color: #fff;
     background: none;
 
     &::placeholder {
-        font-family: "StratosSkyeng";
+        font-family: "Stratos-Regular";
         font-size: 16px;
-        font-style: normal;
-        font-weight: normal;
         color: #fff;  
     }
 

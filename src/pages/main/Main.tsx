@@ -1,13 +1,10 @@
-import { ReactNode, FC } from 'react';
+import { Playlist } from '@components/';
 
 import * as Styled from './Main.styled';
 
 
-interface IMainPageProps {
-  children: ReactNode;
-}
-
-
-export const MainPage: FC<IMainPageProps> = ({ children }) => (
-  <Styled.MainWrapper>{ children }</Styled.MainWrapper>
+export const MainPage = () => (
+  <Styled.MainWrapper>
+    <Playlist />
+  </Styled.MainWrapper>
 );

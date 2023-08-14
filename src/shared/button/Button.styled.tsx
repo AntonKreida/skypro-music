@@ -7,9 +7,10 @@ export const ButtonWrapper = styled.button`
     border: 1px solid #fff;
     border-radius: 60px;
     padding: 6px 20px;
-    font-family: StratosSkyeng;
+    font-family: "Stratos-Regular";
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     color: #fff;
+    background: none;
 `;

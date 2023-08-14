@@ -14,6 +14,7 @@ module.exports = {
           '@components': './src/components',
           '@layouts': './src/layouts',
           '@pages': './src/pages',
+          '@interface': './src/interface',
         },
       },
     },
