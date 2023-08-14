@@ -4,13 +4,15 @@ import * as Styled from './Playlist.styled';
 import { TableItem } from './table-item';
 
 
-const mockData = [{
-  id: 1,
-  name: 'Название трека',
-  artist: 'Имя артиста',
-  album: 'Название альбома',
-  time: '00:00'
-}];
+const mockData = [
+  {
+    id: 1,
+    name: 'Название трека',
+    artist: 'Имя артиста',
+    album: 'Название альбома',
+    time: '00:00'
+  },
+];
 
 
 export const Playlist = () => (
@@ -26,36 +28,38 @@ export const Playlist = () => (
         <Button text="жанру" type="button" />
       </Styled.PlaylistTableFilter>
 
-      <Styled.PlaylistTable>
-        <Styled.PlaylistTableHeader>
-          <Styled.PlaylistTableRow>
+      <Styled.PlaylistTableBox>
+        <Styled.PlaylistTable>
+          <Styled.PlaylistTableHeader>
+            <Styled.PlaylistTableRow>
 
-            <Styled.PlaylistTableHeaderTitle>
-              Трек
-            </Styled.PlaylistTableHeaderTitle>
+              <Styled.PlaylistTableHeaderTitle>
+                Трек
+              </Styled.PlaylistTableHeaderTitle>
 
-            <Styled.PlaylistTableHeaderTitle>
-              Исполнители
-            </Styled.PlaylistTableHeaderTitle>
+              <Styled.PlaylistTableHeaderTitle>
+                Исполнители
+              </Styled.PlaylistTableHeaderTitle>
 
-            <Styled.PlaylistTableHeaderTitle>
-              Альбом
-            </Styled.PlaylistTableHeaderTitle>
+              <Styled.PlaylistTableHeaderTitle>
+                Альбом
+              </Styled.PlaylistTableHeaderTitle>
 
-            <Styled.PlaylistTableHeaderTitle>
-              <Styled.PlaylistTableIcon />
-            </Styled.PlaylistTableHeaderTitle>
+              <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableIcon />
+              </Styled.PlaylistTableHeaderTitle>
 
-          </Styled.PlaylistTableRow>
-        </Styled.PlaylistTableHeader>
+            </Styled.PlaylistTableRow>
+          </Styled.PlaylistTableHeader>
 
-        <Styled.PlaylistTableBody>
-          { mockData.map((item) => (
-            <TableItem key={ item.id } soundtrack={ item } />
-          )) }
-        </Styled.PlaylistTableBody>
+          <Styled.PlaylistTableBody>
+            { mockData.map((item) => (
+              <TableItem key={ item.id } soundtrack={ item } />
+            )) }
+          </Styled.PlaylistTableBody>
 
-      </Styled.PlaylistTable>
+        </Styled.PlaylistTable>
+      </Styled.PlaylistTableBox>
     </Styled.PlaylistTableWrapper>
   </Styled.PlaylistWrapper>
 );

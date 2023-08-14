@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 import { Search } from '@shared/';
-import { Sidebar, Panel } from '@components/';
+import { Sidebar, Panel, AudioPlayer } from '@components/';
 
 import * as Styled from './Layout.styled';
 
@@ -18,5 +18,6 @@ export const Layout: FC<ILayoutProps> = ({ children }) => (
       { children }
     </Styled.LayoutMainContainer>
     <Panel />
+    <AudioPlayer />
   </Styled.LayoutWrapper>
 );

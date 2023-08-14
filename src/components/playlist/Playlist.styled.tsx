@@ -33,11 +33,21 @@ export const PlaylistTableFilter = styled.div`
     color: #fff;
 `;
 
+export const PlaylistTableBox = styled.div`
+    width: 100%;
+    height: 100%;
+    margin-top: 25px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
 export const PlaylistTable = styled.table`
     width: 100%;
     height: 100%;
-    margin-top: 50px;
-    overflow-y: auto;
+    margin-bottom: 90px;
 `;
 
 export const PlaylistTableHeader = styled.thead`
