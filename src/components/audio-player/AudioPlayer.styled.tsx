@@ -85,6 +85,35 @@ export const AudioPlayerInfoText = styled.div`
     background: #2E2E2E;
 `;
 
-export const AudioPlayerInputRange = styled.input`
-    accent-color: #fff;
+export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
+    display: block;
+    appearance: none;
+    max-width: 130px;
+    width: 100%;
+    height: 4px;
+    border-radius: 15px;
+    outline: none;
+    box-shadow: 0 0 4px #000;
+    background: ${({ value }) => `
+    linear-gradient(to right, 
+    #fff 0%,
+    #fff ${value}%,
+    #535353 ${value}%,
+    #535353 100%);
+    )`
+};
+
+
+    &::-webkit-slider-thumb  {
+        position: relative;
+        appearance: none;
+        position: relative;
+        height: 15px;
+        width: 15px;
+        background: #000;
+        border-radius: 100%;
+        border: 3px solid #fff;
+        
+        cursor: pointer;
+    }
 `;
