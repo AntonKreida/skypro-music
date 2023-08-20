@@ -23,7 +23,8 @@
       "react-hooks",
       "jsx-a11y",
       "@typescript-eslint/eslint-plugin",
-      "prettier"
+      "prettier",
+      "import"
     ],
     //
     // PARSER
@@ -216,6 +217,7 @@
           ]
         }
       ],
+      "import/no-unused-modules": "off",
       // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-anonymous-default-export.md
       "import/no-anonymous-default-export": [
         2,

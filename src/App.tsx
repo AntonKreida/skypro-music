@@ -1,7 +1,11 @@
+import { Layout } from '@layouts/';
+import { MainPage } from '@pages/';
+
+
 const App = () => (
-  <div style={{ color: 'red' }}>
-    Здесь скоро будет Skypro.Music!
-  </div>
+  <Layout>
+    <MainPage />
+  </Layout>
 );
 
 export default App;
