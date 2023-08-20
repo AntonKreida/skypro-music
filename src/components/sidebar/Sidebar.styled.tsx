@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { ReactComponent as Logo } from '@assets/icon/Logo.svg';
-import { ReactComponent as Burger } from '@assets/icon/Burger.svg';
 
 
 export const SidebarWrapper = styled.div`
@@ -22,9 +21,4 @@ export const SidebarLogo = styled(Logo)`
 export const SidebarNavMenuWrapper = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-export const SidebarBurgerIcon = styled(Burger)`
-    width: 20px;
-    height: 10px;
 `;

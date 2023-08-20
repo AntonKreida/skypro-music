@@ -113,7 +113,6 @@ export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
         background: #000;
         border-radius: 100%;
         border: 3px solid #fff;
-        
         cursor: pointer;
     }
 `;
