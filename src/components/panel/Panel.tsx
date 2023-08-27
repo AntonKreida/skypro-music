@@ -33,6 +33,8 @@ export const Panel = () => (
         />
       </Styled.PanelMenuItem>
 
+      <Styled.PanelItemSkeleton />
+
     </Styled.PanelMenuWrapper>
   </Styled.PanelWrapper>
 );

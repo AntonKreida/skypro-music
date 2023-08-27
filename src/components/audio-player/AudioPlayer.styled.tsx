@@ -1,4 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+
+const gradient = keyframes`
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+`;
 
 
 export const AudioPlayerWrapper = styled.div`
@@ -74,15 +87,15 @@ export const AudioPlayerInfoIconWrapper = styled.div`
 export const AudioPlayerInfoTextWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     gap: 3px;
 `;
 
 export const AudioPlayerInfoText = styled.div`
     height: 15px;
-    width: 50px;
-    background: #2E2E2E;
+    width: fit-content;
+    font-size: 16px;
+    color: #fff;
 `;
 
 export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
@@ -103,7 +116,6 @@ export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
     )`
 };
 
-
     &::-webkit-slider-thumb  {
         position: relative;
         appearance: none;
@@ -115,4 +127,20 @@ export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
         border: 3px solid #fff;
         cursor: pointer;
     }
+`;
+
+export const AudioPlayerInfoIconSkeleton = styled.div`
+    width: 51px;
+    height: 51px;
+    background: linear-gradient(-45deg, #313131, #6b6b6b);
+    background-size: 400% 400%;
+    animation: ${gradient} 1s ease infinite;
+`;
+
+export const AudioPlayerInfoTextSkeleton = styled.div`
+    height: 15px;
+    width: 50px;
+    background: linear-gradient(-45deg, #313131, #6b6b6b);
+    background-size: 400% 400%;
+    animation: ${gradient} 1s ease infinite;
 `;

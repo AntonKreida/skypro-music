@@ -1,4 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+
+const gradient = keyframes`
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+`;
 
 
 export const TableItemRowWrapper = styled.tr`
@@ -68,4 +81,21 @@ export const TableLikeWrapper = styled.div`
         width: 17px;
         height: 13px;
     }
+`;
+
+export const TableItemIconSkeleton = styled.div`
+    width: 60px;
+    height: 51px;
+    background: linear-gradient(-45deg, #313131, #6b6b6b);
+    background-size: 400% 400%;
+    animation: ${gradient} 1s ease infinite;
+`;
+
+export const TableItemTextSkeleton = styled.div`
+    width: 100%;
+    height: 15px;
+    margin: 0 5px;
+    background: linear-gradient(-45deg, #313131, #6b6b6b);
+    background-size: 400% 400%;
+    animation: ${gradient} 1s ease infinite;
 `;

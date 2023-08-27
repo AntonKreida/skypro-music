@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export const ButtonWrapper = styled.button`
+export const ButtonWrapper = styled.button<{active?: boolean}>`
     display: flex;
     align-items: center;
     border: 1px solid #fff;
@@ -13,4 +13,15 @@ export const ButtonWrapper = styled.button`
     font-weight: 400;
     color: #fff;
     background: none;
+    transition: all 0.1s linear;
+
+    &:hover {
+        border-color: #D9B6FF;
+        color: #D9B6FF;
+    }
+
+    &.active {
+        border-color: #AD61FF;
+        color: #AD61FF;
+    }
 `;
