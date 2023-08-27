@@ -1,10 +1,23 @@
 {
   "files": {
-    "main.js": "/skypro-music/static/js/main.154ba7ee.js",
+    "main.js": "/skypro-music/static/js/main.99e8da9c.js",
+    "static/media/StratosLCWeb-Bold.woff": "/skypro-music/static/media/StratosLCWeb-Bold.ed2e7b59e44431137ce1.woff",
+    "static/media/StratosLCWeb-Light.woff": "/skypro-music/static/media/StratosLCWeb-Light.ec0b6e675e0926848b17.woff",
+    "static/media/StratosLCWeb-Regular.woff": "/skypro-music/static/media/StratosLCWeb-Regular.03b01a6d0972d3524efe.woff",
+    "static/media/StratosLCWeb-Medium.woff": "/skypro-music/static/media/StratosLCWeb-Medium.48915c7877a5c788e420.woff",
+    "static/media/StratosLCWeb-Bold.woff2": "/skypro-music/static/media/StratosLCWeb-Bold.37bafe35cf57739f32ea.woff2",
+    "static/media/StratosLCWeb-Light.woff2": "/skypro-music/static/media/StratosLCWeb-Light.c28692f77e379015cd2a.woff2",
+    "static/media/StratosLCWeb-Regular.woff2": "/skypro-music/static/media/StratosLCWeb-Regular.c14b0c073901d3014117.woff2",
+    "static/media/StratosLCWeb-Medium.woff2": "/skypro-music/static/media/StratosLCWeb-Medium.8c59c20eb125244252b3.woff2",
+    "static/media/Logo.svg": "/skypro-music/static/media/Logo.a09463125eddd07ad8d33d1ba4619290.svg",
+    "static/media/Cross.svg": "/skypro-music/static/media/Cross.c2e141a24cdb2eb3cad44bec8ec40294.svg",
+    "static/media/Search.svg": "/skypro-music/static/media/Search.44144c63f1114bd734334869ead5c143.svg",
     "index.html": "/skypro-music/index.html",
-    "main.154ba7ee.js.map": "/skypro-music/static/js/main.154ba7ee.js.map"
+    "static/media/Burger.svg": "/skypro-music/static/media/Burger.a81becc791f4c418a2f9840744138861.svg",
+    "static/media/Clock.svg": "/skypro-music/static/media/Clock.84648c2824c59841ffecba6dfd292067.svg",
+    "main.99e8da9c.js.map": "/skypro-music/static/js/main.99e8da9c.js.map"
   },
   "entrypoints": [
-    "static/js/main.154ba7ee.js"
+    "static/js/main.99e8da9c.js"
   ]
 }
