@@ -48,9 +48,11 @@ export const AudioPlayer = () => {
           </Styled.AudioPlayerButton>
 
           <Styled.AudioPlayerInfoWrapper>
-            <Styled.AudioPlayerInfoIconSkeleton />
+            <Styled.AudioPlayerInfoIconWrapper />
             <Styled.AudioPlayerInfoTextWrapper>
-              <Styled.AudioPlayerInfoTextSkeleton />
+              <Styled.AudioPlayerInfoText>
+                Трек
+              </Styled.AudioPlayerInfoText>
               <Styled.AudioPlayerInfoText>
                 Исполнитель
               </Styled.AudioPlayerInfoText>

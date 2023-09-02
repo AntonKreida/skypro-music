@@ -88,7 +88,7 @@ export const AudioPlayerInfoTextWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 3px;
+    gap: 10px;
 `;
 
 export const AudioPlayerInfoText = styled.div`

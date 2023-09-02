@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import * as Styled from './Playlist.styled';
-import { TableItem, TableItemSkeleton } from './table-item';
+import { TableItem } from './table-item';
 import { FilterDropdown } from './ui';
 
 
@@ -75,7 +75,6 @@ export const Playlist = () => {
               { mockData.map((item) => (
                 <TableItem key={ item.id } soundtrack={ item } />
               )) }
-              <TableItemSkeleton />
             </Styled.PlaylistTableBody>
 
           </Styled.PlaylistTable>
