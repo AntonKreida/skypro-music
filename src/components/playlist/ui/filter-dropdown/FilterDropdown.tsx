@@ -2,7 +2,7 @@ import {
   FC, useState, useRef, useEffect
 } from 'react';
 
-import { Button } from '@shared/';
+import { ButtonFilter } from '@shared/';
 
 import * as Styled from './FilterDropdown.styled';
 
@@ -49,7 +49,7 @@ export const FilterDropdown: FC<IFilterDropdown> = ({
 
   return (
     <Styled.FilterDropdownWrapper>
-      <Button
+      <ButtonFilter
         active={ dataInfo === filter && isOpen }
         text={ textButton }
         type="button"

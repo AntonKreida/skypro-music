@@ -3,24 +3,22 @@ import { FC, HTMLProps } from 'react';
 import * as Styled from './Button.styled';
 
 
-interface IButtonProps extends HTMLProps<HTMLButtonElement> {
-  type: 'button' | 'submit';
+interface IButtonFilterProps extends HTMLProps<HTMLButtonElement> {
+  type: 'button' | 'reset' | 'submit';
   text: string;
   onClick?: React.MouseEventHandler;
   onSubmit?: React.FormEventHandler;
   active?: boolean;
 }
 
-export const Button: FC<IButtonProps> = ({
-  text, type, onClick, onSubmit, active, form
+export const ButtonFilter: FC<IButtonFilterProps> = ({
+  text, type, onClick, onSubmit, active
 }) => (
-  <Styled.ButtonWrapperDefault
-    $typeButton={ type }
+  <Styled.ButtonWrapper
     className={ active ? 'active' : '' }
-    form={ form }
     type={ type }
     onClick={ onClick }
     onSubmit={ onSubmit }
   >{ text }
-  </Styled.ButtonWrapperDefault>
+  </Styled.ButtonWrapper>
 );
