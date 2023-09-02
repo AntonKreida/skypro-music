@@ -50,8 +50,12 @@ export const AudioPlayer = () => {
           <Styled.AudioPlayerInfoWrapper>
             <Styled.AudioPlayerInfoIconWrapper />
             <Styled.AudioPlayerInfoTextWrapper>
-              <Styled.AudioPlayerInfoText />
-              <Styled.AudioPlayerInfoText />
+              <Styled.AudioPlayerInfoText>
+                Трек
+              </Styled.AudioPlayerInfoText>
+              <Styled.AudioPlayerInfoText>
+                Исполнитель
+              </Styled.AudioPlayerInfoText>
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
 

@@ -1,4 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+
+const gradient = keyframes`
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+`;
 
 
 export const PanelWrapper = styled.div`
@@ -40,4 +53,12 @@ export const PanelMenuItem = styled.div`
         object-fit: fill;
     }
 
+`;
+
+export const PanelItemSkeleton = styled.div`
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(-45deg, #313131, #6b6b6b);
+    background-size: 400% 400%;
+    animation: ${gradient} 1s ease infinite;
 `;

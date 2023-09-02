@@ -1,7 +1,8 @@
-import { Button } from '@shared/';
+import { useState } from 'react';
 
 import * as Styled from './Playlist.styled';
 import { TableItem } from './table-item';
+import { FilterDropdown } from './ui';
 
 
 const mockData = [
@@ -15,51 +16,70 @@ const mockData = [
 ];
 
 
-export const Playlist = () => (
-  <Styled.PlaylistWrapper>
+export const Playlist = () => {
+  const [filter, setFilter] = useState('');
 
-    <Styled.PlaylistTitle>Треки</Styled.PlaylistTitle>
+  return (
+    <Styled.PlaylistWrapper>
 
-    <Styled.PlaylistTableWrapper>
-      <Styled.PlaylistTableFilter>
-        Искать по:
-        <Button text="исполнителю" type="button" />
-        <Button text="году выпуска" type="button" />
-        <Button text="жанру" type="button" />
-      </Styled.PlaylistTableFilter>
+      <Styled.PlaylistTitle>Треки</Styled.PlaylistTitle>
 
-      <Styled.PlaylistTableBox>
-        <Styled.PlaylistTable>
-          <Styled.PlaylistTableHeader>
-            <Styled.PlaylistTableRow>
+      <Styled.PlaylistTableWrapper>
+        <Styled.PlaylistTableFilter>
+          Искать по:
+          <FilterDropdown
+            dataInfo="performer"
+            filter={ filter }
+            setFilter={ setFilter }
+            textButton="исполнителю"
+          />
+          <FilterDropdown
+            dataInfo="genre"
+            filter={ filter }
+            setFilter={ setFilter }
+            textButton="жанру"
+          />
+          <FilterDropdown
+            dataInfo="year"
+            filter={ filter }
+            setFilter={ setFilter }
+            textButton="году"
+          />
+        </Styled.PlaylistTableFilter>
 
-              <Styled.PlaylistTableHeaderTitle>
-                Трек
-              </Styled.PlaylistTableHeaderTitle>
+        <Styled.PlaylistTableBox>
+          <Styled.PlaylistTable>
+            <Styled.PlaylistTableHeader>
+              <Styled.PlaylistTableRow>
 
-              <Styled.PlaylistTableHeaderTitle>
-                Исполнители
-              </Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle>
+                  Трек
+                </Styled.PlaylistTableHeaderTitle>
 
-              <Styled.PlaylistTableHeaderTitle>
-                Альбом
-              </Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle>
+                  Исполнители
+                </Styled.PlaylistTableHeaderTitle>
 
-              <Styled.PlaylistTableHeaderTitle>
-                <Styled.PlaylistTableIcon />
-              </Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle>
+                  Альбом
+                </Styled.PlaylistTableHeaderTitle>
 
-            </Styled.PlaylistTableRow>
-          </Styled.PlaylistTableHeader>
+                <Styled.PlaylistTableHeaderTitle>
+                  <Styled.PlaylistTableIcon />
+                </Styled.PlaylistTableHeaderTitle>
 
-          <Styled.PlaylistTableBody>
-            { mockData.map((item) => (
-              <TableItem key={ item.id } soundtrack={ item } />
-            )) }
-          </Styled.PlaylistTableBody>
+              </Styled.PlaylistTableRow>
+            </Styled.PlaylistTableHeader>
 
-        </Styled.PlaylistTable>
-      </Styled.PlaylistTableBox>
-    </Styled.PlaylistTableWrapper>
-  </Styled.PlaylistWrapper>
-);
+            <Styled.PlaylistTableBody>
+              { mockData.map((item) => (
+                <TableItem key={ item.id } soundtrack={ item } />
+              )) }
+            </Styled.PlaylistTableBody>
+
+          </Styled.PlaylistTable>
+        </Styled.PlaylistTableBox>
+      </Styled.PlaylistTableWrapper>
+    </Styled.PlaylistWrapper>
+  );
+};

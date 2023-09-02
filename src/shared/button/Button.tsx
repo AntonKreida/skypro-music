@@ -8,12 +8,14 @@ interface IButtonProps extends HTMLProps<HTMLButtonElement> {
   text: string;
   onClick?: React.MouseEventHandler;
   onSubmit?: React.FormEventHandler;
+  active?: boolean;
 }
 
 export const Button: FC<IButtonProps> = ({
-  text, type, onClick, onSubmit
+  text, type, onClick, onSubmit, active
 }) => (
   <Styled.ButtonWrapper
+    className={ active ? 'active' : '' }
     type={ type }
     onClick={ onClick }
     onSubmit={ onSubmit }
