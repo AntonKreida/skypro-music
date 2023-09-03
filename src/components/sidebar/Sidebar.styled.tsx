@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '@assets/icon/Logo.svg';
 
@@ -12,6 +13,8 @@ export const SidebarWrapper = styled.div`
     width: 100%;
     height: 100vh;
 `;
+
+export const SidebarLogoWrapperLink = styled(NavLink)``;
 
 export const SidebarLogo = styled(Logo)`
     width: fit-content;

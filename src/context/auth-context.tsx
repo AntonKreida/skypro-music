@@ -34,7 +34,7 @@ export const AuthContext = createContext<IAuthContext>({
 });
 
 export const AppContext: FC<IAppContext> = ({ children }) => {
-  const [isAuthUser, setIsAuthUser] = useState(true);
+  const [isAuthUser, setIsAuthUser] = useState(false);
 
   const handlerAuthUser = useCallback((dataFrom: IFormData) => {
     const targetUser = mockUsers.find((user) => {

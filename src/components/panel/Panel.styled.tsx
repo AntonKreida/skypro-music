@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 
 const gradient = keyframes`
@@ -45,7 +46,7 @@ export const PanelMenuWrapper = styled.div`
     margin-bottom: 60px;
 `;
 
-export const PanelMenuItem = styled.div`
+export const PanelMenuItem = styled(NavLink)`
     width: 100%;
     height: fit-content;
 

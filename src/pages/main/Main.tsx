@@ -17,6 +17,6 @@ const mockData = {
 
 export const MainPage = () => (
   <Styled.MainWrapper>
-    <Playlist catalog={ mockData } />
+    <Playlist title={ mockData.title } trackList={ mockData.trackList } />
   </Styled.MainWrapper>
 );

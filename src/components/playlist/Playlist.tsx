@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import { ICatalog } from '@interface/';
+import { ISoundTrack } from '@interface/';
 
 import * as Styled from './Playlist.styled';
 import { TableItem } from './table-item';
@@ -8,14 +8,13 @@ import { FilterDropdown } from './ui';
 
 
 interface IPlaylistProps {
-  catalog: ICatalog;
+  title: string;
+  trackList: ISoundTrack[];
 }
 
 
-export const Playlist: FC<IPlaylistProps> = ({ catalog }) => {
+export const Playlist: FC<IPlaylistProps> = ({ trackList, title }) => {
   const [filter, setFilter] = useState('');
-
-  const { title, trackList } = catalog;
 
   return (
     <Styled.PlaylistWrapper>

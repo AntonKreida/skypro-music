@@ -17,6 +17,6 @@ const mockData = {
 
 export const Favorites = () => (
   <Styled.FavoritesWrapper>
-    <Playlist catalog={ mockData } />
+    <Playlist title={ mockData.title } trackList={ mockData.trackList } />
   </Styled.FavoritesWrapper>
 );
