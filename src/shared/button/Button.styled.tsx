@@ -26,25 +26,25 @@ export const ButtonWrapper = styled.button<{active?: boolean}>`
     }
 `;
 
-export const ButtonWrapperDefault = styled.button<{$typeButton: 'button' | 'submit'}>`
+export const ButtonWrapperDefault = styled.button<{$color: 'default' | 'purple'}>`
     width: 100%;
     padding: 12px 0px;
-    border: ${({ $typeButton }) => ($typeButton === 'button' ? ' 1px solid #D0CECE' : 'none')};
+    border: ${({ $color }) => ($color === 'default' ? ' 1px solid #D0CECE' : 'none')};
     border-radius: 6px;
     font-family: "Stratos-Regular";
     font-size: 18px;
     text-align: center;
-    color: ${({ $typeButton }) => ($typeButton === 'button' ? '#000' : '#fff')};
-    background: ${({ $typeButton }) => ($typeButton === 'button' ? '#fff' : '#580EA2')};
+    color: ${({ $color }) => ($color === 'default' ? '#000' : '#fff')};
+    background: ${({ $color }) => ($color === 'default' ? '#fff' : '#580EA2')};
     transition: all 0.1s linear;
 
     
     &:hover {
-        background: ${({ $typeButton }) => ($typeButton === 'button' ? '#D0CECE' : '#3F007D')};
+        background: ${({ $color }) => ($color === 'default' ? '#D0CECE' : '#3F007D')};
     }
 
     &:active {
-        background: ${({ $typeButton }) => ($typeButton === 'button' ? '#D9D9D9' : '#271A58')};
+        background: ${({ $color }) => ($color === 'default' ? '#D9D9D9' : '#271A58')};
         transform: scale(0.9);
     }
 `;

@@ -67,7 +67,7 @@ export const FormLogin = () => {
       <Styled.FormButtonPanel>
         <Button form={ form } text="Войти" type="submit" />
         <NavLink to="/signIn">
-          <Button text="Зарегистрироваться" type="button" />
+          <Button color="purple" text="Зарегистрироваться" type="button" />
         </NavLink>
       </Styled.FormButtonPanel>
 

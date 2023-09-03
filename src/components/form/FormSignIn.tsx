@@ -59,7 +59,7 @@ export const FormSignIn = () => {
       </Styled.FormPanelWrapper>
 
       <Styled.FormButtonPanel>
-        <Button form={ form } text="Войти" type="submit" />
+        <Button color="purple" form={ form } text="Войти" type="submit" />
       </Styled.FormButtonPanel>
 
     </Styled.FormWrapper>
