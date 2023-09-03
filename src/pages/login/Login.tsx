@@ -1,9 +1,9 @@
-import { Form } from '@components/';
+import { FormLogin } from '@components/';
 import { Container } from '@layouts/';
 
 
 export const Login = () => (
   <Container>
-    <Form />
+    <FormLogin />
   </Container>
 );

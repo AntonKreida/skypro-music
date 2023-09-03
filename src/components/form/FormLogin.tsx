@@ -1,16 +1,17 @@
+import { NavLink } from 'react-router-dom';
 import { useId } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
 
-import { schemaAuth, TSchemaAuth } from './schemas';
+import { schemaLogin, TSchemaLogin } from './schemas';
 import * as Styled from './Form.styled';
 
 
-export const Form = () => {
-  const { control, handleSubmit } = useForm<TSchemaAuth>({
-    resolver: zodResolver(schemaAuth),
+export const FormLogin = () => {
+  const { control, handleSubmit } = useForm<TSchemaLogin>({
+    resolver: zodResolver(schemaLogin),
     mode: 'onTouched',
     defaultValues: {
       email: '',
@@ -19,7 +20,7 @@ export const Form = () => {
   });
   const form = useId();
 
-  const submitHandler: SubmitHandler<TSchemaAuth> = (dataFrom) => {
+  const submitHandler: SubmitHandler<TSchemaLogin> = (dataFrom) => {
     console.log(dataFrom);
   };
 
@@ -47,7 +48,9 @@ export const Form = () => {
 
       <Styled.FormButtonPanel>
         <Button form={ form } text="Войти" type="submit" />
-        <Button text="Зарегистрироваться" type="button" />
+        <NavLink to="/signIn">
+          <Button text="Зарегистрироваться" type="button" />
+        </NavLink>
       </Styled.FormButtonPanel>
 
     </Styled.FormWrapper>

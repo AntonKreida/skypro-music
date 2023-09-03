@@ -21,6 +21,7 @@ export const Input: FC<IInputProps> = ({
     render={ ({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
       <Styled.InputLabelWrapper>
         <Styled.InputWrapper
+          autoComplete="on"
           error={ error || null }
           placeholder={ placeholder }
           type={ type }
