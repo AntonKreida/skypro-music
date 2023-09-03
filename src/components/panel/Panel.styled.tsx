@@ -21,6 +21,7 @@ export const PanelWrapper = styled.div`
     justify-content: space-between;
     width: 300px;
     height: 100%;
+    padding: 35px 35px 35px 0px;
 `;
 
 export const PanelHeader = styled.div`

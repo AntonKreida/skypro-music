@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { AppContext } from '@context/';
+import { AppContext, AppThemeContext } from '@context/';
 
 import { AppRouter } from './router';
 
@@ -8,8 +8,11 @@ import { AppRouter } from './router';
 const App = () => (
   <BrowserRouter>
     <AppContext>
-      <AppRouter />
+      <AppThemeContext>
+        <AppRouter />
+      </AppThemeContext>
     </AppContext>
+
   </BrowserRouter>
 );
 
