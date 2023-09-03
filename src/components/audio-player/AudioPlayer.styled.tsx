@@ -24,7 +24,7 @@ export const AudioPlayerWrapper = styled.div`
     width: 100vw;
     height: 73px;
     padding: 10px 36px 5px 36px;
-    background: #1c1c1c7f;
+    background: ${({ theme }) => theme.colors.godGrayOpacity};
 `;
 
 export const AudioPlayerProgress = styled.div`
@@ -33,7 +33,7 @@ export const AudioPlayerProgress = styled.div`
     top: 0;
     width: 100%;
     height: 5px;
-    background: #2E2E2E;
+    background: ${({ theme }) => theme.colors.gray};
 `;
 
 export const AudioPlayerControllerWrapper = styled.div`
@@ -68,8 +68,8 @@ export const AudioPlayerButton = styled.button`
     }
 
     & > .volume {
-        stroke: #fff;
-        fill: #fff;
+        stroke: ${({ theme }) => theme.colors.mercury};
+        fill:  ${({ theme }) => theme.colors.mercury};
     }
 `;
 
@@ -81,7 +81,7 @@ export const AudioPlayerInfoWrapper = styled.div`
 export const AudioPlayerInfoIconWrapper = styled.div`
     width: 51px;
     height: 51px;
-    background: #2E2E2E;
+    background: ${({ theme }) => theme.colors.gray};
 `;
 
 export const AudioPlayerInfoTextWrapper = styled.div`
@@ -95,7 +95,7 @@ export const AudioPlayerInfoText = styled.div`
     height: 15px;
     width: fit-content;
     font-size: 16px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
 `;
 
 export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
@@ -106,13 +106,12 @@ export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
     height: 4px;
     border-radius: 15px;
     outline: none;
-    box-shadow: 0 0 4px #000;
-    background: ${({ value }) => `
+    background: ${({ value, theme }) => `
     linear-gradient(to right, 
-    #fff 0%,
-    #fff ${value}%,
-    #535353 ${value}%,
-    #535353 100%);
+    ${theme.colors.perfume} 0%,
+    ${theme.colors.perfume} ${value}%,
+    ${theme.colors.emperor} ${value}%,
+    ${theme.colors.emperor} 100%);
     )`
 };
 
@@ -122,9 +121,9 @@ export const AudioPlayerInputRange = styled.input.attrs({ type: 'range' })`
         position: relative;
         height: 15px;
         width: 15px;
-        background: #000;
+        background: ${({ theme }) => theme.colors.bonJour};
         border-radius: 100%;
-        border: 3px solid #fff;
+        border: 3px solid ${({ theme }) => theme.colors.mercury};
         cursor: pointer;
     }
 `;

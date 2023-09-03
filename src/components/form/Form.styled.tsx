@@ -11,6 +11,7 @@ export const FormWrapper = styled.form`
     height: auto;
     border-radius: 12px;
     padding: 41px 47px;
+    border: 1px solid #000;
     background: #fff;
 `;
 
@@ -22,8 +23,6 @@ export const FormLogoWrapper = styled.div`
 `;
 
 export const FormLogo = styled(Logo)`
-    stroke: #000;
-    
     & > path:nth-child(n + 3) {
         fill: #000;
     }

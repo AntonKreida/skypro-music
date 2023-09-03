@@ -4,6 +4,7 @@ import 'styled-components';
 interface TTheme {
   name: 'dark' | 'light';
   colors: {
+    godGrayOpacity: string;
     godGray: string;
     mineShaft: string;
     mineShaftBlack: string;
@@ -15,6 +16,10 @@ interface TTheme {
     mauve: string;
     heliotrope: string;
     heliotropeWhite: string;
+    mercury: string;
+    bonJour: string;
+    perfume: string;
+    emperor: string;
   };
 }
 

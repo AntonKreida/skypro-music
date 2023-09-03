@@ -4,11 +4,7 @@ import * as Styled from './Panel.styled';
 export const Panel = () => (
   <Styled.PanelWrapper>
     <Styled.PanelHeader>
-      <Styled.PanelIconWrapper>
-        <svg>
-          <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#exit` } />
-        </svg>
-      </Styled.PanelIconWrapper>
+      <Styled.PanelIconWrapper />
     </Styled.PanelHeader>
     <Styled.PanelMenuWrapper>
 

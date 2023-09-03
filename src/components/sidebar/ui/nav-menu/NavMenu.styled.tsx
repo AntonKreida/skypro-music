@@ -22,12 +22,16 @@ export const NavMenuBurgerIcon = styled(Burger)`
     width: 20px;
     height: 10px;
     cursor: pointer;
+
+    & > path {
+        stroke: ${({ theme }) => theme.colors.default};
+    }
 `;
 
 export const NavMenuCrossIcon = styled(Cross)`
     width: 20px;
     height: 10px;
-    fill: #fff;
+    fill: ${({ theme }) => theme.colors.default};
     cursor: pointer;
 `;
 
@@ -45,16 +49,16 @@ export const NavMenuDropdown = styled(motion.div)`
 
 export const NavMenuItem = styled(NavLink)`
     font-size: 16px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
     cursor: pointer;
     transition: color 0.2s linear;
 
     &:hover {
-        color: #D9B6FF;
+        color: ${({ theme }) => theme.colors.mauve};
     }
 
     &.active {
-        color: #AD61FF;
+        color: ${({ theme }) => theme.colors.heliotrope};
         text-decoration: underline;
     }
 `;

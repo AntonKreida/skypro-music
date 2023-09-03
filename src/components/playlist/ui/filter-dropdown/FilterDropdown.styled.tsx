@@ -15,7 +15,7 @@ export const FilterDropdownMenuWrapper = styled.div`
     width: 237px;
     height: 237px;
     border-radius: 12px;
-    background: #313131;
+    background: ${({ theme }) => theme.colors.gray};
 `;
 
 export const FilterDropdownMenuInner = styled.div`
@@ -38,11 +38,11 @@ export const FilterDropdownMenuBox = styled.div`
 
     &::-webkit-scrollbar-track {
         border-radius: 10px;
-        background: #4B4949;
+        background:  ${({ theme }) => theme.colors.doveGray};
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: #fff;
+        background-color: ${({ theme }) => theme.colors.default};
         border-radius: 10px;
     }
 `;
@@ -50,16 +50,16 @@ export const FilterDropdownMenuBox = styled.div`
 export const FilterDropdownItem = styled.div`
     font-family: "Stratos-Light";
     font-size: 20px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
     transition: all 0.1s linear;
     cursor: pointer;
 
     &:hover {
-        color: #D9B6FF;
+        color:  ${({ theme }) => theme.colors.mauve};
     }
 
     .active {
-        color: #AD61FF;
+        color: ${({ theme }) => theme.colors.heliotropeWhite};;
         text-decoration: underline;
     }
 `;

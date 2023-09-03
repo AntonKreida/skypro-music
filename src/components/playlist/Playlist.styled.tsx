@@ -14,7 +14,7 @@ export const PlaylistWrapper = styled.div`
 export const PlaylistTitle = styled.h1`
     font-family: "Stratos-Regular";
     font-size: 60px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
 `;
 
 export const PlaylistTableWrapper = styled.div`
@@ -30,7 +30,7 @@ export const PlaylistTableFilter = styled.div`
     align-items: center;
     font-family: "Stratos-Medium";
     font-size: 16px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
 `;
 
 export const PlaylistTableBox = styled.div`
@@ -95,14 +95,14 @@ export const PlaylistTableHeaderTitle = styled.th`
     font-family: "Stratos-Light";
     font-size: 14px;
     text-align: left;
-    color: #4E4E4E;
+    color: ${({ theme }) => theme.colors.tundora};
     text-transform: uppercase;
 `;
 
 export const PlaylistTableIcon = styled(Clock)`
     width: 15px;
     height: 15px;
-    stroke: #4E4E4E;
+    stroke: ${({ theme }) => theme.colors.tundora};
 `;
 
 export const PlaylistTableBody = styled.tbody`
@@ -130,13 +130,13 @@ export const PlaylistItemIconWrapper = styled.div`
 export const PlaylistItemText = styled.p`
     font-family: "Stratos-Light";
     font-size: 16px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
 `;
 
 export const PlaylistItemTextSilenced = styled.p`
     font-family: "Stratos-Light";
     font-size: 16px;
-    color: #4E4E4E;
+    color: ${({ theme }) => theme.colors.tundora};
 `;
 
 export const PlaylistLikeWrapper = styled.div`

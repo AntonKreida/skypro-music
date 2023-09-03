@@ -4,25 +4,25 @@ import styled from 'styled-components';
 export const ButtonWrapper = styled.button<{active?: boolean}>`
     display: flex;
     align-items: center;
-    border: 1px solid #fff;
+    border: 1px solid ${({ theme }) => theme.colors.default};
     border-radius: 60px;
     padding: 6px 20px;
     font-family: "Stratos-Regular";
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
     background: none;
     transition: all 0.1s linear;
 
     &:hover {
-        border-color: #D9B6FF;
-        color: #D9B6FF;
+        border-color: ${({ theme }) => theme.colors.mauve};
+        color: ${({ theme }) => theme.colors.mauve};
     }
 
     &.active {
-        border-color: #AD61FF;
-        color: #AD61FF;
+        border-color: ${({ theme }) => theme.colors.heliotrope};
+        color: ${({ theme }) => theme.colors.heliotrope};
     }
 `;
 

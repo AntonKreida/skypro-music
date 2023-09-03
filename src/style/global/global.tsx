@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     html {
-        background: #181818;
+        background: ${({ theme }) => theme.colors.mineShaft};
     }
 
     body {

@@ -1,6 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import { ReactComponent as Exit } from '@assets/icon/Exit.svg';
+
 
 const gradient = keyframes`
     0% {
@@ -30,13 +32,16 @@ export const PanelHeader = styled.div`
     width: 100%;
 `;
 
-export const PanelIconWrapper = styled.div`
-    width: fit-content;
-    height: fit-content;
+export const PanelIconWrapper = styled(Exit)`
+    width: 40px;
+    height: 40px;
 
-    & > svg {
-        width: 40px;
-        height: 40px;
+    & > g > g > path {
+        stroke: ${({ theme }) => theme.colors.default}
+    }
+
+    & > g > circle {
+        stroke: ${({ theme }) => theme.colors.default};
     }
 `;
 

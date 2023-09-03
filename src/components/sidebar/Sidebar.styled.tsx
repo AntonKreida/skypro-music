@@ -9,7 +9,7 @@ export const SidebarWrapper = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     gap: 46px;
-    max-width: 300px;
+    max-width: 252px;
     width: 100%;
     height: 100vh;
     padding: 35px;
@@ -28,6 +28,10 @@ export const SidebarLogoWrapperLink = styled(NavLink)``;
 export const SidebarLogo = styled(Logo)`
     width: fit-content;
     height: 20px;
+    
+    & > path:nth-child(n + 3) {
+        fill:${({ theme }) => theme.colors.default};
+    }
 `;
 
 export const SidebarNavMenuWrapper = styled.div`
