@@ -28,7 +28,7 @@ export const FormLogin = () => {
     handlerAuthUser(dataFrom);
 
     if (isAuthUser) {
-      navigate('/skypro-music/');
+      navigate('/skypro-music');
       setError(false);
 
       return;
