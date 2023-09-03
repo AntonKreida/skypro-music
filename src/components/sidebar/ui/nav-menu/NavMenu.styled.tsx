@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as Burger } from '@assets/icon/Burger.svg';
 import { ReactComponent as Cross } from '@assets/icon/Cross.svg';
@@ -42,8 +43,18 @@ export const NavMenuDropdown = styled(motion.div)`
     overflow: hidden;
 `;
 
-export const NavMenuItem = styled.div`
+export const NavMenuItem = styled(NavLink)`
     font-size: 16px;
     color: #fff;
     cursor: pointer;
+    transition: color 0.2s linear;
+
+    &:hover {
+        color: #D9B6FF;
+    }
+
+    &.active {
+        color: #AD61FF;
+        text-decoration: underline;
+    }
 `;

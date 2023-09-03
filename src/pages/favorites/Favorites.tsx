@@ -1,10 +1,10 @@
 import { Playlist } from '@components/';
 
-import * as Styled from './Main.styled';
+import * as Styled from './Favorites.styled';
 
 
 const mockData = {
-  title: 'Треки',
+  title: 'Мои треки',
   trackList: [{
     id: 1,
     name: 'Название трека',
@@ -15,8 +15,8 @@ const mockData = {
 };
 
 
-export const MainPage = () => (
-  <Styled.MainWrapper>
+export const Favorites = () => (
+  <Styled.FavoritesWrapper>
     <Playlist catalog={ mockData } />
-  </Styled.MainWrapper>
+  </Styled.FavoritesWrapper>
 );

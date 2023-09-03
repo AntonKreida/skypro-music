@@ -2,16 +2,16 @@ export const menuItemList = [
   {
     id: 1,
     label: 'Главная',
-    href: ''
+    href: '/skypro-music'
   },
   {
     id: 2,
     label: 'Мои треки',
-    href: ''
+    href: '/skypro-music/favorites'
   },
   {
     id: 3,
     label: 'Выйти',
-    href: ''
+    href: '/login'
   },
 ];

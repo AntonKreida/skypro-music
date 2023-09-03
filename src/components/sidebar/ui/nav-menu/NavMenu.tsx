@@ -47,6 +47,8 @@ export const NavMenu = () => {
         { menuItemList.map((item) => (
           <Styled.NavMenuItem
             key={ item.id }
+            end
+            to={ item.href }
           >
             { item.label }
           </Styled.NavMenuItem>
