@@ -8,7 +8,7 @@ export const FormWrapper = styled.form`
     flex-direction: column;
     max-width: 366px;
     width: 100%;
-    height: 439px;
+    height: auto;
     border-radius: 12px;
     padding: 41px 47px;
     background: #fff;
@@ -42,4 +42,12 @@ export const FormButtonPanel = styled.div`
     flex-direction: column;
     gap: 20px;
     width: 100%;
+`;
+
+export const FormSubmitErrorMessage = styled.div`
+    width: 100%;
+    font-family: "Stratos-Light";
+    font-size: 16px;
+    color: #d91818;
+    text-align: center;
 `;
