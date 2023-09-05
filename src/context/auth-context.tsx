@@ -1,5 +1,5 @@
 import {
-  createContext, useState, ReactNode, FC, useMemo, useCallback
+  createContext, useState, ReactNode, FC, useMemo, useCallback,
 } from 'react';
 
 
@@ -10,8 +10,9 @@ interface IFormData {
 
 interface IAuthContext {
   isAuthUser: boolean;
-  handlerAuthUser: (dataFrom: IFormData) => void;
+  handlerOnAuthUser: (dataFrom: IFormData) => boolean;
   handlerCreateUser: (dataFrom: IFormData) => void;
+  handlerOffAuthUser: () => void;
 }
 
 interface IAppContext {
@@ -28,15 +29,22 @@ const mockUsers = [
 
 export const AuthContext = createContext<IAuthContext>({
   isAuthUser: false,
-  handlerAuthUser: (_dataFrom: IFormData) => null,
+  handlerOnAuthUser: (_dataFrom: IFormData) => false,
   handlerCreateUser: (_dataFrom: IFormData) => null,
-
+  handlerOffAuthUser: () => null,
 });
 
 export const AppContext: FC<IAppContext> = ({ children }) => {
-  const [isAuthUser, setIsAuthUser] = useState(false);
+  const [isAuthUser, setIsAuthUser] = useState(() => {
+    // Проверка сохранен ли токен
+    if (localStorage.getItem('user')) {
+      return true;
+    }
 
-  const handlerAuthUser = useCallback((dataFrom: IFormData) => {
+    return false;
+  });
+
+  const handlerOnAuthUser = useCallback((dataFrom: IFormData) => {
     const targetUser = mockUsers.find((user) => {
       if (user.email === dataFrom.email && user.password === dataFrom.password) {
         return user;
@@ -46,22 +54,32 @@ export const AppContext: FC<IAppContext> = ({ children }) => {
     });
 
     if (!targetUser) {
-      setIsAuthUser(false);
-      return;
+      return false;
     }
 
+    // Тут будет сохранение токена в localStorage
+    localStorage.setItem('user', '1234567qwe');
     setIsAuthUser(true);
+
+    return true;
   }, []);
 
   const handlerCreateUser = useCallback((dataFrom: IFormData) => {
     mockUsers.push({ ...dataFrom });
   }, []);
 
+  const handlerOffAuthUser = () => {
+    localStorage.removeItem('user');
+    setIsAuthUser(false);
+  };
+
   const context: IAuthContext = useMemo(() => ({
     isAuthUser,
-    handlerAuthUser,
+    handlerOnAuthUser,
     handlerCreateUser,
-  }), [handlerAuthUser, handlerCreateUser, isAuthUser]);
+    handlerOffAuthUser,
+    setIsAuthUser,
+  }), [handlerOnAuthUser, handlerCreateUser, isAuthUser]);
 
   return (
     <AuthContext.Provider value={ context }>

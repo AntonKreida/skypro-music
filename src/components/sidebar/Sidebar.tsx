@@ -9,7 +9,6 @@ import { NavMenu } from './ui/nav-menu';
 export const Sidebar = () => {
   const { handlerSwitchTheme, currentTheme } = useAppThemeContext();
 
-
   return (
     <Styled.SidebarWrapper>
 

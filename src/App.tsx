@@ -7,15 +7,14 @@ import { AppRouter } from './router';
 
 
 const App = () => (
-  <BrowserRouter>
-    <AppContext>
+  <AppContext>
+    <BrowserRouter>
       <AppThemeContext>
         <GlobalStyle />
         <AppRouter />
       </AppThemeContext>
-    </AppContext>
-
-  </BrowserRouter>
+    </BrowserRouter>
+  </AppContext>
 );
 
 export default App;

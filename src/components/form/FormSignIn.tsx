@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
-import { useAppContext } from '@hook/';
+import { useAppAuthContext } from '@hook/';
 
 import { schemaSignIn, TSchemaSignIn } from './schemas';
 import * as Styled from './Form.styled';
@@ -22,7 +22,7 @@ export const FormSignIn = () => {
     }
   });
   const form = useId();
-  const { handlerCreateUser } = useAppContext();
+  const { handlerCreateUser } = useAppAuthContext();
 
   const submitHandler: SubmitHandler<TSchemaSignIn> = (dataFrom) => {
     handlerCreateUser(dataFrom);

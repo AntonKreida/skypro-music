@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useAppContext } from '@hook/';
+import { useAppAuthContext } from '@hook/';
 
 
 export const RequireAuth = () => {
-  const { isAuthUser } = useAppContext();
+  const { isAuthUser } = useAppAuthContext();
 
   if (!isAuthUser) {
     return <Navigate to="/login" />;

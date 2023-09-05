@@ -9,9 +9,4 @@ export const menuItemList = [
     label: 'Мои треки',
     href: '/skypro-music/favorites'
   },
-  {
-    id: 3,
-    label: 'Выйти',
-    href: '/login'
-  },
 ];

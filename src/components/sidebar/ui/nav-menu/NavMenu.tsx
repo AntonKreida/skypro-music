@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { useAppAuthContext } from '@hook/';
+
 import * as Styled from './NavMenu.styled';
 import { menuItemList } from '../lib';
 
 
 export const NavMenu = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const { handlerOffAuthUser } = useAppAuthContext();
 
   const handlerOnClickButtonMenu = () => {
     setIsOpenMenu(!isOpenMenu);
@@ -53,6 +56,7 @@ export const NavMenu = () => {
             { item.label }
           </Styled.NavMenuItem>
         )) }
+        <Styled.NavMenuItem end to="/login" onClick={ () => handlerOffAuthUser() }>Выйти</Styled.NavMenuItem>
       </Styled.NavMenuDropdown>
     </Styled.NavMenuWrapper>
   );

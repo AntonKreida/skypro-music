@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
-import { useAppContext } from '@hook/';
+import { useAppAuthContext } from '@hook/';
 
 import { schemaLogin, TSchemaLogin } from './schemas';
 import * as Styled from './Form.styled';
@@ -22,12 +22,12 @@ export const FormLogin = () => {
     }
   });
   const form = useId();
-  const { handlerAuthUser, isAuthUser } = useAppContext();
+  const { handlerOnAuthUser } = useAppAuthContext();
 
   const submitHandler: SubmitHandler<TSchemaLogin> = (dataFrom) => {
-    handlerAuthUser(dataFrom);
+    const response = handlerOnAuthUser(dataFrom);
 
-    if (isAuthUser) {
+    if (response) {
       navigate('/skypro-music');
       setError(false);
 
