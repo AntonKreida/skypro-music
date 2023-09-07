@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import { FontsStyle } from '@style/';
 
-import App from './app';
+import App from './App';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
