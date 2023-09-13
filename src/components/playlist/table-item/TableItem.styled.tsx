@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
+import { ReactComponent as Plug } from '@assets/icon/Plug.svg';
+
 
 const gradient = keyframes`
     0% {
@@ -51,26 +53,25 @@ export const TableItemCell = styled.td`
     width: 100%;
 `;
 
-export const TableItemIconWrapper = styled.div`
-    width: fit-content;
-    height: 100%;
+export const TableItemIconPlug = styled(Plug)`
+    width: 51px;
+    height: 51px;
 
-    & > svg {
-        width: 51px;
-        height: 51px;
+    & > g > rect {
+        fill: ${({ theme }) => theme.colors.doveGray};
     }
 `;
 
 export const TableItemText = styled.p`
     font-family: "Stratos-Light";
     font-size: 16px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
 `;
 
 export const TableItemTextSilenced = styled.p`
     font-family: "Stratos-Light";
     font-size: 16px;
-    color: #4E4E4E;
+    color: ${({ theme }) => theme.colors.tundora};
 `;
 
 export const TableLikeWrapper = styled.div`

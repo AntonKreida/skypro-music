@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { Search } from '@shared/';
 import { Sidebar, Panel, AudioPlayer } from '@components/';
@@ -6,16 +6,12 @@ import { Sidebar, Panel, AudioPlayer } from '@components/';
 import * as Styled from './Layout.styled';
 
 
-interface ILayoutProps {
-  children: ReactNode;
-}
-
-export const Layout: FC<ILayoutProps> = ({ children }) => (
+export const Layout = () => (
   <Styled.LayoutWrapper>
     <Sidebar />
     <Styled.LayoutMainContainer>
       <Search />
-      { children }
+      <Outlet />
     </Styled.LayoutMainContainer>
     <Panel />
     <AudioPlayer />

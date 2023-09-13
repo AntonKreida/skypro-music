@@ -11,14 +11,14 @@ export const SearchWrapper = styled.div`
     height: 50px;
     margin-bottom: 51px;
     padding: 0px 10px 14px 10px;
-    border-bottom: 1px solid #4E4E4E;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.tundora};
 `;
 
 export const SearchIcon = styled(Search)`
     width: 15px;
     height: 15px;
-    stroke: #fff;
-    fill: #fff;
+    stroke: ${({ theme }) => theme.colors.default};
+    fill: ${({ theme }) => theme.colors.default};
 `;
 
 export const SearchInput = styled.input`
@@ -27,13 +27,13 @@ export const SearchInput = styled.input`
     border: none;
     font-family: "Stratos-Regular";
     font-size: 16px; 
-    color: #fff;
+    color: ${({ theme }) => theme.colors.default};
     background: none;
 
     &::placeholder {
         font-family: "Stratos-Regular";
         font-size: 16px;
-        color: #fff;  
+        color: ${({ theme }) => theme.colors.default};  
     }
 
     &:focus {

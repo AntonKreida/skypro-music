@@ -1,28 +1,25 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
+
+import { ISoundTrack } from '@interface/';
 
 import * as Styled from './Playlist.styled';
 import { TableItem } from './table-item';
 import { FilterDropdown } from './ui';
 
 
-const mockData = [
-  {
-    id: 1,
-    name: 'Название трека',
-    artist: 'Имя артиста',
-    album: 'Название альбома',
-    time: '00:00'
-  },
-];
+interface IPlaylistProps {
+  title: string;
+  trackList: ISoundTrack[];
+}
 
 
-export const Playlist = () => {
+export const Playlist: FC<IPlaylistProps> = ({ trackList, title }) => {
   const [filter, setFilter] = useState('');
 
   return (
     <Styled.PlaylistWrapper>
 
-      <Styled.PlaylistTitle>Треки</Styled.PlaylistTitle>
+      <Styled.PlaylistTitle>{ title }</Styled.PlaylistTitle>
 
       <Styled.PlaylistTableWrapper>
         <Styled.PlaylistTableFilter>
@@ -72,7 +69,7 @@ export const Playlist = () => {
             </Styled.PlaylistTableHeader>
 
             <Styled.PlaylistTableBody>
-              { mockData.map((item) => (
+              { trackList?.map((item) => (
                 <TableItem key={ item.id } soundtrack={ item } />
               )) }
             </Styled.PlaylistTableBody>

@@ -26,6 +26,15 @@
             "@interface/": [
                 "./src/interface"
             ],
+            "@context/": [
+                "./src/context"
+            ],
+            "@hook/": [
+                "./src/hook"
+            ],
+            "@hocs/": [
+                "./src/hocs"
+            ],
         }
     },
   }

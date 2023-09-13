@@ -1,11 +1,20 @@
-import { Layout } from '@layouts/';
-import { MainPage } from '@pages/';
+import { BrowserRouter } from 'react-router-dom';
+
+import { AppContext, AppThemeContext } from '@context/';
+import { GlobalStyle } from '@style/';
+
+import { AppRouter } from './router';
 
 
 const App = () => (
-  <Layout>
-    <MainPage />
-  </Layout>
+  <AppContext>
+    <BrowserRouter>
+      <AppThemeContext>
+        <GlobalStyle />
+        <AppRouter />
+      </AppThemeContext>
+    </BrowserRouter>
+  </AppContext>
 );
 
 export default App;

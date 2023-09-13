@@ -19,11 +19,8 @@ export const TableItem: FC<ITableItemProps> = ({ soundtrack }) => {
     <Styled.TableItemRowWrapper>
       <Styled.TableItemCell>
 
-        <Styled.TableItemIconWrapper>
-          <svg>
-            <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#default` } />
-          </svg>
-        </Styled.TableItemIconWrapper>
+        <Styled.TableItemIconPlug />
+
         <Styled.TableItemText>
           { name }
         </Styled.TableItemText>

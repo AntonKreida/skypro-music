@@ -1,4 +1,7 @@
 import styled, { keyframes } from 'styled-components';
+import { NavLink } from 'react-router-dom';
+
+import { ReactComponent as Exit } from '@assets/icon/Exit.svg';
 
 
 const gradient = keyframes`
@@ -20,6 +23,7 @@ export const PanelWrapper = styled.div`
     justify-content: space-between;
     width: 300px;
     height: 100%;
+    padding: 35px 35px 35px 0px;
 `;
 
 export const PanelHeader = styled.div`
@@ -28,13 +32,16 @@ export const PanelHeader = styled.div`
     width: 100%;
 `;
 
-export const PanelIconWrapper = styled.div`
-    width: fit-content;
-    height: fit-content;
+export const PanelIconWrapper = styled(Exit)`
+    width: 40px;
+    height: 40px;
 
-    & > svg {
-        width: 40px;
-        height: 40px;
+    & > g > g > path {
+        stroke: ${({ theme }) => theme.colors.default}
+    }
+
+    & > g > circle {
+        stroke: ${({ theme }) => theme.colors.default};
     }
 `;
 
@@ -45,7 +52,7 @@ export const PanelMenuWrapper = styled.div`
     margin-bottom: 60px;
 `;
 
-export const PanelMenuItem = styled.div`
+export const PanelMenuItem = styled(NavLink)`
     width: 100%;
     height: fit-content;
 
