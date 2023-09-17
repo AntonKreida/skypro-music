@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { ITrack } from '@interface/';
+import { formattedTime } from '@utils/';
 
 import * as Styled from './TableItem.styled';
 
@@ -48,7 +49,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
           </svg>
         </Styled.TableLikeWrapper>
         <Styled.TableItemTextSilenced>
-          { String(time) }
+          { formattedTime(time) }
         </Styled.TableItemTextSilenced>
       </Styled.TableItemCell>
     </Styled.TableItemRowWrapper>
