@@ -37,6 +37,7 @@ export const PlaylistTableBox = styled.div`
     width: 100%;
     height: 100%;
     margin-top: 25px;
+    padding-bottom: 150px;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -147,4 +148,16 @@ export const PlaylistLikeWrapper = styled.div`
         width: 17px;
         height: 13px;
     }
+`;
+
+export const PlaylistErrorHolder = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Stratos-Light";
+    font-size: 32px;
+    text-align: center;
 `;

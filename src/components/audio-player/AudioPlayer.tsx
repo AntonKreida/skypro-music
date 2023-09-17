@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import * as Styled from './AudioPlayer.styled';
 
 
-export const AudioPlayer = () => {
+interface IAudioPlayer {
+  isLoading: boolean;
+}
+
+
+export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const [valueRange, setValueRange] = useState('50');
 
 
@@ -48,14 +53,26 @@ export const AudioPlayer = () => {
           </Styled.AudioPlayerButton>
 
           <Styled.AudioPlayerInfoWrapper>
-            <Styled.AudioPlayerInfoIconWrapper />
+
+            { !isLoading ? (
+              <Styled.AudioPlayerInfoIconWrapper />
+            ) : <Styled.AudioPlayerInfoIconSkeleton /> }
+
             <Styled.AudioPlayerInfoTextWrapper>
-              <Styled.AudioPlayerInfoText>
-                Трек
-              </Styled.AudioPlayerInfoText>
-              <Styled.AudioPlayerInfoText>
-                Исполнитель
-              </Styled.AudioPlayerInfoText>
+              { !isLoading ? (
+                <Styled.AudioPlayerInfoText>
+                  Трек
+                </Styled.AudioPlayerInfoText>
+              ) : (
+                <Styled.AudioPlayerInfoTextSkeleton />
+              ) }
+              { !isLoading ? (
+                <Styled.AudioPlayerInfoText>
+                  Исполнитель
+                </Styled.AudioPlayerInfoText>
+              ) : (
+                <Styled.AudioPlayerInfoTextSkeleton />
+              ) }
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
 

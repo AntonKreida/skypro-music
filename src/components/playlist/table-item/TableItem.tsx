@@ -1,18 +1,21 @@
 import { FC } from 'react';
 
-import { ISoundTrack } from '@interface/';
+import { ITrack } from '@interface/';
 
 import * as Styled from './TableItem.styled';
 
 
 interface ITableItemProps {
-  soundtrack: ISoundTrack;
+  track: ITrack;
 }
 
-export const TableItem: FC<ITableItemProps> = ({ soundtrack }) => {
+export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const {
-    name, artist, album, time
-  } = soundtrack;
+    name,
+    author,
+    album,
+    duration_in_seconds: time
+  } = track;
 
 
   return (
@@ -28,7 +31,7 @@ export const TableItem: FC<ITableItemProps> = ({ soundtrack }) => {
 
       <Styled.TableItemCell>
         <Styled.TableItemText>
-          { artist }
+          { author }
         </Styled.TableItemText>
       </Styled.TableItemCell>
 
@@ -45,7 +48,7 @@ export const TableItem: FC<ITableItemProps> = ({ soundtrack }) => {
           </svg>
         </Styled.TableLikeWrapper>
         <Styled.TableItemTextSilenced>
-          { time }
+          { String(time) }
         </Styled.TableItemTextSilenced>
       </Styled.TableItemCell>
     </Styled.TableItemRowWrapper>
