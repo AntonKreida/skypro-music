@@ -21,37 +21,42 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   return (
     <Styled.TableItemRowWrapper>
-      <Styled.TableItemCell>
+      <Styled.TableItemCell colSpan={ 1 }>
 
-        <Styled.TableItemIconPlug />
+        <Styled.TableItemBox>
+          <Styled.TableItemIconPlug />
+          <Styled.TableItemText>
+            { name }
+          </Styled.TableItemText>
+        </Styled.TableItemBox>
 
-        <Styled.TableItemText>
-          { name }
-        </Styled.TableItemText>
       </Styled.TableItemCell>
 
-      <Styled.TableItemCell>
+      <Styled.TableItemCell colSpan={ 2 }>
         <Styled.TableItemText>
           { author }
         </Styled.TableItemText>
       </Styled.TableItemCell>
 
-      <Styled.TableItemCell>
+      <Styled.TableItemCell colSpan={ 3 }>
         <Styled.TableItemTextSilenced>
           { album }
         </Styled.TableItemTextSilenced>
       </Styled.TableItemCell>
 
-      <Styled.TableItemCell>
-        <Styled.TableLikeWrapper>
-          <svg>
-            <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
-          </svg>
-        </Styled.TableLikeWrapper>
-        <Styled.TableItemTextSilenced>
-          { formattedTime(time) }
-        </Styled.TableItemTextSilenced>
+      <Styled.TableItemCell colSpan={ 4 }>
+        <Styled.TableItemLastBox>
+          <Styled.TableLikeWrapper>
+            <svg>
+              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
+            </svg>
+          </Styled.TableLikeWrapper>
+          <Styled.TableItemTextSilenced>
+            { formattedTime(time) }
+          </Styled.TableItemTextSilenced>
+        </Styled.TableItemLastBox>
       </Styled.TableItemCell>
+
     </Styled.TableItemRowWrapper>
   );
 };

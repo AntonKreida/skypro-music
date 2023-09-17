@@ -53,20 +53,22 @@ export const Playlist: FC<IPlaylistProps> = ({
             <Styled.PlaylistTableHeader>
               <Styled.PlaylistTableRow>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 1 }>
                   Трек
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 2 }>
                   Исполнители
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 3 }>
                   Альбом
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
-                  <Styled.PlaylistTableIcon />
+                <Styled.PlaylistTableHeaderTitle colSpan={ 4 }>
+                  <Styled.PlaylistTableLastHeader>
+                    <Styled.PlaylistTableIcon />
+                  </Styled.PlaylistTableLastHeader>
                 </Styled.PlaylistTableHeaderTitle>
 
               </Styled.PlaylistTableRow>
