@@ -13,15 +13,15 @@ export const useTrack = () => {
     const handlerGetAllTracks = async () => {
       try {
         const tracksList = await getAllTrack();
-        setIsLoading(false);
-
         setTracks([...tracksList]);
-      } catch {
         setIsLoading(false);
+      } catch {
         setIsError('Возникла ошибка! Пожалуйста повторите позже');
+        setIsLoading(false);
       }
     };
 
+    setIsLoading(true);
     handlerGetAllTracks();
   }, []);
 

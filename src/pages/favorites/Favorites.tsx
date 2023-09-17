@@ -5,6 +5,6 @@ import * as Styled from './Favorites.styled';
 
 export const Favorites = () => (
   <Styled.FavoritesWrapper>
-    <Playlist title="фавориты" trackList={ [] } />
+    <Playlist title="Фавориты" trackList={ [] } />
   </Styled.FavoritesWrapper>
 );
