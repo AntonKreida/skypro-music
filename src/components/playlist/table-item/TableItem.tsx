@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { ITrack } from '@interface/';
 import { formattedTime } from '@utils/';
+import { useAudioContext } from '@hook/';
 
 import * as Styled from './TableItem.styled';
 
@@ -15,12 +16,15 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     name,
     author,
     album,
+    track_file: href,
     duration_in_seconds: time
   } = track;
 
+  const { handlerPlayCurrentTrack } = useAudioContext();
+
 
   return (
-    <Styled.TableItemRowWrapper>
+    <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(href, name) }>
       <Styled.TableItemCell colSpan={ 1 }>
 
         <Styled.TableItemBox>

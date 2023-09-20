@@ -19,6 +19,7 @@ const gradient = keyframes`
 export const TableItemRowWrapper = styled.tr`
     width: 100%;
     height: fit-content;
+    cursor: pointer;
 `;
 
 

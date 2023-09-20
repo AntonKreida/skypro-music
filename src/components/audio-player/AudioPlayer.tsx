@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
 
+import { useAudioContext } from '@hook/';
+
 import * as Styled from './AudioPlayer.styled';
 
 
@@ -10,6 +12,7 @@ interface IAudioPlayer {
 
 export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const [valueRange, setValueRange] = useState('50');
+  const { handlerPlayTrack } = useAudioContext();
 
 
   const handlerOnChangeValueRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +21,7 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   };
 
   return (
-    <Styled.AudioPlayerWrapper>
+    <Styled.AudioPlayerWrapper $isLoading={ isLoading }>
 
       <Styled.AudioPlayerProgress />
 
@@ -30,7 +33,7 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
               <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#prev` } />
             </svg>
           </Styled.AudioPlayerButton>
-          <Styled.AudioPlayerButton>
+          <Styled.AudioPlayerButton onClick={ handlerPlayTrack }>
             <svg>
               <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#play` } />
             </svg>

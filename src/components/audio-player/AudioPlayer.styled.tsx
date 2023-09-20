@@ -14,11 +14,11 @@ const gradient = keyframes`
 `;
 
 
-export const AudioPlayerWrapper = styled.div`
+export const AudioPlayerWrapper = styled.div<{$isLoading: boolean}>`
     position: fixed;
     left: 0;
     bottom: 0;
-    display: flex;
+    display: ${({ $isLoading }) => ($isLoading ? 'none' : 'flex')};
     align-items: center;
     justify-content: space-between;
     width: 100vw;
