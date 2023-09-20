@@ -3,7 +3,7 @@ import { useOutletContext, useParams } from 'react-router-dom';
 
 import { Playlist } from '@components/';
 import { TParams, TITLE_PAGE, OutletContext } from '@interface/';
-import { useSectionTracks } from '@hook/';
+import { useAudioContext, useSectionTracks } from '@hook/';
 
 import * as Styled from './Category.styled';
 
@@ -12,11 +12,17 @@ export const Category = () => {
   const { id } = useParams<TParams>();
   const { tracks, isLoading, isError } = useSectionTracks(id ?? 1);
   const { setIsLoading } = useOutletContext<OutletContext>();
-
+  const { handlerInitFirstTrack } = useAudioContext();
 
   useEffect(() => {
     setIsLoading(isLoading);
   }, [isLoading, setIsLoading]);
+
+  useEffect(() => {
+    if (!isLoading && tracks) {
+      handlerInitFirstTrack(tracks.items[0].track_file, tracks.items[0].name);
+    }
+  }, [handlerInitFirstTrack, isLoading, tracks]);
 
   return (
     <Styled.CategoryWrapper>
