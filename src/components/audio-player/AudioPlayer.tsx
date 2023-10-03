@@ -1,8 +1,20 @@
-import { FC, useState } from 'react';
+import {
+  FC, useEffect, useState
+} from 'react';
 
 import { useAudioContext } from '@hook/';
+import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
+import { ReactComponent as Play } from '@assets/icon/Play.svg';
+import { ReactComponent as Next } from '@assets/icon/Next.svg';
+import { ReactComponent as Prev } from '@assets/icon/Prev.svg';
 
 import * as Styled from './AudioPlayer.styled';
+
+
+interface ITimeTrack {
+  progress: number;
+  length: number;
+}
 
 
 interface IAudioPlayer {
@@ -12,7 +24,8 @@ interface IAudioPlayer {
 
 export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const [valueRange, setValueRange] = useState('50');
-  const { handlerPlayTrack } = useAudioContext();
+  const [timeTrack, setTimeTrack] = useState<ITimeTrack>({ progress: 0, length: 0 });
+  const { handlerPlayTrack, isPlay, refAudio } = useAudioContext();
 
 
   const handlerOnChangeValueRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,28 +33,45 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
     setValueRange(currentTarget.value);
   };
 
+
+  useEffect(() => {
+    let audio: HTMLAudioElement;
+
+    const handlerTimeTrack = (event: any) => {
+      const { currentTime, duration } = event.currentTarget as HTMLAudioElement;
+      setTimeTrack({ progress: (currentTime / duration) * 100, length: duration });
+    };
+
+    if (refAudio?.current) {
+      audio = refAudio.current;
+
+      refAudio.current.addEventListener('timeupdate', handlerTimeTrack);
+    }
+
+    return () => {
+      audio?.removeEventListener('timeupdate', handlerTimeTrack);
+    };
+  }, [refAudio]);
+
   return (
     <Styled.AudioPlayerWrapper $isLoading={ isLoading }>
 
-      <Styled.AudioPlayerProgress />
+      <Styled.AudioPlayerProgressWrapper>
+        <Styled.AudioPlayerProgress $progress={ timeTrack.progress } />
+      </Styled.AudioPlayerProgressWrapper>
 
       <Styled.AudioPlayerControllerWrapper>
         <Styled.AudioPlayerPanel>
 
           <Styled.AudioPlayerButton>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#prev` } />
-            </svg>
+            <Prev />
           </Styled.AudioPlayerButton>
           <Styled.AudioPlayerButton onClick={ handlerPlayTrack }>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#play` } />
-            </svg>
+            { !isPlay && <Play /> }
+            { isPlay && <Pause /> }
           </Styled.AudioPlayerButton>
           <Styled.AudioPlayerButton>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#next` } />
-            </svg>
+            <Next />
           </Styled.AudioPlayerButton>
 
           <Styled.AudioPlayerButton>

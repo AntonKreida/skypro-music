@@ -8,6 +8,7 @@ interface IAudioContext {
   handlerInitFirstTrack: (src: string, nameTrack: string) => void;
   handlerPlayCurrentTrack: (src: string, nameTrack: string) => void;
   handlerPlayTrack: () => void;
+  refAudio: React.RefObject<HTMLAudioElement> | null;
 }
 
 interface IAppAudioContext {
@@ -20,6 +21,7 @@ export const AudioContext = createContext<IAudioContext>({
   handlerInitFirstTrack: () => null,
   handlerPlayCurrentTrack: () => null,
   handlerPlayTrack: () => null,
+  refAudio: null,
 });
 
 export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
@@ -36,27 +38,42 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
     setCurrentTrack(nameTrack);
 
     if (nameTrack !== currentTrack && !isPlay) {
-      setIsPlay(true);
+      setIsPlay(false);
       refAudio.current?.setAttribute('src', src);
-      refAudio.current?.play();
+      refAudio.current?.play().then(() => {
+        setIsPlay(true);
+      }).catch(() => {
+        setIsPlay(false);
+      });
       return;
     }
 
     if (nameTrack === currentTrack && isPlay) {
       setIsPlay(false);
-      refAudio.current?.pause();
+      refAudio.current?.play().then(() => {
+        refAudio.current?.pause();
+      }).catch(() => {
+        setIsPlay(false);
+      });
       return;
     }
 
     if (nameTrack === currentTrack && !isPlay) {
-      setIsPlay(true);
-      refAudio.current?.play();
+      refAudio.current?.play().then(() => {
+        setIsPlay(true);
+      }).catch(() => {
+        setIsPlay(false);
+      });
       return;
     }
 
-    setIsPlay(true);
+    refAudio.current?.load();
     refAudio.current?.setAttribute('src', src);
-    refAudio.current?.play();
+    refAudio.current?.play().then(() => {
+      setIsPlay(true);
+    }).catch(() => {
+      setIsPlay(false);
+    });
   }, [currentTrack, isPlay]);
 
   const handlerPlayTrack = useCallback(() => {
@@ -66,8 +83,11 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
       return;
     }
 
-    setIsPlay(true);
-    refAudio.current?.play();
+    refAudio.current?.play().then(() => {
+      setIsPlay(true);
+    }).catch(() => {
+      setIsPlay(false);
+    });
   }, [isPlay]);
 
   const context = useMemo(() => ({
@@ -75,6 +95,7 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
     handlerInitFirstTrack,
     handlerPlayCurrentTrack,
     handlerPlayTrack,
+    refAudio,
   }
   ), [handlerInitFirstTrack, handlerPlayCurrentTrack, handlerPlayTrack, isPlay]);
 

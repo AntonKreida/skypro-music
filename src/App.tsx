@@ -1,17 +1,17 @@
 import { BrowserRouter } from 'react-router-dom';
 
 import { AppAudioContext, AppContext, AppThemeContext } from '@context/';
-import { GlobalStyle } from '@style/';
 
 import { AppRouter } from './router';
+import { GlobalStyle } from './style';
 
 
 const App = () => (
   <AppContext>
     <BrowserRouter>
       <AppThemeContext>
+        <GlobalStyle />
         <AppAudioContext>
-          <GlobalStyle />
           <AppRouter />
         </AppAudioContext>
       </AppThemeContext>

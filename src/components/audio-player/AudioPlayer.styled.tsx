@@ -27,13 +27,22 @@ export const AudioPlayerWrapper = styled.div<{$isLoading: boolean}>`
     background: ${({ theme }) => theme.colors.godGrayOpacity};
 `;
 
-export const AudioPlayerProgress = styled.div`
+export const AudioPlayerProgressWrapper = styled.div`
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 5px;
     background: ${({ theme }) => theme.colors.gray};
+`;
+
+export const AudioPlayerProgress = styled.div<{$progress: number}>`
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: ${({ $progress }) => `${$progress}%`};
+    height: 5px;
+    background: ${({ theme }) => theme.colors.heliotropeWhite};
 `;
 
 export const AudioPlayerControllerWrapper = styled.div`
@@ -71,6 +80,28 @@ export const AudioPlayerButton = styled.button`
         stroke: ${({ theme }) => theme.colors.mercury};
         fill:  ${({ theme }) => theme.colors.mercury};
     }
+
+    &:hover > svg > path, 
+    &:hover > svg > rect,
+    &:hover > svg > g > path:last-child {
+        fill: #696969;
+    }
+
+    &:hover > svg > g > path:first-child {
+        stroke: #696969;
+    }
+
+    &:active > svg > path, 
+    &:active > svg > rect,
+    &:active > svg > g > path:last-child {
+        fill: #D9D9D9;
+    }
+
+    &:active > svg > g > path:first-child {
+        stroke: #D9D9D9;
+    }
+
+   
 `;
 
 export const AudioPlayerInfoWrapper = styled.div`
