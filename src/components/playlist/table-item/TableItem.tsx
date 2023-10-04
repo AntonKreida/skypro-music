@@ -16,7 +16,6 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     name,
     author,
     album,
-    track_file: href,
     duration_in_seconds: time
   } = track;
 
@@ -24,7 +23,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
 
   return (
-    <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(href, name) }>
+    <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(track) }>
       <Styled.TableItemCell colSpan={ 1 }>
 
         <Styled.TableItemBox>

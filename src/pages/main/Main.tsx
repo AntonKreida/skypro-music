@@ -11,7 +11,7 @@ import * as Styled from './Main.styled';
 export const MainPage = () => {
   const { tracks, isLoading, isError } = useTrack();
   const { setIsLoading } = useOutletContext<OutletContext>();
-  const { handlerInitFirstTrack } = useAudioContext();
+  const { handlerInitFirstTrack, setIsListTrack } = useAudioContext();
 
   useEffect(() => {
     setIsLoading(isLoading);
@@ -19,9 +19,10 @@ export const MainPage = () => {
 
   useEffect(() => {
     if (!isLoading) {
-      handlerInitFirstTrack(tracks[0].track_file, tracks[0].name);
+      handlerInitFirstTrack(tracks[0]);
+      setIsListTrack(tracks);
     }
-  }, [handlerInitFirstTrack, isLoading, tracks]);
+  }, [handlerInitFirstTrack, isLoading, setIsListTrack, tracks]);
 
   return (
     <Styled.MainWrapper>

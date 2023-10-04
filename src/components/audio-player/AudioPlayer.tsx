@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import {
   FC, useEffect, useState
 } from 'react';
@@ -7,8 +8,12 @@ import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
 import { ReactComponent as Play } from '@assets/icon/Play.svg';
 import { ReactComponent as Next } from '@assets/icon/Next.svg';
 import { ReactComponent as Prev } from '@assets/icon/Prev.svg';
+import { ReactComponent as Loop } from '@assets/icon/Loop.svg';
+import { ReactComponent as Volume } from '@assets/icon/Volume.svg';
+import { ReactComponent as Case } from '@assets/icon/Case.svg';
 
 import * as Styled from './AudioPlayer.styled';
+import { ProgressBar } from './ui';
 
 
 interface ITimeTrack {
@@ -23,21 +28,48 @@ interface IAudioPlayer {
 
 
 export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
-  const [valueRange, setValueRange] = useState('50');
+  const [valueRange, setValueRange] = useState('100');
   const [timeTrack, setTimeTrack] = useState<ITimeTrack>({ progress: 0, length: 0 });
-  const { handlerPlayTrack, isPlay, refAudio } = useAudioContext();
+  const {
+    handlerPlayTrack,
+    isPlay,
+    refAudio,
+    handleLoopTrack,
+    isLoop,
+    handlerVolumeAudio,
+    handlerBackTrack,
+    handlerNextTrack,
+    currentTrack,
+    setIsRandom,
+    isRandom,
+  } = useAudioContext();
 
 
   const handlerOnChangeValueRange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { currentTarget } = event;
+    handlerVolumeAudio(currentTarget.value);
     setValueRange(currentTarget.value);
   };
 
+  const handlerClickOffAndOnVolume = () => {
+    if (refAudio?.current && refAudio?.current?.volume === 0) {
+      handlerVolumeAudio(String(100));
+      setValueRange(String(100));
+      return;
+    }
+
+    handlerVolumeAudio(String(0));
+    setValueRange(String(0));
+  };
+
+  const handlerClickRandomTrack = () => {
+    setIsRandom((prev) => !prev);
+  };
 
   useEffect(() => {
     let audio: HTMLAudioElement;
 
-    const handlerTimeTrack = (event: any) => {
+    const handlerTimeTrack = (event: Event) => {
       const { currentTime, duration } = event.currentTarget as HTMLAudioElement;
       setTimeTrack({ progress: (currentTime / duration) * 100, length: duration });
     };
@@ -56,34 +88,31 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   return (
     <Styled.AudioPlayerWrapper $isLoading={ isLoading }>
 
-      <Styled.AudioPlayerProgressWrapper>
-        <Styled.AudioPlayerProgress $progress={ timeTrack.progress } />
-      </Styled.AudioPlayerProgressWrapper>
+      { refAudio?.current && (
+        <ProgressBar progress={ timeTrack.progress } refAudio={ refAudio } timeTrack={ timeTrack } />
+      ) }
 
       <Styled.AudioPlayerControllerWrapper>
         <Styled.AudioPlayerPanel>
 
-          <Styled.AudioPlayerButton>
+          <Styled.AudioPlayerButton onClick={ handlerBackTrack }>
             <Prev />
           </Styled.AudioPlayerButton>
           <Styled.AudioPlayerButton onClick={ handlerPlayTrack }>
             { !isPlay && <Play /> }
             { isPlay && <Pause /> }
           </Styled.AudioPlayerButton>
-          <Styled.AudioPlayerButton>
+          <Styled.AudioPlayerButton onClick={ handlerNextTrack }>
             <Next />
           </Styled.AudioPlayerButton>
 
-          <Styled.AudioPlayerButton>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#loop` } />
-            </svg>
-          </Styled.AudioPlayerButton>
-          <Styled.AudioPlayerButton>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#case` } />
-            </svg>
-          </Styled.AudioPlayerButton>
+          <Styled.AudioPlayerButtonControl $isLoop={ isLoop } onClick={ handleLoopTrack }>
+            <Loop />
+          </Styled.AudioPlayerButtonControl>
+
+          <Styled.AudioPlayerButtonCase $isRandom={ isRandom } onClick={ handlerClickRandomTrack }>
+            <Case />
+          </Styled.AudioPlayerButtonCase>
 
           <Styled.AudioPlayerInfoWrapper>
 
@@ -94,14 +123,14 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
             <Styled.AudioPlayerInfoTextWrapper>
               { !isLoading ? (
                 <Styled.AudioPlayerInfoText>
-                  Трек
+                  { currentTrack ? currentTrack.name : '' }
                 </Styled.AudioPlayerInfoText>
               ) : (
                 <Styled.AudioPlayerInfoTextSkeleton />
               ) }
               { !isLoading ? (
                 <Styled.AudioPlayerInfoText>
-                  Исполнитель
+                  { currentTrack ? currentTrack.author : '' }
                 </Styled.AudioPlayerInfoText>
               ) : (
                 <Styled.AudioPlayerInfoTextSkeleton />
@@ -121,11 +150,12 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
       <Styled.AudioPlayerControllerWrapper>
 
         <Styled.AudioPlayerPanel>
-          <Styled.AudioPlayerButton>
-            <svg className="volume">
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#volume` } />
-            </svg>
-          </Styled.AudioPlayerButton>
+          <Styled.AudioPlayerButtonVolume
+            $isVolume={ valueRange !== '0' }
+            onClick={ handlerClickOffAndOnVolume }
+          >
+            <Volume className="volume" />
+          </Styled.AudioPlayerButtonVolume>
           <Styled.AudioPlayerInputRange
             max={ 100 }
             min={ 0 }

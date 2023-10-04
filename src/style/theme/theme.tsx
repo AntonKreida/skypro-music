@@ -17,6 +17,7 @@ export const dark = {
     bonJour: '#000',
     perfume: '#fff',
     emperor: '#535353',
+    blackAndWithe: '#fff'
   }
 } as const;
 
@@ -39,5 +40,6 @@ export const light = {
     bonJour: '#fff',
     perfume: '#f5b0f8',
     emperor: '#D9D9D9',
+    blackAndWithe: '#000'
   }
 } as const;

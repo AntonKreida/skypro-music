@@ -20,7 +20,7 @@ export const Category = () => {
 
   useEffect(() => {
     if (!isLoading && tracks) {
-      handlerInitFirstTrack(tracks.items[0].track_file, tracks.items[0].name);
+      handlerInitFirstTrack(tracks.items[0]);
     }
   }, [handlerInitFirstTrack, isLoading, tracks]);
 
