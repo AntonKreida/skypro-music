@@ -16,7 +16,7 @@ export const useSectionTracks = (idSection: number | string) => {
         setTracks({ ...tracksList });
         setIsLoading(false);
       } catch {
-        setIsError('Возникла ошибка! Пожалуйста повторите позже');
+        setIsError('Возникла ошибка! Пожалуйста повторите позже!');
         setIsLoading(false);
       }
     };
