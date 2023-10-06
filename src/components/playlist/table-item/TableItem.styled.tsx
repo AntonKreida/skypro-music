@@ -17,49 +17,46 @@ const gradient = keyframes`
 
 
 export const TableItemRowWrapper = styled.tr`
-    display: flex;
-    align-items: center;
     width: 100%;
     height: fit-content;
-
-    & > td:nth-child(1) {
-        max-width: 447px;
-        width: 100%;
-    }
-
-    & > td:nth-child(2) {
-        max-width: 216px;
-        width: 100%;
-    }
-
-    & > td:nth-child(3) {
-        max-width: 230px;
-        width: 100%;
-    }
-
-    & > td:nth-child(4) {
-        justify-content: end;
-        max-width: 100px;
-        width: 100%;
-        text-align: end;
-    }
+    cursor: pointer;
 `;
 
 
 export const TableItemCell = styled.td`
+    width: fit-content;
+`;
+
+export const TableItemBox = styled.div`
     display: flex;
     align-items: center;
-    gap: 17px;
+    gap: 10px;
+`;
+
+export const TableItemLastBox = styled.div`
+    display: flex;
+    justify-content: space-between;
     width: 100%;
 `;
 
-export const TableItemIconPlug = styled(Plug)`
+export const TableItemWrapperImg = styled.div`
     width: 51px;
     height: 51px;
+`;
+
+export const TableItemIconPlug = styled(Plug)`
+    width: 100%;
+    height: 100%;
 
     & > g > rect {
         fill: ${({ theme }) => theme.colors.doveGray};
     }
+`;
+
+export const TableItemImg = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 `;
 
 export const TableItemText = styled.p`

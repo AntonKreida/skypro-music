@@ -1,7 +1,7 @@
-import { ISoundTrack } from './soundtrack';
+import { ITrack } from './track';
 
 
 export interface ICategory {
   title: string;
-  trackList: ISoundTrack[];
+  trackList: ITrack[];
 }

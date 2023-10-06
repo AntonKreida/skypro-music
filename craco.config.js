@@ -18,6 +18,8 @@ module.exports = {
           '@context': './src/context',
           '@hook': './src/hook',
           '@hocs': './src/hocs',
+          '@api': './src/api',
+          '@utils': './src/utils',
         },
       },
     },

@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { AppContext, AppThemeContext } from '@context/';
-import { GlobalStyle } from '@style/';
+import { AppAudioContext, AppContext, AppThemeContext } from '@context/';
 
 import { AppRouter } from './router';
+import { GlobalStyle } from './style';
 
 
 const App = () => (
@@ -11,7 +11,9 @@ const App = () => (
     <BrowserRouter>
       <AppThemeContext>
         <GlobalStyle />
-        <AppRouter />
+        <AppAudioContext>
+          <AppRouter />
+        </AppAudioContext>
       </AppThemeContext>
     </BrowserRouter>
   </AppContext>

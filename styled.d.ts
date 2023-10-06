@@ -20,6 +20,7 @@ interface TTheme {
     bonJour: string;
     perfume: string;
     emperor: string;
+    blackAndWithe: string;
   };
 }
 

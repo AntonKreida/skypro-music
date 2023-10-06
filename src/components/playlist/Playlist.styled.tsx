@@ -37,6 +37,7 @@ export const PlaylistTableBox = styled.div`
     width: 100%;
     height: 100%;
     margin-top: 25px;
+    padding-bottom: 150px;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -46,49 +47,18 @@ export const PlaylistTableBox = styled.div`
 
 export const PlaylistTable = styled.table`
     width: 100%;
-    height: 100%;
     margin-bottom: 90px;
 `;
 
 export const PlaylistTableHeader = styled.thead`
-    display: flex;
-    align-items: center;
     width: 100%;
     height: 30px;
     margin-bottom: 10px;
 `;
 
 export const PlaylistTableRow = styled.tr`
-    display: flex;
-    align-items: center;
     width: 100%;
     height: fit-content;
-
-    & > th:nth-child(1), 
-    & > td:nth-child(1) {
-        max-width: 447px;
-        width: 100%;
-    }
-
-    & > th:nth-child(2),
-    & > td:nth-child(2) {
-        max-width: 216px;
-        width: 100%;
-    }
-
-    & > th:nth-child(3),
-    & > td:nth-child(3) {
-        max-width: 230px;
-        width: 100%;
-    }
-
-    & > th:nth-child(4),
-    & > td:nth-child(4) {
-        justify-content: end;
-        max-width: 100px;
-        width: 100%;
-        text-align: end;
-    }
 `;
 
 export const PlaylistTableHeaderTitle = styled.th`
@@ -97,6 +67,12 @@ export const PlaylistTableHeaderTitle = styled.th`
     text-align: left;
     color: ${({ theme }) => theme.colors.tundora};
     text-transform: uppercase;
+`;
+
+export const PlaylistTableLastHeader = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 `;
 
 export const PlaylistTableIcon = styled(Clock)`
@@ -147,4 +123,16 @@ export const PlaylistLikeWrapper = styled.div`
         width: 17px;
         height: 13px;
     }
+`;
+
+export const PlaylistErrorHolder = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Stratos-Light";
+    font-size: 32px;
+    text-align: center;
 `;

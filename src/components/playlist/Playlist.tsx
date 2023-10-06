@@ -1,19 +1,23 @@
 import { FC, useState } from 'react';
 
-import { ISoundTrack } from '@interface/';
+import { ITrack } from '@interface/';
 
 import * as Styled from './Playlist.styled';
-import { TableItem } from './table-item';
+import { TableItem, TableItemSkeleton } from './table-item';
 import { FilterDropdown } from './ui';
 
 
 interface IPlaylistProps {
   title: string;
-  trackList: ISoundTrack[];
+  trackList: ITrack[];
+  isLoading?: boolean;
+  isError?: string;
 }
 
 
-export const Playlist: FC<IPlaylistProps> = ({ trackList, title }) => {
+export const Playlist: FC<IPlaylistProps> = ({
+  trackList, title, isLoading, isError
+}) => {
   const [filter, setFilter] = useState('');
 
   return (
@@ -49,29 +53,41 @@ export const Playlist: FC<IPlaylistProps> = ({ trackList, title }) => {
             <Styled.PlaylistTableHeader>
               <Styled.PlaylistTableRow>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 1 }>
                   Трек
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 2 }>
                   Исполнители
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
+                <Styled.PlaylistTableHeaderTitle colSpan={ 3 }>
                   Альбом
                 </Styled.PlaylistTableHeaderTitle>
 
-                <Styled.PlaylistTableHeaderTitle>
-                  <Styled.PlaylistTableIcon />
+                <Styled.PlaylistTableHeaderTitle colSpan={ 4 }>
+                  <Styled.PlaylistTableLastHeader>
+                    <Styled.PlaylistTableIcon />
+                  </Styled.PlaylistTableLastHeader>
                 </Styled.PlaylistTableHeaderTitle>
 
               </Styled.PlaylistTableRow>
             </Styled.PlaylistTableHeader>
 
             <Styled.PlaylistTableBody>
-              { trackList?.map((item) => (
-                <TableItem key={ item.id } soundtrack={ item } />
+              { isLoading && (
+                [1, 2, 3].map((item) => (
+                  <TableItemSkeleton key={ item } />
+                ))
+              ) }
+              { (!isLoading && !isError) && trackList?.map((track) => (
+                <TableItem key={ track.id } track={ track } />
               )) }
+              { (!isLoading && isError) && (
+                <Styled.PlaylistErrorHolder>
+                  { isError }
+                </Styled.PlaylistErrorHolder>
+              ) }
             </Styled.PlaylistTableBody>
 
           </Styled.PlaylistTable>

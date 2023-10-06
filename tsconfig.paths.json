@@ -35,6 +35,12 @@
             "@hocs/": [
                 "./src/hocs"
             ],
+            "@api/": [
+                "./src/api"
+            ],
+            "@utils/": [
+                "./src/utils"
+            ],
         }
     },
   }
