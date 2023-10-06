@@ -1,6 +1,10 @@
 import {
   createContext, useState, ReactNode, FC, useMemo, useCallback,
 } from 'react';
+import { isAxiosError } from 'axios';
+
+import { IDataForm } from '@interface/';
+import { postSigUpUser } from '@api/';
 
 
 interface IFormData {
@@ -11,7 +15,7 @@ interface IFormData {
 interface IAuthContext {
   isAuthUser: boolean;
   handlerOnAuthUser: (dataFrom: IFormData) => boolean;
-  handlerCreateUser: (dataFrom: IFormData) => void;
+  handlerCreateUser: (dataFrom: IDataForm) => Promise<Error | void>;
   handlerOffAuthUser: () => void;
 }
 
@@ -29,8 +33,8 @@ const mockUsers = [
 
 export const AuthContext = createContext<IAuthContext>({
   isAuthUser: false,
-  handlerOnAuthUser: (_dataFrom: IFormData) => false,
-  handlerCreateUser: (_dataFrom: IFormData) => null,
+  handlerOnAuthUser: () => false,
+  handlerCreateUser: async () => new Error(),
   handlerOffAuthUser: () => null,
 });
 
@@ -64,8 +68,22 @@ export const AppContext: FC<IAppContext> = ({ children }) => {
     return true;
   }, []);
 
-  const handlerCreateUser = useCallback((dataFrom: IFormData) => {
-    mockUsers.push({ ...dataFrom });
+  const handlerCreateUser = useCallback(async (dataFrom: IDataForm) => {
+    const dataForCreateUser = {
+      username: dataFrom.username,
+      email: dataFrom.email,
+      password: dataFrom.password,
+    };
+
+    try {
+      await postSigUpUser(dataForCreateUser);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      }
+
+      throw error;
+    }
   }, []);
 
   const handlerOffAuthUser = () => {

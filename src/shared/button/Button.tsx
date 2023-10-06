@@ -13,7 +13,7 @@ interface IButtonProps extends HTMLProps<HTMLButtonElement> {
 }
 
 export const Button: FC<IButtonProps> = ({
-  text, type, onClick, onSubmit, active, form, color = 'default'
+  text, type, onClick, onSubmit, active, form, color = 'default', ...props
 }) => (
   <Styled.ButtonWrapperDefault
     $color={ color }
@@ -22,6 +22,8 @@ export const Button: FC<IButtonProps> = ({
     type={ type }
     onClick={ onClick }
     onSubmit={ onSubmit }
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    { ...props }
   >{ text }
   </Styled.ButtonWrapperDefault>
 );

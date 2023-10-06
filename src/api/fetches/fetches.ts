@@ -1,6 +1,24 @@
-import { ISectionTracks, ITrack } from '@/interface';
+import { isAxiosError } from 'axios';
+
+import {
+  IDataForm, ISectionTracks, ITrack, IUserCreateResponse
+} from '@interface/';
 
 import { base } from '../base';
+
+
+export const postSigUpUser = async (dataForm: IDataForm) => {
+  try {
+    await base.post<IUserCreateResponse>('/user/signup/', { ...dataForm }, {
+      headers: { 'content-type': 'application/json' },
+    });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw error.response?.data;
+    }
+    throw Error('Что-то пошло не так попробуйте позже...');
+  }
+};
 
 
 export const getAllTrack = async () => {
