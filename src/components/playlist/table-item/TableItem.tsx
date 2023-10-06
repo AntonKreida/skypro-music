@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { ITrack } from '@interface/';
 import { formattedTime } from '@utils/';
@@ -16,18 +16,24 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     name,
     author,
     album,
+    logo,
     duration_in_seconds: time
   } = track;
-
+  const [isErrorImg, setIsErrorImg] = useState(false);
   const { handlerPlayCurrentTrack } = useAudioContext();
 
+  const handlerErrorImg = () => {
+    setIsErrorImg(true);
+  };
 
   return (
     <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(track) }>
       <Styled.TableItemCell colSpan={ 1 }>
 
         <Styled.TableItemBox>
-          <Styled.TableItemIconPlug />
+          <Styled.TableItemWrapperImg>
+            { !isErrorImg ? <Styled.TableItemImg src={ logo ?? '' } onError={ handlerErrorImg } /> : <Styled.TableItemIconPlug /> }
+          </Styled.TableItemWrapperImg>
           <Styled.TableItemText>
             { name }
           </Styled.TableItemText>

@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
+import { ReactComponent as Plug } from '@assets/icon/Plug.svg';
+
 
 const gradient = keyframes`
     0% {
@@ -191,6 +193,21 @@ export const AudioPlayerInfoIconWrapper = styled.div`
     width: 51px;
     height: 51px;
     background: ${({ theme }) => theme.colors.gray};
+`;
+
+export const AudioPlayerInfoIconPlug = styled(Plug)`
+    width: 100%;
+    height: 100%;
+
+    & > g > rect {
+        fill: ${({ theme }) => theme.colors.doveGray};
+    }
+`;
+
+export const AudioPlayerInfoImg = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 `;
 
 export const AudioPlayerInfoTextWrapper = styled.div`

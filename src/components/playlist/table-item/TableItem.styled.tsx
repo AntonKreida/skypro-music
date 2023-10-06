@@ -39,13 +39,24 @@ export const TableItemLastBox = styled.div`
     width: 100%;
 `;
 
-export const TableItemIconPlug = styled(Plug)`
+export const TableItemWrapperImg = styled.div`
     width: 51px;
     height: 51px;
+`;
+
+export const TableItemIconPlug = styled(Plug)`
+    width: 100%;
+    height: 100%;
 
     & > g > rect {
         fill: ${({ theme }) => theme.colors.doveGray};
     }
+`;
+
+export const TableItemImg = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 `;
 
 export const TableItemText = styled.p`

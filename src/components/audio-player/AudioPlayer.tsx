@@ -29,6 +29,7 @@ interface IAudioPlayer {
 
 export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const [valueRange, setValueRange] = useState('100');
+  const [isErrorImg, setIsErrorImg] = useState(false);
   const [timeTrack, setTimeTrack] = useState<ITimeTrack>({ progress: 0, length: 0 });
   const {
     handlerPlayTrack,
@@ -65,6 +66,14 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const handlerClickRandomTrack = () => {
     setIsRandom((prev) => !prev);
   };
+
+  const handlerErrorImg = () => {
+    setIsErrorImg(true);
+  };
+
+  useEffect(() => {
+    setIsErrorImg(false);
+  }, [refAudio]);
 
   useEffect(() => {
     let audio: HTMLAudioElement;
@@ -116,9 +125,19 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
 
           <Styled.AudioPlayerInfoWrapper>
 
-            { !isLoading ? (
-              <Styled.AudioPlayerInfoIconWrapper />
-            ) : <Styled.AudioPlayerInfoIconSkeleton /> }
+
+            { (!isLoading && isErrorImg) && (
+              <Styled.AudioPlayerInfoIconWrapper>
+                <Styled.AudioPlayerInfoIconPlug />
+              </Styled.AudioPlayerInfoIconWrapper>
+            ) }
+            { (!isLoading && !isErrorImg) && (
+              <Styled.AudioPlayerInfoIconWrapper>
+                <Styled.AudioPlayerInfoImg src={ currentTrack?.logo ?? '' } onError={ handlerErrorImg } />
+              </Styled.AudioPlayerInfoIconWrapper>
+            ) }
+            { isLoading && <Styled.AudioPlayerInfoIconSkeleton /> }
+
 
             <Styled.AudioPlayerInfoTextWrapper>
               { !isLoading ? (

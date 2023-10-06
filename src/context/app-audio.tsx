@@ -1,5 +1,5 @@
 import {
-  createContext, ReactNode, FC, useRef, useMemo, useState, useCallback
+  createContext, ReactNode, FC, useRef, useMemo, useState, useCallback, useEffect
 } from 'react';
 
 import { ITrack } from '@/interface';
@@ -241,6 +241,27 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const handlerPlayHeadset = () => {
+      setIsPlay(true);
+    };
+
+    const handlerPauseHeadset = () => {
+      setIsPlay(false);
+    };
+
+    if (refAudio.current) {
+      refAudio.current.addEventListener('play', handlerPlayHeadset);
+      refAudio.current.addEventListener('pause', handlerPauseHeadset);
+    }
+
+
+    return () => {
+      refAudio.current?.removeEventListener('pause', handlerPauseHeadset);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      refAudio.current?.removeEventListener('play', handlerPlayHeadset);
+    };
+  }, [refAudio]);
 
   const context = useMemo(() => ({
     isPlay,
