@@ -50,3 +50,29 @@ export const FormSubmitErrorMessage = styled.div`
     color: #d91818;
     text-align: center;
 `;
+
+export const FormErrorMessagesWrapper = styled.div`
+    width: 100%;
+    height: auto;
+`;
+
+export const FormErrorMessageList = styled.ul`
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    height: auto;
+`;
+
+export const FromErrorMessageListTitle = styled.div`
+    font-family: "Stratos-Bold";
+    font-size: 16px;
+    color: #d91818;
+`;
+
+export const FromErrorMessageItem = styled.li`
+    width: 100%;
+    font-family: "Stratos-Light";
+    font-size: 16px;
+    color: #d91818;
+`;

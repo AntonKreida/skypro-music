@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { useAppAuthContext } from '@hook/';
+
 import * as Styled from './Panel.styled';
 
 
@@ -8,42 +10,51 @@ interface IPanel {
 }
 
 
-export const Panel: FC<IPanel> = ({ isLoading }) => (
-  <Styled.PanelWrapper>
-    <Styled.PanelHeader>
-      <Styled.PanelIconWrapper />
-    </Styled.PanelHeader>
-    <Styled.PanelMenuWrapper>
+export const Panel: FC<IPanel> = ({ isLoading }) => {
+  const { isAuthUser, handlerOffAuthUser } = useAppAuthContext();
 
-      { !isLoading ? (
-        <Styled.PanelMenuItem to="/skypro-music/category/1">
-          <img
-            alt=""
-            src={ `${process.env.PUBLIC_URL}/assets/img/item1.png` }
-          />
-        </Styled.PanelMenuItem>
-      ) : (
-        <Styled.PanelItemSkeleton />
-      ) }
+  return (
+    <Styled.PanelWrapper>
+      <Styled.PanelHeader>
 
-      { !isLoading ? (
-        <Styled.PanelMenuItem to="/skypro-music/category/2">
-          <img
-            alt=""
-            src={ `${process.env.PUBLIC_URL}/assets/img/item2.png` }
-          />
-        </Styled.PanelMenuItem>
-      ) : <Styled.PanelItemSkeleton /> }
+        <Styled.PanelExitButton onClick={ handlerOffAuthUser }>
+          { isAuthUser?.username }
+          <Styled.PanelIconExit />
+        </Styled.PanelExitButton>
 
-      { !isLoading ? (
-        <Styled.PanelMenuItem to="/skypro-music/category/3">
-          <img
-            alt=""
-            src={ `${process.env.PUBLIC_URL}/assets/img/item3.png` }
-          />
-        </Styled.PanelMenuItem>
-      ) : <Styled.PanelItemSkeleton /> }
+      </Styled.PanelHeader>
+      <Styled.PanelMenuWrapper>
 
-    </Styled.PanelMenuWrapper>
-  </Styled.PanelWrapper>
-);
+        { !isLoading ? (
+          <Styled.PanelMenuItem to="/skypro-music/category/1">
+            <img
+              alt=""
+              src={ `${process.env.PUBLIC_URL}/assets/img/item1.png` }
+            />
+          </Styled.PanelMenuItem>
+        ) : (
+          <Styled.PanelItemSkeleton />
+        ) }
+
+        { !isLoading ? (
+          <Styled.PanelMenuItem to="/skypro-music/category/2">
+            <img
+              alt=""
+              src={ `${process.env.PUBLIC_URL}/assets/img/item2.png` }
+            />
+          </Styled.PanelMenuItem>
+        ) : <Styled.PanelItemSkeleton /> }
+
+        { !isLoading ? (
+          <Styled.PanelMenuItem to="/skypro-music/category/3">
+            <img
+              alt=""
+              src={ `${process.env.PUBLIC_URL}/assets/img/item3.png` }
+            />
+          </Styled.PanelMenuItem>
+        ) : <Styled.PanelItemSkeleton /> }
+
+      </Styled.PanelMenuWrapper>
+    </Styled.PanelWrapper>
+  );
+};

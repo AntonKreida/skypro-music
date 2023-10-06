@@ -32,7 +32,18 @@ export const PanelHeader = styled.div`
     width: 100%;
 `;
 
-export const PanelIconWrapper = styled(Exit)`
+export const PanelExitButton = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    height: 100%;
+    border: none;
+    color: ${({ theme }) => theme.colors.blackAndWithe};
+    background: none;
+`;
+
+export const PanelIconExit = styled(Exit)`
     width: 40px;
     height: 40px;
 
