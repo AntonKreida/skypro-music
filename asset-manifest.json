@@ -1,6 +1,7 @@
 {
   "files": {
-    "main.js": "/skypro-music/static/js/main.8a2998af.js",
+    "main.css": "/skypro-music/static/css/main.7644c755.css",
+    "main.js": "/skypro-music/static/js/main.6ebaf9b5.js",
     "static/media/Crying.svg": "/skypro-music/static/media/Crying.ddf3e0403d0bd9e16696b53a22acb982.svg",
     "static/media/StratosLCWeb-Bold.woff": "/skypro-music/static/media/StratosLCWeb-Bold.ed2e7b59e44431137ce1.woff",
     "static/media/StratosLCWeb-Light.woff": "/skypro-music/static/media/StratosLCWeb-Light.ec0b6e675e0926848b17.woff",
@@ -12,17 +13,26 @@
     "static/media/StratosLCWeb-Medium.woff2": "/skypro-music/static/media/StratosLCWeb-Medium.8c59c20eb125244252b3.woff2",
     "static/media/Logo.svg": "/skypro-music/static/media/Logo.a09463125eddd07ad8d33d1ba4619290.svg",
     "static/media/Light.svg": "/skypro-music/static/media/Light.d1fa43d30be5444cf7b0c8c49e5d7c54.svg",
+    "static/media/Case.svg": "/skypro-music/static/media/Case.da6ade65558fa190f4ca98dcb009057f.svg",
     "static/media/Cross.svg": "/skypro-music/static/media/Cross.c2e141a24cdb2eb3cad44bec8ec40294.svg",
     "static/media/Dark.svg": "/skypro-music/static/media/Dark.8db1a3c1e3a8f33386999f9ffa7c565b.svg",
+    "static/media/Volume.svg": "/skypro-music/static/media/Volume.80e2bb87eeec86eb5b73de303a0fa85d.svg",
     "static/media/Exit.svg": "/skypro-music/static/media/Exit.514f71f2f5a09182b39c910353c6ce81.svg",
+    "static/media/Loop.svg": "/skypro-music/static/media/Loop.bc1ef10abf36d0b53410acadb71339e4.svg",
     "static/media/Search.svg": "/skypro-music/static/media/Search.44144c63f1114bd734334869ead5c143.svg",
     "static/media/Plug.svg": "/skypro-music/static/media/Plug.256e938032f4248cf4328aa90fe496e1.svg",
     "index.html": "/skypro-music/index.html",
+    "static/media/Next.svg": "/skypro-music/static/media/Next.24985cc5ae856dbd92bf7028d6ab0948.svg",
+    "static/media/Prev.svg": "/skypro-music/static/media/Prev.509c4d751bbeda5ca76d4f4bfbf9e3ee.svg",
     "static/media/Burger.svg": "/skypro-music/static/media/Burger.a81becc791f4c418a2f9840744138861.svg",
     "static/media/Clock.svg": "/skypro-music/static/media/Clock.84648c2824c59841ffecba6dfd292067.svg",
-    "main.8a2998af.js.map": "/skypro-music/static/js/main.8a2998af.js.map"
+    "static/media/Play.svg": "/skypro-music/static/media/Play.3db00368f69a60720aead6e8b77d8e83.svg",
+    "static/media/Pause.svg": "/skypro-music/static/media/Pause.2ced727fda4f48c1c7386cc5537757f4.svg",
+    "main.7644c755.css.map": "/skypro-music/static/css/main.7644c755.css.map",
+    "main.6ebaf9b5.js.map": "/skypro-music/static/js/main.6ebaf9b5.js.map"
   },
   "entrypoints": [
-    "static/js/main.8a2998af.js"
+    "static/css/main.7644c755.css",
+    "static/js/main.6ebaf9b5.js"
   ]
 }
