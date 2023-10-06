@@ -1,5 +1,5 @@
 import {
-  FC, useState, useRef, useEffect
+  FC, useState, useRef, useEffect,
 } from 'react';
 
 import { ButtonFilter } from '@shared/';
@@ -20,7 +20,17 @@ export const FilterDropdown: FC<IFilterDropdown> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const refButton = useRef<HTMLDivElement>(null);
-  const handlerOnClickButton = () => {
+
+
+  const handlerOnClickButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { currentTarget } = event;
+
+    if (currentTarget.closest('button') && isOpen && filter === dataInfo) {
+      setFilter('');
+      setIsOpen(false);
+      return;
+    }
+
     setFilter(dataInfo);
     setIsOpen(true);
   };
