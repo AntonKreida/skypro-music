@@ -3,19 +3,14 @@ import {
 } from 'react';
 import { isAxiosError } from 'axios';
 
-import { IDataForm } from '@interface/';
-import { postSigUpUser } from '@api/';
+import { IDataFormCreateUser, IDataFormLoginUser, IUserLoginResponse } from '@interface/';
+import { postLoginUser, postSigUpUser } from '@api/';
 
-
-interface IFormData {
-  email: string;
-  password: string;
-}
 
 interface IAuthContext {
-  isAuthUser: boolean;
-  handlerOnAuthUser: (dataFrom: IFormData) => boolean;
-  handlerCreateUser: (dataFrom: IDataForm) => Promise<Error | void>;
+  isAuthUser: IUserLoginResponse | null;
+  handlerOnAuthUser: (dataFrom: IDataFormLoginUser) => Promise<Error | IUserLoginResponse>;
+  handlerCreateUser: (dataFrom: IDataFormCreateUser) => Promise<Error | void>;
   handlerOffAuthUser: () => void;
 }
 
@@ -23,52 +18,40 @@ interface IAppContext {
   children: ReactNode;
 }
 
-const mockUsers = [
-  {
-    email: 'exemple@exmple.ru',
-    password: 'qwerty123'
-  },
-];
-
-
 export const AuthContext = createContext<IAuthContext>({
-  isAuthUser: false,
-  handlerOnAuthUser: () => false,
+  isAuthUser: null,
+  handlerOnAuthUser: async () => new Error(),
   handlerCreateUser: async () => new Error(),
   handlerOffAuthUser: () => null,
 });
 
 export const AppContext: FC<IAppContext> = ({ children }) => {
   const [isAuthUser, setIsAuthUser] = useState(() => {
-    // Проверка сохранен ли токен
-    if (localStorage.getItem('user')) {
-      return true;
+    const checkUserSave = localStorage.getItem('user');
+    const parseUserSave: IUserLoginResponse | null = checkUserSave ? JSON.parse(checkUserSave) : null;
+    if (parseUserSave) {
+      return parseUserSave;
     }
 
-    return false;
+    return null;
   });
 
-  const handlerOnAuthUser = useCallback((dataFrom: IFormData) => {
-    const targetUser = mockUsers.find((user) => {
-      if (user.email === dataFrom.email && user.password === dataFrom.password) {
-        return user;
+  const handlerOnAuthUser = useCallback(async (dataFrom: IDataFormLoginUser) => {
+    try {
+      const response = await postLoginUser(dataFrom);
+      setIsAuthUser(response);
+
+      return response;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error.response?.data.detail;
       }
 
-      return null;
-    });
-
-    if (!targetUser) {
-      return false;
+      throw Error('Что-то пошло не так попробуйте позже...');
     }
-
-    // Тут будет сохранение токена в localStorage
-    localStorage.setItem('user', '1234567qwe');
-    setIsAuthUser(true);
-
-    return true;
   }, []);
 
-  const handlerCreateUser = useCallback(async (dataFrom: IDataForm) => {
+  const handlerCreateUser = useCallback(async (dataFrom: IDataFormCreateUser) => {
     const dataForCreateUser = {
       username: dataFrom.username,
       email: dataFrom.email,
@@ -88,7 +71,7 @@ export const AppContext: FC<IAppContext> = ({ children }) => {
 
   const handlerOffAuthUser = () => {
     localStorage.removeItem('user');
-    setIsAuthUser(false);
+    setIsAuthUser(null);
   };
 
   const context: IAuthContext = useMemo(() => ({

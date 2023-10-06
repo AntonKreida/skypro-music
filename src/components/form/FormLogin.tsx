@@ -12,7 +12,8 @@ import * as Styled from './Form.styled';
 
 export const FormLogin = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { control, handleSubmit } = useForm<TSchemaLogin>({
     resolver: zodResolver(schemaLogin),
     mode: 'onTouched',
@@ -24,17 +25,20 @@ export const FormLogin = () => {
   const form = useId();
   const { handlerOnAuthUser } = useAppAuthContext();
 
-  const submitHandler: SubmitHandler<TSchemaLogin> = (dataFrom) => {
-    const response = handlerOnAuthUser(dataFrom);
+  const submitHandler: SubmitHandler<TSchemaLogin> = async (dataFrom) => {
+    setIsLoading(true);
 
-    if (response) {
+    try {
+      const response = await handlerOnAuthUser(dataFrom);
+      setIsLoading(false);
+      setIsError(null);
+
+      localStorage.setItem('user', JSON.stringify(response));
       navigate('/skypro-music');
-      setError(false);
-
-      return;
+    } catch (error) {
+      setIsError(error as string);
+      setIsLoading(false);
     }
-
-    setError(true);
   };
 
   return (
@@ -57,17 +61,17 @@ export const FormLogin = () => {
           placeholder="Пароль"
           type="password"
         />
-        { error && (
+        { isError && (
           <Styled.FormSubmitErrorMessage>
-            Пользователя не существует! Попробуйте еще раз!
+            { isError }
           </Styled.FormSubmitErrorMessage>
         ) }
       </Styled.FormPanelWrapper>
 
       <Styled.FormButtonPanel>
-        <Button form={ form } text="Войти" type="submit" />
+        <Button disabled={ isLoading } form={ form } text="Войти" type="submit" />
         <NavLink to="/signIn">
-          <Button color="purple" text="Зарегистрироваться" type="button" />
+          <Button color="purple" disabled={ isLoading } text="Зарегистрироваться" type="button" />
         </NavLink>
       </Styled.FormButtonPanel>
 

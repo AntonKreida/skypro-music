@@ -49,7 +49,7 @@ export const ButtonWrapperDefault = styled.button<{$color: 'default' | 'purple'}
     }
 
     &:disabled {
-        color: #898989;
+        color: #ffffff;
         background: #898989;
         cursor: default;
     }

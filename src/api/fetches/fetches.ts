@@ -1,13 +1,28 @@
 import { isAxiosError } from 'axios';
 
 import {
-  IDataForm, ISectionTracks, ITrack, IUserCreateResponse
+  IDataFormCreateUser, IDataFormLoginUser, ISectionTracks, ITrack, IUserCreateResponse, IUserLoginResponse
 } from '@interface/';
 
 import { base } from '../base';
 
 
-export const postSigUpUser = async (dataForm: IDataForm) => {
+export const postLoginUser = async (dataForm: IDataFormLoginUser) => {
+  try {
+    const { data } = await base.post<IUserLoginResponse>('/user/login/', { ...dataForm }, {
+      headers: { 'content-type': 'application/json' },
+    });
+
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+    throw Error('Что-то пошло не так попробуйте позже...');
+  }
+};
+
+export const postSigUpUser = async (dataForm: IDataFormCreateUser) => {
   try {
     await base.post<IUserCreateResponse>('/user/signup/', { ...dataForm }, {
       headers: { 'content-type': 'application/json' },
