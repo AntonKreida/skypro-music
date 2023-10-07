@@ -35,13 +35,6 @@ export const postSigUpUser = async (dataForm: IDataFormCreateUser) => {
   }
 };
 
-
-export const getAllTrack = async () => {
-  const { data } = await base.get<ITrack[]>('/catalog/track/all/');
-
-  return data;
-};
-
 export const getSectionTrack = async (idSection: number | string) => {
   const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
 
