@@ -2,23 +2,32 @@ import {
   createContext, ReactNode, FC, useRef, useMemo, useState, useCallback, useEffect
 } from 'react';
 
-import { ITrack } from '@/interface';
+import { ITrack } from '@interface/';
+import {
+  getStateAudioPlayer,
+  handlerCurrentTrack,
+  handlerPlayTrack,
+  handlerBackTrack,
+  handlerNextTrack,
+  handlerEndTrack,
+  handlerShuffle
+} from '@redux/';
+
+import { useAppDispatch, useAppSelector } from '../hook/use-app-dispatch-and-selector';
 
 
 interface IAudioContext {
   isPlay: boolean;
   isLoop: boolean;
-  isRandom: boolean;
+  isShuffle: boolean;
   currentTrack: ITrack | null | undefined;
-  handlerInitFirstTrack: (track: ITrack) => void;
-  handlerPlayCurrentTrack: (track: ITrack) => void;
-  handlerPlayTrack: () => void;
+  handlerPlayClickTrack: () => void;
   handleLoopTrack: () => void;
   handlerVolumeAudio: (volume: string) => void;
-  handlerNextTrack: () => void;
-  handlerBackTrack: () => void;
-  setIsListTrack: React.Dispatch<React.SetStateAction<ITrack[]>>;
-  setIsRandom: React.Dispatch<React.SetStateAction<boolean>>;
+  handlerClickPlayCurrentTrack: (track: ITrack) => void;
+  handlerClickBackTrack: () => void;
+  handlerClickNextTrack: () => void;
+  handlerShuffleClick: () => void;
   refAudio: React.RefObject<HTMLAudioElement> | null;
 }
 
@@ -30,89 +39,27 @@ interface IAppAudioContext {
 export const AudioContext = createContext<IAudioContext>({
   isPlay: false,
   isLoop: false,
-  isRandom: false,
+  isShuffle: false,
   currentTrack: null,
-  handlerInitFirstTrack: () => null,
-  handlerPlayCurrentTrack: () => null,
-  handlerPlayTrack: () => null,
+  handlerPlayClickTrack: () => null,
   handleLoopTrack: () => null,
   handlerVolumeAudio: () => null,
-  setIsListTrack: () => null,
-  setIsRandom: () => null,
-  handlerNextTrack: () => null,
-  handlerBackTrack: () => null,
+  handlerClickPlayCurrentTrack: () => null,
+  handlerClickBackTrack: () => null,
+  handlerClickNextTrack: () => null,
+  handlerShuffleClick: () => null,
   refAudio: null,
 });
 
 export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
   const refAudio = useRef<HTMLAudioElement>(null);
-  const [isPlay, setIsPlay] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isPlay, currentTrack, isShuffle } = useAppSelector(getStateAudioPlayer);
   const [isLoop, setIsLoop] = useState(false);
-  const [isRandom, setIsRandom] = useState(false);
-  const [prevRandomNumber, setPrevRandomNumber] = useState<number>(0);
-  const [currentTrack, setCurrentTrack] = useState<ITrack | null>();
-  const [listTrack, setIsListTrack] = useState<ITrack[]>([]);
 
-  const handlerInitFirstTrack = useCallback((track: ITrack) => {
-    setCurrentTrack({ ...track });
-    refAudio.current?.setAttribute('src', track.track_file);
-  }, []);
-
-  const handlerPlayCurrentTrack = useCallback((track: ITrack) => {
-    setCurrentTrack({ ...track });
-
-    if (track.name !== currentTrack?.name && !isPlay) {
-      setIsPlay(false);
-      refAudio.current?.setAttribute('src', track.track_file);
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
-      return;
-    }
-
-    if (track.name === currentTrack?.name && isPlay) {
-      setIsPlay(false);
-      refAudio.current?.play().then(() => {
-        refAudio.current?.pause();
-      }).catch(() => {
-        setIsPlay(false);
-      });
-      return;
-    }
-
-    if (track.name === currentTrack?.name && !isPlay) {
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
-      return;
-    }
-
-    refAudio.current?.load();
-    refAudio.current?.setAttribute('src', track.track_file);
-    refAudio.current?.play().then(() => {
-      setIsPlay(true);
-    }).catch(() => {
-      setIsPlay(false);
-    });
-  }, [currentTrack, isPlay]);
-
-  const handlerPlayTrack = useCallback(() => {
-    if (isPlay) {
-      setIsPlay(false);
-      refAudio.current?.pause();
-      return;
-    }
-
-    refAudio.current?.play().then(() => {
-      setIsPlay(true);
-    }).catch(() => {
-      setIsPlay(false);
-    });
-  }, [isPlay]);
+  const handlerClickPlayCurrentTrack = useCallback((track: ITrack) => {
+    dispatch(handlerCurrentTrack(track));
+  }, [dispatch]);
 
   const handleLoopTrack = () => {
     if (!refAudio.current?.hasAttribute('loop')) {
@@ -129,125 +76,107 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
     (refAudio.current as HTMLAudioElement).volume = Number(volume) / 100;
   };
 
-  const handlerBackTrack = useCallback(() => {
-    const index = listTrack.findIndex((track) => track.name === currentTrack?.name);
-
-    if (index === 0) {
-      setCurrentTrack(listTrack[listTrack.length - 1]);
-      refAudio.current?.setAttribute('src', listTrack[listTrack.length - 1].track_file);
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
+  const handlerPlayClickTrack = useCallback(() => {
+    if (isPlay) {
+      dispatch(handlerPlayTrack(false));
       return;
     }
 
-    setCurrentTrack(listTrack[index - 1]);
-    refAudio.current?.setAttribute('src', listTrack[index - 1].track_file);
-    refAudio.current?.play().then(() => {
-      setIsPlay(true);
-    }).catch(() => {
-      setIsPlay(false);
-    });
+    dispatch(handlerPlayTrack(true));
+  }, [dispatch, isPlay]);
+
+  const handlerClickBackTrack = useCallback(() => {
+    dispatch(handlerBackTrack());
 
     if (refAudio.current) {
       refAudio.current.currentTime = 0;
     }
-  }, [currentTrack?.name, listTrack]);
+  }, [dispatch]);
 
-  const handlerNextTrack = useCallback(() => {
-    const index = listTrack.findIndex((track) => track.name === currentTrack?.name);
 
-    if (index === listTrack.length - 1) {
-      setCurrentTrack(listTrack[0]);
-      refAudio.current?.setAttribute('src', listTrack[0].track_file);
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
-      return;
-    }
-
-    setCurrentTrack(listTrack[index + 1]);
-    refAudio.current?.setAttribute('src', listTrack[index + 1].track_file);
-    refAudio.current?.play().then(() => {
-      setIsPlay(true);
-    }).catch(() => {
-      setIsPlay(false);
-    });
+  const handlerClickNextTrack = useCallback(() => {
+    dispatch(handlerNextTrack());
 
     if (refAudio.current) {
       refAudio.current.currentTime = 0;
     }
-  }, [currentTrack?.name, listTrack]);
+  }, [dispatch]);
 
-  const handlerEndTrack = () => {
-    if (isPlay && !isRandom) {
-      const index = listTrack.findIndex((track) => track.name === currentTrack?.name);
+  const handlerEndAudio = useCallback(() => {
+    dispatch(handlerEndTrack());
+  }, [dispatch]);
 
-      if (index === listTrack.length - 1) {
-        setCurrentTrack(listTrack[0]);
-        refAudio.current?.setAttribute('src', listTrack[0].track_file);
-        refAudio.current?.play().then(() => {
-          setIsPlay(true);
-        }).catch(() => {
-          setIsPlay(false);
-        });
-        return;
-      }
+  const handlerShuffleClick = useCallback(() => {
+    dispatch(handlerShuffle());
+  }, [dispatch]);
 
-      setCurrentTrack(listTrack[index + 1]);
-      refAudio.current?.setAttribute('src', listTrack[index + 1].track_file);
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
 
-      if (refAudio.current) {
-        refAudio.current.currentTime = 0;
-      }
-    }
-
-    if (isPlay && isRandom) {
-      const randomNumber = Math.floor(Math.random() * listTrack.length);
-
-      if (prevRandomNumber === randomNumber) {
-        const newRandomNumber = randomNumber === 0 ? randomNumber + 1 : randomNumber - 1;
-        setPrevRandomNumber(newRandomNumber);
-        setCurrentTrack(listTrack[newRandomNumber]);
-
-        refAudio.current?.setAttribute('src', listTrack[newRandomNumber].track_file);
-        refAudio.current?.play().then(() => {
-          setIsPlay(true);
-        }).catch(() => {
-          setIsPlay(false);
-        });
-
-        return;
-      }
-
-      setPrevRandomNumber(randomNumber);
-      setCurrentTrack(listTrack[randomNumber]);
-
-      refAudio.current?.setAttribute('src', listTrack[randomNumber].track_file);
-      refAudio.current?.play().then(() => {
-        setIsPlay(true);
-      }).catch(() => {
-        setIsPlay(false);
-      });
-    }
-  };
+  //
+  // const handlerEndTrack = () => {
+  //   if (isPlay && !isRandom) {
+  //     const index = listTrack.findIndex((track) => track.name === currentTrack?.name);
+  //
+  //     if (index === listTrack.length - 1) {
+  //       setCurrentTrack(listTrack[0]);
+  //       refAudio.current?.setAttribute('src', listTrack[0].track_file);
+  //       refAudio.current?.play().then(() => {
+  //         setIsPlay(true);
+  //       }).catch(() => {
+  //         setIsPlay(false);
+  //       });
+  //       return;
+  //     }
+  //
+  //     setCurrentTrack(listTrack[index + 1]);
+  //     refAudio.current?.setAttribute('src', listTrack[index + 1].track_file);
+  //     refAudio.current?.play().then(() => {
+  //       setIsPlay(true);
+  //     }).catch(() => {
+  //       setIsPlay(false);
+  //     });
+  //
+  //     if (refAudio.current) {
+  //       refAudio.current.currentTime = 0;
+  //     }
+  //   }
+  //
+  //   if (isPlay && isRandom) {
+  //     const randomNumber = Math.floor(Math.random() * listTrack.length);
+  //
+  //     if (prevRandomNumber === randomNumber) {
+  //       const newRandomNumber = randomNumber === 0 ? randomNumber + 1 : randomNumber - 1;
+  //       setPrevRandomNumber(newRandomNumber);
+  //       setCurrentTrack(listTrack[newRandomNumber]);
+  //
+  //       refAudio.current?.setAttribute('src', listTrack[newRandomNumber].track_file);
+  //       refAudio.current?.play().then(() => {
+  //         setIsPlay(true);
+  //       }).catch(() => {
+  //         setIsPlay(false);
+  //       });
+  //
+  //       return;
+  //     }
+  //
+  //     setPrevRandomNumber(randomNumber);
+  //     setCurrentTrack(listTrack[randomNumber]);
+  //
+  //     refAudio.current?.setAttribute('src', listTrack[randomNumber].track_file);
+  //     refAudio.current?.play().then(() => {
+  //       setIsPlay(true);
+  //     }).catch(() => {
+  //       setIsPlay(false);
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     const handlerPlayHeadset = () => {
-      setIsPlay(true);
+      dispatch(handlerPlayTrack(true));
     };
 
     const handlerPauseHeadset = () => {
-      setIsPlay(false);
+      dispatch(handlerPlayTrack(false));
     };
 
     if (refAudio.current) {
@@ -261,39 +190,51 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       refAudio.current?.removeEventListener('play', handlerPlayHeadset);
     };
-  }, [refAudio]);
+  }, [dispatch, refAudio, isPlay]);
+
+  useEffect(() => {
+    if (isPlay) {
+      refAudio.current?.play().then(() => {
+        dispatch(handlerPlayTrack(true));
+      }).catch(() => {
+        dispatch(handlerPlayTrack(false));
+      });
+
+      return;
+    }
+
+    refAudio.current?.pause();
+  }, [currentTrack, dispatch, isPlay]);
 
   const context = useMemo(() => ({
     isPlay,
     isLoop,
-    isRandom,
-    handlerInitFirstTrack,
-    handlerPlayCurrentTrack,
-    handlerPlayTrack,
-    refAudio,
+    isShuffle,
+    handlerClickPlayCurrentTrack,
+    handlerPlayClickTrack,
+    handlerClickBackTrack,
+    handlerClickNextTrack,
     handleLoopTrack,
     handlerVolumeAudio,
-    setIsListTrack,
-    setIsRandom,
-    handlerBackTrack,
-    handlerNextTrack,
+    handlerShuffleClick,
+    refAudio,
     currentTrack,
   }
   ), [
-    handlerBackTrack,
-    handlerInitFirstTrack,
-    handlerNextTrack,
-    handlerPlayCurrentTrack,
-    handlerPlayTrack,
-    isLoop,
     isPlay,
-    isRandom,
+    isLoop,
+    isShuffle,
     currentTrack,
+    handlerClickPlayCurrentTrack,
+    handlerPlayClickTrack,
+    handlerClickNextTrack,
+    handlerClickBackTrack,
+    handlerShuffleClick,
   ]);
 
   return (
     <AudioContext.Provider value={ context }>
-      <audio ref={ refAudio } src="" onEnded={ handlerEndTrack } />
+      <audio ref={ refAudio } src={ currentTrack?.track_file } onEnded={ handlerEndAudio } />
       { children }
     </AudioContext.Provider>
   );

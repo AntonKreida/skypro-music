@@ -20,19 +20,28 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     duration_in_seconds: time
   } = track;
   const [isErrorImg, setIsErrorImg] = useState(false);
-  const { handlerPlayCurrentTrack } = useAudioContext();
+  const { handlerClickPlayCurrentTrack, currentTrack, isPlay } = useAudioContext();
 
   const handlerErrorImg = () => {
     setIsErrorImg(true);
   };
 
   return (
-    <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(track) }>
+    <Styled.TableItemRowWrapper onClick={ () => {
+      handlerClickPlayCurrentTrack(track);
+    } }
+    >
       <Styled.TableItemCell colSpan={ 1 }>
 
         <Styled.TableItemBox>
           <Styled.TableItemWrapperImg>
             { !isErrorImg ? <Styled.TableItemImg src={ logo ?? '' } onError={ handlerErrorImg } /> : <Styled.TableItemIconPlug /> }
+            { currentTrack?.id === track.id
+              && (
+                <Styled.TableCurrentTrack>
+                  <Styled.TableCurrentTrackPulse $isCurrentTrack={ currentTrack?.id === track.id } $isPlay={ isPlay } />
+                </Styled.TableCurrentTrack>
+              ) }
           </Styled.TableItemWrapperImg>
           <Styled.TableItemText>
             { name }

@@ -5,7 +5,7 @@ import { sliceAudioPlayer } from '../slices';
 
 export const store = configureStore({
   reducer: {
-    trackList: sliceAudioPlayer.reducer
+    audioplayer: sliceAudioPlayer.reducer
   },
 });
 

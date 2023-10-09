@@ -32,17 +32,17 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   const [isErrorImg, setIsErrorImg] = useState(false);
   const [timeTrack, setTimeTrack] = useState<ITimeTrack>({ progress: 0, length: 0 });
   const {
-    handlerPlayTrack,
     isPlay,
     refAudio,
-    handleLoopTrack,
     isLoop,
+    isShuffle,
+    handleLoopTrack,
     handlerVolumeAudio,
-    handlerBackTrack,
-    handlerNextTrack,
+    handlerPlayClickTrack,
+    handlerClickBackTrack,
+    handlerClickNextTrack,
     currentTrack,
-    setIsRandom,
-    isRandom,
+    handlerShuffleClick,
   } = useAudioContext();
 
 
@@ -61,10 +61,6 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
 
     handlerVolumeAudio(String(0));
     setValueRange(String(0));
-  };
-
-  const handlerClickRandomTrack = () => {
-    setIsRandom((prev) => !prev);
   };
 
   const handlerErrorImg = () => {
@@ -95,7 +91,7 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   }, [refAudio]);
 
   return (
-    <Styled.AudioPlayerWrapper $isLoading={ isLoading }>
+    <Styled.AudioPlayerWrapper $isLoading={ isLoading || !currentTrack }>
 
       { refAudio?.current && (
         <ProgressBar progress={ timeTrack.progress } refAudio={ refAudio } timeTrack={ timeTrack } />
@@ -104,14 +100,14 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
       <Styled.AudioPlayerControllerWrapper>
         <Styled.AudioPlayerPanel>
 
-          <Styled.AudioPlayerButton onClick={ handlerBackTrack }>
+          <Styled.AudioPlayerButton onClick={ handlerClickBackTrack }>
             <Prev />
           </Styled.AudioPlayerButton>
-          <Styled.AudioPlayerButton onClick={ handlerPlayTrack }>
+          <Styled.AudioPlayerButton onClick={ handlerPlayClickTrack }>
             { !isPlay && <Play /> }
             { isPlay && <Pause /> }
           </Styled.AudioPlayerButton>
-          <Styled.AudioPlayerButton onClick={ handlerNextTrack }>
+          <Styled.AudioPlayerButton onClick={ handlerClickNextTrack }>
             <Next />
           </Styled.AudioPlayerButton>
 
@@ -119,7 +115,7 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
             <Loop />
           </Styled.AudioPlayerButtonControl>
 
-          <Styled.AudioPlayerButtonCase $isRandom={ isRandom } onClick={ handlerClickRandomTrack }>
+          <Styled.AudioPlayerButtonCase $isRandom={ isShuffle } onClick={ handlerShuffleClick }>
             <Case />
           </Styled.AudioPlayerButtonCase>
 
