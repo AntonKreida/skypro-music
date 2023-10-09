@@ -13,7 +13,7 @@ import { ReactComponent as Volume } from '@assets/icon/Volume.svg';
 import { ReactComponent as Case } from '@assets/icon/Case.svg';
 
 import * as Styled from './AudioPlayer.styled';
-import { ProgressBar } from './ui';
+import { ProgressBar } from './ui/Progress-bar';
 
 
 interface ITimeTrack {
