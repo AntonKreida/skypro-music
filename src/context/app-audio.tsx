@@ -86,6 +86,11 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
   }, [dispatch, isPlay]);
 
   const handlerClickBackTrack = useCallback(() => {
+    if (refAudio.current && refAudio.current.currentTime >= 5) {
+      refAudio.current.currentTime = 0;
+      return;
+    }
+
     dispatch(handlerBackTrack());
 
     if (refAudio.current) {
@@ -109,66 +114,6 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
   const handlerShuffleClick = useCallback(() => {
     dispatch(handlerShuffle());
   }, [dispatch]);
-
-
-  //
-  // const handlerEndTrack = () => {
-  //   if (isPlay && !isRandom) {
-  //     const index = listTrack.findIndex((track) => track.name === currentTrack?.name);
-  //
-  //     if (index === listTrack.length - 1) {
-  //       setCurrentTrack(listTrack[0]);
-  //       refAudio.current?.setAttribute('src', listTrack[0].track_file);
-  //       refAudio.current?.play().then(() => {
-  //         setIsPlay(true);
-  //       }).catch(() => {
-  //         setIsPlay(false);
-  //       });
-  //       return;
-  //     }
-  //
-  //     setCurrentTrack(listTrack[index + 1]);
-  //     refAudio.current?.setAttribute('src', listTrack[index + 1].track_file);
-  //     refAudio.current?.play().then(() => {
-  //       setIsPlay(true);
-  //     }).catch(() => {
-  //       setIsPlay(false);
-  //     });
-  //
-  //     if (refAudio.current) {
-  //       refAudio.current.currentTime = 0;
-  //     }
-  //   }
-  //
-  //   if (isPlay && isRandom) {
-  //     const randomNumber = Math.floor(Math.random() * listTrack.length);
-  //
-  //     if (prevRandomNumber === randomNumber) {
-  //       const newRandomNumber = randomNumber === 0 ? randomNumber + 1 : randomNumber - 1;
-  //       setPrevRandomNumber(newRandomNumber);
-  //       setCurrentTrack(listTrack[newRandomNumber]);
-  //
-  //       refAudio.current?.setAttribute('src', listTrack[newRandomNumber].track_file);
-  //       refAudio.current?.play().then(() => {
-  //         setIsPlay(true);
-  //       }).catch(() => {
-  //         setIsPlay(false);
-  //       });
-  //
-  //       return;
-  //     }
-  //
-  //     setPrevRandomNumber(randomNumber);
-  //     setCurrentTrack(listTrack[randomNumber]);
-  //
-  //     refAudio.current?.setAttribute('src', listTrack[randomNumber].track_file);
-  //     refAudio.current?.play().then(() => {
-  //       setIsPlay(true);
-  //     }).catch(() => {
-  //       setIsPlay(false);
-  //     });
-  //   }
-  // };
 
   useEffect(() => {
     const handlerPlayHeadset = () => {

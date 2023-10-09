@@ -57,25 +57,49 @@ export const sliceAudioPlayer = createSlice({
       store.isPlay = action.payload;
     },
     handlerBackTrack: (store) => {
-      const index = store.trackList.findIndex((track) => track.name === store.currentTrack?.name);
+      if (!store.isShuffle) {
+        const index = store.trackList.findIndex((track) => track.name === store.currentTrack?.name);
+
+        if (index === 0) {
+          store.currentTrack = store.trackList[store.trackList.length - 1];
+          return;
+        }
+
+        store.currentTrack = store.trackList[index - 1];
+        return;
+      }
+
+      const index = store.shuffleList.findIndex((track) => track.name === store.currentTrack?.name);
 
       if (index === 0) {
-        store.currentTrack = store.trackList[store.trackList.length - 1];
+        store.currentTrack = store.shuffleList[store.shuffleList.length - 1];
         return;
       }
 
-      store.currentTrack = store.trackList[index - 1];
+      store.currentTrack = store.shuffleList[index - 1];
     },
     handlerNextTrack: (store) => {
-      const index = store.trackList.findIndex((track) => track.name === store.currentTrack?.name);
+      if (!store.isShuffle) {
+        const index = store.trackList.findIndex((track) => track.name === store.currentTrack?.name);
 
-      if (index === store.trackList.length - 1) {
-        const [firstTrack] = store.trackList;
-        store.currentTrack = firstTrack;
+        if (index === store.trackList.length - 1) {
+          const [firstTrack] = store.trackList;
+          store.currentTrack = firstTrack;
+          return;
+        }
+
+        store.currentTrack = store.trackList[index + 1];
         return;
       }
 
-      store.currentTrack = store.trackList[index + 1];
+      const index = store.shuffleList.findIndex((track) => track.name === store.currentTrack?.name);
+
+      if (index === store.shuffleList.length - 1) {
+        const [firstTrack] = store.shuffleList;
+        store.currentTrack = firstTrack;
+      }
+
+      store.currentTrack = store.shuffleList[index + 1];
     },
     handlerEndTrack: (store) => {
       const index = store.trackList.findIndex((track) => track.name === store.currentTrack?.name);
