@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
 import { useAppDispatch, useAppSelector } from '@hook/';
-import { getStateUser, postLoginUser } from '@redux/';
+import { getStateUser, postGetToken, postLoginUser } from '@redux/';
 
 import { schemaLogin, TSchemaLogin } from './schemas';
 import * as Styled from './Form.styled';
@@ -26,10 +26,10 @@ export const FormLogin = () => {
   const form = useId();
 
   const submitHandler: SubmitHandler<TSchemaLogin> = async (dataFrom) => {
-    const { meta, payload } = await dispatch(postLoginUser(dataFrom));
+    const { meta } = await dispatch(postLoginUser(dataFrom));
 
     if (meta.requestStatus === 'fulfilled') {
-      localStorage.setItem('user', JSON.stringify(payload));
+      await dispatch(postGetToken(dataFrom));
       navigate('/skypro-music');
     }
   };

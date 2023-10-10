@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IResponseError, IUserLoginResponse } from '@interface/';
+import { IResponseError, ITokenResponse, IUserLoginResponse } from '@interface/';
 
-import { postCreateUser, postLoginUser } from './user-auth.func';
+import { postCreateUser, postLoginUser, postGetToken } from './user-auth.func';
 
 
 interface IInitState {
@@ -13,8 +13,8 @@ interface IInitState {
     email: string;
   } | null;
   token: {
-    apiToken: string | null;
-    refreshToken: string | null;
+    access: string | null;
+    refresh: string | null;
   } | null;
   isLoading: boolean;
   isError: IResponseError | string | null;
@@ -52,6 +52,7 @@ export const sliceUserAuth = createSlice({
       state.isLoading = false;
       state.isError = null;
       state.user = { ...action.payload };
+      localStorage.setItem('user', JSON.stringify({ ...action.payload }));
     });
     builder.addCase(postLoginUser.pending, (state) => {
       state.isLoading = true;
@@ -59,6 +60,14 @@ export const sliceUserAuth = createSlice({
     builder.addCase(postLoginUser.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = action.payload ?? 'Что-то пошло не так :(';
+    });
+    builder.addCase(postGetToken.fulfilled, (state, action: PayloadAction<ITokenResponse>) => {
+      state.isError = null;
+      state.token = { ...action.payload };
+      localStorage.setItem('token', JSON.stringify({ ...action.payload }));
+    });
+    builder.addCase(postGetToken.rejected, (state) => {
+      state.isError = 'Что-то пошло не так :(';
     });
   },
 });

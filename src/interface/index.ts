@@ -6,3 +6,4 @@ export * from './outlet-context';
 export * from './section-tracks';
 export * from './form';
 export * from './response';
+export * from './user';

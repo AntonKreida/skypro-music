@@ -3,7 +3,13 @@ import { isAxiosError } from 'axios';
 
 import { base } from '@api/';
 import {
-  IDataFormCreateUser, IDataFormLoginUser, IResponseError, IUserCreateResponse, IUserLoginResponse
+  IDataFormCreateUser,
+  IDataFormLoginUser,
+  IResponseError,
+  IUserCreateResponse,
+  IUserLoginResponse,
+  IUserData,
+  ITokenResponse
 } from '@interface/';
 
 
@@ -34,6 +40,25 @@ export const postLoginUser = createAsyncThunk<IUserLoginResponse, IDataFormLogin
   async (dataForm: IDataFormLoginUser, thunkApi) => {
     try {
       const { data } = await base.post<IUserLoginResponse>('/user/login/', { ...dataForm }, {
+        headers: { 'content-type': 'application/json' },
+      });
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        return thunkApi.rejectWithValue(error.response?.data);
+      }
+
+      return thunkApi.rejectWithValue('Что-то пошло не так попробуйте позже :(');
+    }
+  }
+);
+
+export const postGetToken = createAsyncThunk<ITokenResponse, IUserData, {rejectValue: string}>(
+  'user/token',
+  async (userData: IUserData, thunkApi) => {
+    try {
+      const { data } = await base.post<ITokenResponse>('/user/token/', { ...userData }, {
         headers: { 'content-type': 'application/json' },
       });
 
