@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
-import { useAppAuthContext } from '@hook/';
+import { useAppDispatch, useAppSelector } from '@hook/';
+import { getStateUser, postLoginUser } from '@redux/';
 
 import { schemaLogin, TSchemaLogin } from './schemas';
 import * as Styled from './Form.styled';
@@ -12,8 +13,8 @@ import * as Styled from './Form.styled';
 
 export const FormLogin = () => {
   const navigate = useNavigate();
-  const [isError, setIsError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isLoading, isError } = useAppSelector(getStateUser);
   const { control, handleSubmit } = useForm<TSchemaLogin>({
     resolver: zodResolver(schemaLogin),
     mode: 'onTouched',
@@ -23,21 +24,13 @@ export const FormLogin = () => {
     }
   });
   const form = useId();
-  const { handlerOnAuthUser } = useAppAuthContext();
 
   const submitHandler: SubmitHandler<TSchemaLogin> = async (dataFrom) => {
-    setIsLoading(true);
+    const { meta, payload } = await dispatch(postLoginUser(dataFrom));
 
-    try {
-      const response = await handlerOnAuthUser(dataFrom);
-      setIsLoading(false);
-      setIsError(null);
-
-      localStorage.setItem('user', JSON.stringify(response));
+    if (meta.requestStatus === 'fulfilled') {
+      localStorage.setItem('user', JSON.stringify(payload));
       navigate('/skypro-music');
-    } catch (error) {
-      setIsError(error as string);
-      setIsLoading(false);
     }
   };
 
@@ -61,10 +54,13 @@ export const FormLogin = () => {
           placeholder="Пароль"
           type="password"
         />
-        { isError && (
+        { typeof isError === 'string' && (
           <Styled.FormSubmitErrorMessage>
             { isError }
           </Styled.FormSubmitErrorMessage>
+        ) }
+        { isError && (
+          <Styled.FormSubmitErrorMessage>Что-то пошло не так попробуйте позже :(</Styled.FormSubmitErrorMessage>
         ) }
       </Styled.FormPanelWrapper>
 

@@ -6,11 +6,13 @@ export const ButtonWrapper = styled.button<{active?: boolean}>`
     align-items: center;
     border: 1px solid ${({ theme }) => theme.colors.default};
     border-radius: 60px;
-    padding: 6px 20px;
+    padding: 10px 20px;
     font-family: "Stratos-Regular";
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
+    line-height: 100%;
+    vertical-align: middle;
     color: ${({ theme }) => theme.colors.default};
     background: none;
     transition: all 0.1s linear;

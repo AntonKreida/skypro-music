@@ -8,6 +8,7 @@ import { getMainTrackList, getSectionTrackList } from './audioplayer.func';
 
 interface IInitState {
   isPlay: boolean;
+  token: string | null;
   trackList: ITrack[];
   shuffleList: ITrack[];
   currentTrack: ITrack | null;
@@ -18,6 +19,7 @@ interface IInitState {
 
 const initialState: IInitState = {
   isPlay: false,
+  token: null,
   trackList: [],
   shuffleList: [],
   currentTrack: null,
@@ -124,6 +126,9 @@ export const sliceAudioPlayer = createSlice({
 
         store.shuffleList.unshift(store.currentTrack as ITrack);
       }
+    },
+    resetToken: (store) => {
+      store.token = '1234567890';
     }
   },
   extraReducers: (builder) => {
@@ -162,4 +167,5 @@ export const {
   handlerNextTrack,
   handlerEndTrack,
   handlerShuffle,
+  resetToken,
 } = sliceAudioPlayer.actions;

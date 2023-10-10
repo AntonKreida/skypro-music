@@ -19,7 +19,7 @@ export const Layout = () => {
         <Outlet context={{ setIsLoading }} />
       </Styled.LayoutMainContainer>
       <Panel isLoading={ isLoading } />
-      <AudioPlayer isLoading={ isLoading } />
+      <AudioPlayer />
     </Styled.LayoutWrapper>
   );
 };

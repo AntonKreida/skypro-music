@@ -1,7 +1,5 @@
 /* eslint-disable import/max-dependencies */
-import {
-  FC, useEffect, useState
-} from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAudioContext } from '@hook/';
 import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
@@ -22,12 +20,7 @@ interface ITimeTrack {
 }
 
 
-interface IAudioPlayer {
-  isLoading: boolean;
-}
-
-
-export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
+export const AudioPlayer = () => {
   const [valueRange, setValueRange] = useState('100');
   const [isErrorImg, setIsErrorImg] = useState(false);
   const [timeTrack, setTimeTrack] = useState<ITimeTrack>({ progress: 0, length: 0 });
@@ -91,7 +84,7 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
   }, [refAudio]);
 
   return (
-    <Styled.AudioPlayerWrapper $isLoading={ isLoading || !currentTrack }>
+    <Styled.AudioPlayerWrapper $isLoading={ !currentTrack }>
 
       { refAudio?.current && (
         <ProgressBar progress={ timeTrack.progress } refAudio={ refAudio } timeTrack={ timeTrack } />
@@ -122,33 +115,28 @@ export const AudioPlayer: FC<IAudioPlayer> = ({ isLoading }) => {
           <Styled.AudioPlayerInfoWrapper>
 
 
-            { (!isLoading && isErrorImg) && (
+            { (isErrorImg) && (
               <Styled.AudioPlayerInfoIconWrapper>
                 <Styled.AudioPlayerInfoIconPlug />
               </Styled.AudioPlayerInfoIconWrapper>
             ) }
-            { (!isLoading && !isErrorImg) && (
+            { (!isErrorImg) && (
               <Styled.AudioPlayerInfoIconWrapper>
-                <Styled.AudioPlayerInfoImg src={ currentTrack?.logo ?? '' } onError={ handlerErrorImg } />
+                <Styled.AudioPlayerInfoImg src={ currentTrack?.logo ?? 'error' } onError={ handlerErrorImg } />
               </Styled.AudioPlayerInfoIconWrapper>
             ) }
-            { isLoading && <Styled.AudioPlayerInfoIconSkeleton /> }
 
 
             <Styled.AudioPlayerInfoTextWrapper>
-              { !isLoading ? (
+              { currentTrack && (
                 <Styled.AudioPlayerInfoText>
                   { currentTrack ? currentTrack.name : '' }
                 </Styled.AudioPlayerInfoText>
-              ) : (
-                <Styled.AudioPlayerInfoTextSkeleton />
               ) }
-              { !isLoading ? (
+              { currentTrack && (
                 <Styled.AudioPlayerInfoText>
                   { currentTrack ? currentTrack.author : '' }
                 </Styled.AudioPlayerInfoText>
-              ) : (
-                <Styled.AudioPlayerInfoTextSkeleton />
               ) }
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
