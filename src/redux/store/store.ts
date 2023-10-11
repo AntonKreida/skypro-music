@@ -12,13 +12,12 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 
-import { sliceAudioPlayer, sliceUserAuth } from '../slices';
-import { listenerMiddleware } from '../middlewares';
+import { sliceAudioPlayer, sliceUser } from '../slices';
 
 
 const rootReducer = combineReducers({
   audioplayer: sliceAudioPlayer.reducer,
-  user: sliceUserAuth.reducer,
+  user: sliceUser.reducer,
 });
 
 const persistConfig = {
@@ -35,7 +34,7 @@ export const store = configureStore({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  }).prepend(listenerMiddleware.middleware),
+  })
 });
 
 export const persistor = persistStore(store);

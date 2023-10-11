@@ -31,3 +31,7 @@ export interface ITokenResponse {
   refresh: string;
   access: string;
 }
+
+export interface ITokenRefreshResponse {
+  access: string;
+}

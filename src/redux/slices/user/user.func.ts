@@ -8,9 +8,12 @@ import {
   IResponseError,
   IUserCreateResponse,
   IUserLoginResponse,
+  ITokenRefreshResponse,
+  ITokenResponse,
   IUserData,
-  ITokenResponse
 } from '@interface/';
+
+import type { RootState } from '@redux/';
 
 
 export const postCreateUser = createAsyncThunk<
@@ -55,12 +58,36 @@ export const postLoginUser = createAsyncThunk<IUserLoginResponse, IDataFormLogin
 );
 
 export const postGetToken = createAsyncThunk<ITokenResponse, IUserData, {rejectValue: string}>(
-  'user/token',
+  'audioplayer/token',
   async (userData: IUserData, thunkApi) => {
     try {
       const { data } = await base.post<ITokenResponse>('/user/token/', { ...userData }, {
         headers: { 'content-type': 'application/json' },
       });
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        return thunkApi.rejectWithValue(error.response?.data);
+      }
+
+      return thunkApi.rejectWithValue('Что-то пошло не так попробуйте позже :(');
+    }
+  }
+);
+
+export const postRefreshToken = createAsyncThunk<
+ITokenRefreshResponse, undefined, {rejectValue: string; state: RootState}>(
+  'audioplayer/token/refresh',
+  async (_, thunkApi) => {
+    try {
+      const state = thunkApi.getState();
+
+      const { data } = await base.post<ITokenRefreshResponse>(
+        '/user/token/refresh/',
+        { refresh: state.user.token?.refresh },
+        { headers: { 'content-type': 'application/json' } }
+      );
 
       return data;
     } catch (error) {

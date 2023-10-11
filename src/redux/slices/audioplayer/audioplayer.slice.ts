@@ -3,28 +3,30 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ITrack } from '@/interface';
 
-import { getMainTrackList, getSectionTrackList } from './audioplayer.func';
+import {
+  getMainTrackList, getSectionTrackList, postAddFavoriteTrack,
+} from './audioplayer.func';
 
 
 interface IInitState {
   isPlay: boolean;
-  token: string | null;
   trackList: ITrack[];
   shuffleList: ITrack[];
   currentTrack: ITrack | null;
   isLoading: boolean;
-  error: string | null;
+  isError: string | null;
+  isErrorAddFavorite: string | null;
   isShuffle: boolean;
 }
 
 const initialState: IInitState = {
   isPlay: false,
-  token: null,
   trackList: [],
   shuffleList: [],
   currentTrack: null,
   isLoading: false,
-  error: null,
+  isError: null,
+  isErrorAddFavorite: null,
   isShuffle: false,
 };
 
@@ -127,14 +129,11 @@ export const sliceAudioPlayer = createSlice({
         store.shuffleList.unshift(store.currentTrack as ITrack);
       }
     },
-    resetToken: (store) => {
-      store.token = '1234567890';
-    }
   },
   extraReducers: (builder) => {
     builder.addCase(getMainTrackList.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.error = null;
+      state.isError = null;
       state.trackList = action.payload;
       state.shuffleList = action.payload;
     });
@@ -143,11 +142,11 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getMainTrackList.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload ?? 'default';
+      state.isError = action.payload ?? 'default';
     });
     builder.addCase(getSectionTrackList.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.error = null;
+      state.isError = null;
       state.trackList = action.payload.items;
     });
     builder.addCase(getSectionTrackList.pending, (state) => {
@@ -155,7 +154,13 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getSectionTrackList.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload ?? 'default';
+      state.isError = action.payload ?? 'default';
+    });
+    builder.addCase(postAddFavoriteTrack.fulfilled, (state) => {
+      state.isErrorAddFavorite = null;
+    });
+    builder.addCase(postAddFavoriteTrack.rejected, (state, action) => {
+      state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
     });
   },
 });
@@ -167,5 +172,4 @@ export const {
   handlerNextTrack,
   handlerEndTrack,
   handlerShuffle,
-  resetToken,
 } = sliceAudioPlayer.actions;

@@ -1,8 +1,11 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC, useState, useEffect, MouseEvent
+} from 'react';
 
 import { ITrack } from '@interface/';
 import { formattedTime } from '@utils/';
-import { useAudioContext } from '@hook/';
+import { useAppDispatch, useAudioContext } from '@hook/';
+import { postAddFavoriteTrack } from '@redux/';
 
 import * as Styled from './TableItem.styled';
 
@@ -12,7 +15,10 @@ interface ITableItemProps {
 }
 
 export const TableItem: FC<ITableItemProps> = ({ track }) => {
+  const dispatch = useAppDispatch();
+
   const {
+    id,
     name,
     author,
     album,
@@ -27,6 +33,11 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   const handlerErrorImg = () => {
     setIsErrorImg(true);
+  };
+
+  const handlerClickAddFavorite = async (event: MouseEvent) => {
+    event.stopPropagation();
+    dispatch(postAddFavoriteTrack({ idTrack: id }));
   };
 
   useEffect(() => {
@@ -85,7 +96,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
       <Styled.TableItemCell colSpan={ 4 }>
         <Styled.TableItemLastBox>
-          <Styled.TableLikeWrapper>
+          <Styled.TableLikeWrapper onClick={ handlerClickAddFavorite }>
             <svg>
               <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
             </svg>

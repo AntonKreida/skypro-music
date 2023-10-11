@@ -14,7 +14,7 @@ import * as Styled from './Category.styled';
 export const Category = () => {
   const { id } = useParams<TParams>();
   const dispatch = useAppDispatch();
-  const { trackList, error, isLoading } = useAppSelector(getStateAudioPlayer);
+  const { trackList, isError, isLoading } = useAppSelector(getStateAudioPlayer);
 
   const { setIsLoading } = useOutletContext<OutletContext>();
 
@@ -29,7 +29,7 @@ export const Category = () => {
   return (
     <Styled.CategoryWrapper>
       <Playlist
-        isError={ error }
+        isError={ isError }
         isLoading={ isLoading }
         title={ TITLE_PAGE[id ?? 1] }
         trackList={ trackList }

@@ -2,7 +2,9 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { IResponseError, ITokenResponse, IUserLoginResponse } from '@interface/';
 
-import { postCreateUser, postLoginUser, postGetToken } from './user-auth.func';
+import {
+  postCreateUser, postLoginUser, postGetToken, postRefreshToken
+} from './user.func';
 
 
 interface IInitState {
@@ -12,23 +14,26 @@ interface IInitState {
     last_name: string;
     email: string;
   } | null;
+  isLoading: boolean;
+  isError: IResponseError | string | null;
   token: {
     access: string | null;
     refresh: string | null;
-  } | null;
-  isLoading: boolean;
-  isError: IResponseError | string | null;
+  };
 }
 
 const initialState: IInitState = {
   user: null,
-  token: null,
   isLoading: false,
-  isError: null
+  isError: null,
+  token: {
+    access: null,
+    refresh: null
+  }
 };
 
 
-export const sliceUserAuth = createSlice({
+export const sliceUser = createSlice({
   name: 'userAuth/slice',
   initialState,
   reducers: {
@@ -66,10 +71,10 @@ export const sliceUserAuth = createSlice({
       state.token = { ...action.payload };
       localStorage.setItem('token', JSON.stringify({ ...action.payload }));
     });
-    builder.addCase(postGetToken.rejected, (state) => {
-      state.isError = 'Что-то пошло не так :(';
+    builder.addCase(postRefreshToken.fulfilled, (state, action) => {
+      state.token = { ...state.token, access: action.payload.access };
     });
   },
 });
 
-export const { clearUser } = sliceUserAuth.actions;
+export const { clearUser } = sliceUser.actions;

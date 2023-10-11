@@ -135,4 +135,5 @@ export const PlaylistErrorHolder = styled.div`
     font-family: "Stratos-Light";
     font-size: 32px;
     text-align: center;
+    color: ${({ theme }) => theme.colors.blackAndWithe};
 `;
