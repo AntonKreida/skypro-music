@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ITrack } from '@interface/';
 
 import {
+  getAllFavoriteTrack,
   getMainTrackList, getSectionTrackList, postAddFavoriteTrack, postRemoveFavoriteTrack,
 } from './audioplayer.func';
 
@@ -142,7 +143,7 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getMainTrackList.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = action.payload ?? 'default';
+      state.isError = action.payload ?? 'Что-то пошло не так :(';
     });
     builder.addCase(getSectionTrackList.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -154,7 +155,7 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getSectionTrackList.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = action.payload ?? 'default';
+      state.isError = action.payload ?? 'Что-то пошло не так :(';
     });
     builder.addCase(postAddFavoriteTrack.fulfilled, (state, action) => {
       state.trackList = action.payload;
@@ -169,6 +170,19 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(postRemoveFavoriteTrack.rejected, (state, action) => {
       state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
+    });
+    builder.addCase(getAllFavoriteTrack.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isError = null;
+      state.trackList = action.payload;
+      state.shuffleList = action.payload;
+    });
+    builder.addCase(getAllFavoriteTrack.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAllFavoriteTrack.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = action.payload ?? 'Что-то пошло не так :(';
     });
   },
 });

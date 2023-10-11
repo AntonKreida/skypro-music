@@ -1,9 +1,11 @@
 import { FC, useEffect } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { base } from '@api/';
+import { baseCatalog } from '@api/';
 import { useAppDispatch } from '@hook/';
-import { postAddFavoriteTrack, postRefreshToken } from '@redux/';
+import {
+  getAllFavoriteTrack, postAddFavoriteTrack, postRefreshToken, postRemoveFavoriteTrack
+} from '@redux/';
 
 
 interface IAxiosInterceptorProps {
@@ -20,10 +22,21 @@ export const AxiosInterceptor: FC<IAxiosInterceptorProps> = ({ children }) => {
 
     const errInterceptor = async (error: AxiosError) => {
       if (error.response?.status === 401) {
-        const idTrack = error.config?.url?.split('/')[3];
+        const idTrack = error.config?.url?.split('/')[2];
 
         await dispatch(postRefreshToken());
-        await dispatch(postAddFavoriteTrack({ idTrack: Number(idTrack) }));
+
+        if (error.config?.method === 'post') {
+          await dispatch(postAddFavoriteTrack({ idTrack: Number(idTrack) }));
+        }
+
+        if (error.config?.method === 'delete') {
+          await dispatch(postRemoveFavoriteTrack({ idTrack: Number(idTrack) }));
+        }
+
+        if (error.config?.method === 'get') {
+          await dispatch(getAllFavoriteTrack());
+        }
 
         return null;
       }
@@ -31,9 +44,9 @@ export const AxiosInterceptor: FC<IAxiosInterceptorProps> = ({ children }) => {
       return Promise.reject(error);
     };
 
-    const interceptor = base.interceptors.response.use(resInterceptor, errInterceptor);
+    const interceptor = baseCatalog.interceptors.response.use(resInterceptor, errInterceptor);
 
-    return () => base.interceptors.response.eject(interceptor);
+    return () => baseCatalog.interceptors.response.eject(interceptor);
   }, [dispatch]);
 
   return (

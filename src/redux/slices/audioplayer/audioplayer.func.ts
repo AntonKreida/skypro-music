@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
-import { base } from '@api/';
+import { base, baseCatalog } from '@api/';
 import {
   ISectionTracks, ITrack,
 } from '@interface/';
@@ -21,7 +21,7 @@ export const getMainTrackList = createAsyncThunk<ITrack[], undefined, {rejectVal
         return thunkApi.rejectWithValue(error.response?.data);
       }
 
-      return thunkApi.rejectWithValue('default');
+      return thunkApi.rejectWithValue('Что-то пошло не так :(');
     }
   }
 );
@@ -46,12 +46,12 @@ export const getSectionTrackList = createAsyncThunk<ITrack[], number | string, {
 export const postAddFavoriteTrack = createAsyncThunk<
 ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
 >(
-  'user/favorite/add',
+  'audioplayer/favorite/add',
   async ({ idTrack, idSection }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
-      await base.post(`/catalog/track/${idTrack}/favorite/`, null, {
+      await baseCatalog.post(`/track/${idTrack}/favorite/`, null, {
         headers: {
           Authorization: `Bearer ${store.user.token?.access}`,
         }
@@ -79,12 +79,12 @@ ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue:
 export const postRemoveFavoriteTrack = createAsyncThunk<
 ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
 >(
-  'user/favorite/remove',
+  'audioplayer/favorite/remove',
   async ({ idTrack, idSection }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
-      await base.delete(`/catalog/track/${idTrack}/favorite/`, {
+      await baseCatalog.delete(`/track/${idTrack}/favorite/`, {
         headers: {
           Authorization: `Bearer ${store.user.token?.access}`,
         }
@@ -105,6 +105,29 @@ ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue:
       }
 
       return thunkApi.rejectWithValue('Что-то пошло не так попробуйте позже :(');
+    }
+  }
+);
+
+export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {rejectValue: string; state: RootState}>(
+  'audioplayer/favorite/all',
+  async (_, thunkApi) => {
+    const store = thunkApi.getState();
+
+    try {
+      const { data } = await baseCatalog.get<ITrack[]>('/track/favorite/all/', {
+        headers: {
+          Authorization: `Bearer ${store.user.token?.access}`,
+        },
+      });
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        return thunkApi.rejectWithValue(error.response?.data);
+      }
+
+      return thunkApi.rejectWithValue('Что-то пошло не так :(');
     }
   }
 );
