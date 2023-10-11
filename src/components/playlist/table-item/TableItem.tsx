@@ -1,11 +1,13 @@
 import {
   FC, useState, useEffect, MouseEvent
 } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { ITrack } from '@interface/';
+import { ReactComponent as Like } from '@assets/icon/Like.svg';
+import { ITrack, TParams } from '@interface/';
 import { formattedTime } from '@utils/';
-import { useAppDispatch, useAudioContext } from '@hook/';
-import { postAddFavoriteTrack } from '@redux/';
+import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
+import { getStateUser, postAddFavoriteTrack } from '@redux/';
 
 import * as Styled from './TableItem.styled';
 
@@ -16,16 +18,20 @@ interface ITableItemProps {
 
 export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector(getStateUser);
+  const { id } = useParams<TParams>();
 
   const {
-    id,
+    id: idTrack,
     name,
     author,
     album,
     logo,
-    duration_in_seconds: time
+    duration_in_seconds: time,
+    stared_user: userList,
   } = track;
   const [isErrorImg, setIsErrorImg] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const {
     handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio
   } = useAudioContext();
@@ -37,7 +43,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   const handlerClickAddFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
-    dispatch(postAddFavoriteTrack({ idTrack: id }));
+    dispatch(postAddFavoriteTrack({ idTrack, idSection: id }));
   };
 
   useEffect(() => {
@@ -57,6 +63,12 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
       setTime('0:00');
     };
   }, [currentTrack?.id, isPlay, refAudio, track.id]);
+
+  useEffect(() => {
+    if (user) {
+      setIsLike(userList?.some((itemUser) => itemUser.id === user.id));
+    }
+  }, [user, userList]);
 
   return (
     <Styled.TableItemRowWrapper onClick={ () => {
@@ -96,11 +108,16 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
       <Styled.TableItemCell colSpan={ 4 }>
         <Styled.TableItemLastBox>
-          <Styled.TableLikeWrapper onClick={ handlerClickAddFavorite }>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
-            </svg>
-          </Styled.TableLikeWrapper>
+          { !isLike && (
+            <Styled.TableLikeWrapper onClick={ handlerClickAddFavorite }>
+              <Like />
+            </Styled.TableLikeWrapper>
+          ) }
+          { isLike && (
+            <Styled.TableLikeWrapper $isLike={ isLike }>
+              <Like />
+            </Styled.TableLikeWrapper>
+          ) }
           <Styled.TableItemTextSilenced>
             { currentTrack?.id !== track.id && formattedTime(time) }
             { currentTrack?.id === track.id && isPlay && (currentTime ?? time) }

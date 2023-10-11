@@ -26,13 +26,13 @@ export const getMainTrackList = createAsyncThunk<ITrack[], undefined, {rejectVal
   }
 );
 
-export const getSectionTrackList = createAsyncThunk<ISectionTracks, number | string, {rejectValue: string}>(
+export const getSectionTrackList = createAsyncThunk<ITrack[], number | string, {rejectValue: string}>(
   'audioplayer/selection',
   async (idSection, thunkApi) => {
     try {
-      const { data } = await base.get<ISectionTracks>(`/catalog/selectio/${idSection}/`);
+      const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
 
-      return data;
+      return data.items;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         return thunkApi.rejectWithValue('Что-то пошло не так :(');
@@ -44,10 +44,11 @@ export const getSectionTrackList = createAsyncThunk<ISectionTracks, number | str
 );
 
 export const postAddFavoriteTrack = createAsyncThunk<
-void, {idTrack: number | string}, {rejectValue: string; state: RootState}>(
+ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
+>(
   'user/favorite',
   // eslint-disable-next-line consistent-return
-  async ({ idTrack }, thunkApi) => {
+  async ({ idTrack, idSection }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
@@ -56,6 +57,16 @@ void, {idTrack: number | string}, {rejectValue: string; state: RootState}>(
           Authorization: `Bearer ${store.user.token?.access}`,
         }
       });
+
+      if (idSection) {
+        const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
+
+        return data.items;
+      }
+
+      const { data } = await base.get<ITrack[]>('/catalog/track/all/');
+
+      return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         return thunkApi.rejectWithValue(error.response?.data as string);

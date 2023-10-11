@@ -147,7 +147,7 @@ export const sliceAudioPlayer = createSlice({
     builder.addCase(getSectionTrackList.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = null;
-      state.trackList = action.payload.items;
+      state.trackList = action.payload;
     });
     builder.addCase(getSectionTrackList.pending, (state) => {
       state.isLoading = true;
@@ -156,7 +156,8 @@ export const sliceAudioPlayer = createSlice({
       state.isLoading = false;
       state.isError = action.payload ?? 'default';
     });
-    builder.addCase(postAddFavoriteTrack.fulfilled, (state) => {
+    builder.addCase(postAddFavoriteTrack.fulfilled, (state, action) => {
+      state.trackList = action.payload;
       state.isErrorAddFavorite = null;
     });
     builder.addCase(postAddFavoriteTrack.rejected, (state, action) => {
