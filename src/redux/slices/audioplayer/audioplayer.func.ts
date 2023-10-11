@@ -46,13 +46,45 @@ export const getSectionTrackList = createAsyncThunk<ITrack[], number | string, {
 export const postAddFavoriteTrack = createAsyncThunk<
 ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
 >(
-  'user/favorite',
-  // eslint-disable-next-line consistent-return
+  'user/favorite/add',
   async ({ idTrack, idSection }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
       await base.post(`/catalog/track/${idTrack}/favorite/`, null, {
+        headers: {
+          Authorization: `Bearer ${store.user.token?.access}`,
+        }
+      });
+
+      if (idSection) {
+        const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
+
+        return data.items;
+      }
+
+      const { data } = await base.get<ITrack[]>('/catalog/track/all/');
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        return thunkApi.rejectWithValue(error.response?.data as string);
+      }
+
+      return thunkApi.rejectWithValue('Что-то пошло не так попробуйте позже :(');
+    }
+  }
+);
+
+export const postRemoveFavoriteTrack = createAsyncThunk<
+ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
+>(
+  'user/favorite/remove',
+  async ({ idTrack, idSection }, thunkApi) => {
+    try {
+      const store = thunkApi.getState();
+
+      await base.delete(`/catalog/track/${idTrack}/favorite/`, {
         headers: {
           Authorization: `Bearer ${store.user.token?.access}`,
         }

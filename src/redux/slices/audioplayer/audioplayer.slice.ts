@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
-import { ITrack } from '@/interface';
+import { ITrack } from '@interface/';
 
 import {
-  getMainTrackList, getSectionTrackList, postAddFavoriteTrack,
+  getMainTrackList, getSectionTrackList, postAddFavoriteTrack, postRemoveFavoriteTrack,
 } from './audioplayer.func';
 
 
@@ -161,6 +161,13 @@ export const sliceAudioPlayer = createSlice({
       state.isErrorAddFavorite = null;
     });
     builder.addCase(postAddFavoriteTrack.rejected, (state, action) => {
+      state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
+    });
+    builder.addCase(postRemoveFavoriteTrack.fulfilled, (state, action) => {
+      state.trackList = action.payload;
+      state.isErrorAddFavorite = null;
+    });
+    builder.addCase(postRemoveFavoriteTrack.rejected, (state, action) => {
       state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
     });
   },

@@ -7,7 +7,7 @@ import { ReactComponent as Like } from '@assets/icon/Like.svg';
 import { ITrack, TParams } from '@interface/';
 import { formattedTime } from '@utils/';
 import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
-import { getStateUser, postAddFavoriteTrack } from '@redux/';
+import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@redux/';
 
 import * as Styled from './TableItem.styled';
 
@@ -44,6 +44,11 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const handlerClickAddFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
     dispatch(postAddFavoriteTrack({ idTrack, idSection: id }));
+  };
+
+  const handlerClickRemoveFavorite = async (event: MouseEvent) => {
+    event.stopPropagation();
+    dispatch(postRemoveFavoriteTrack({ idTrack, idSection: id }));
   };
 
   useEffect(() => {
@@ -114,7 +119,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
             </Styled.TableLikeWrapper>
           ) }
           { isLike && (
-            <Styled.TableLikeWrapper $isLike={ isLike }>
+            <Styled.TableLikeWrapper $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
               <Like />
             </Styled.TableLikeWrapper>
           ) }
