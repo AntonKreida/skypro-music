@@ -20,6 +20,7 @@ module.exports = {
           '@hocs': './src/hocs',
           '@api': './src/api',
           '@utils': './src/utils',
+          '@redux': './src/redux',
         },
       },
     },

@@ -11,7 +11,7 @@ interface IPlaylistProps {
   title: string;
   trackList: ITrack[];
   isLoading?: boolean;
-  isError?: string;
+  isError?: string | null;
 }
 
 

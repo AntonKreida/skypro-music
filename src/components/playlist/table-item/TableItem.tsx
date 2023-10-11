@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 
 import { ITrack } from '@interface/';
 import { formattedTime } from '@utils/';
@@ -20,19 +20,49 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     duration_in_seconds: time
   } = track;
   const [isErrorImg, setIsErrorImg] = useState(false);
-  const { handlerPlayCurrentTrack } = useAudioContext();
+  const {
+    handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio
+  } = useAudioContext();
+  const [currentTime, setTime] = useState('');
 
   const handlerErrorImg = () => {
     setIsErrorImg(true);
   };
 
+  useEffect(() => {
+    let idInterval: NodeJS.Timer;
+
+    setTime(formattedTime(refAudio?.current?.currentTime || 0));
+
+    if (currentTrack?.id === track.id && isPlay) {
+      idInterval = setInterval(() => {
+        setTime(formattedTime(refAudio?.current?.currentTime || 0));
+      }, 1000);
+    }
+
+
+    return () => {
+      clearInterval(idInterval as NodeJS.Timer);
+      setTime('0:00');
+    };
+  }, [currentTrack?.id, isPlay, refAudio, track.id]);
+
   return (
-    <Styled.TableItemRowWrapper onClick={ () => handlerPlayCurrentTrack(track) }>
+    <Styled.TableItemRowWrapper onClick={ () => {
+      handlerClickPlayCurrentTrack(track);
+    } }
+    >
       <Styled.TableItemCell colSpan={ 1 }>
 
         <Styled.TableItemBox>
           <Styled.TableItemWrapperImg>
             { !isErrorImg ? <Styled.TableItemImg src={ logo ?? '' } onError={ handlerErrorImg } /> : <Styled.TableItemIconPlug /> }
+            { currentTrack?.id === track.id
+              && (
+                <Styled.TableCurrentTrack>
+                  <Styled.TableCurrentTrackPulse $isCurrentTrack={ currentTrack?.id === track.id } $isPlay={ isPlay } />
+                </Styled.TableCurrentTrack>
+              ) }
           </Styled.TableItemWrapperImg>
           <Styled.TableItemText>
             { name }
@@ -61,7 +91,9 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
             </svg>
           </Styled.TableLikeWrapper>
           <Styled.TableItemTextSilenced>
-            { formattedTime(time) }
+            { currentTrack?.id !== track.id && formattedTime(time) }
+            { currentTrack?.id === track.id && isPlay && (currentTime ?? time) }
+            { currentTrack?.id === track.id && !isPlay && formattedTime(refAudio?.current?.currentTime || time) }
           </Styled.TableItemTextSilenced>
         </Styled.TableItemLastBox>
       </Styled.TableItemCell>
