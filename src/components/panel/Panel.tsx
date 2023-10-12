@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppAuthContext } from '@hook/';
 
@@ -12,12 +13,18 @@ interface IPanel {
 
 export const Panel: FC<IPanel> = ({ isLoading }) => {
   const { isAuthUser, handlerOffAuthUser } = useAppAuthContext();
+  const navigate = useNavigate();
+
+  const handlerClickOffAuthUser = () => {
+    handlerOffAuthUser();
+    navigate('/login');
+  };
 
   return (
     <Styled.PanelWrapper>
       <Styled.PanelHeader>
 
-        <Styled.PanelExitButton onClick={ handlerOffAuthUser }>
+        <Styled.PanelExitButton onClick={ handlerClickOffAuthUser }>
           { isAuthUser?.username }
           <Styled.PanelIconExit />
         </Styled.PanelExitButton>
