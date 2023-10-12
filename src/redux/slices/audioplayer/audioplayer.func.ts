@@ -44,7 +44,7 @@ export const getSectionTrackList = createAsyncThunk<ITrack[], number | string, {
 );
 
 export const postAddFavoriteTrack = createAsyncThunk<
-ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
+ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {rejectValue: string; state: RootState}
 >(
   'audioplayer/favorite/add',
   async ({ idTrack, idSection }, thunkApi) => {
@@ -77,7 +77,7 @@ ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue:
 );
 
 export const postRemoveFavoriteTrack = createAsyncThunk<
-ITrack[], {idTrack: number | string; idSection?: number | string}, {rejectValue: string; state: RootState}
+ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {rejectValue: string; state: RootState}
 >(
   'audioplayer/favorite/remove',
   async ({ idTrack, idSection }, thunkApi) => {

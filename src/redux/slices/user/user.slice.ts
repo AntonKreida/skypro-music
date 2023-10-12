@@ -40,6 +40,10 @@ export const sliceUser = createSlice({
   reducers: {
     clearUser: (state) => {
       state.user = null;
+      state.token = {
+        access: null,
+        refresh: null
+      };
     }
   },
   extraReducers: (builder) => {

@@ -1,7 +1,8 @@
 /* eslint-disable import/max-dependencies */
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { useAudioContext } from '@hook/';
+import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
 import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
 import { ReactComponent as Play } from '@assets/icon/Play.svg';
 import { ReactComponent as Next } from '@assets/icon/Next.svg';
@@ -9,6 +10,9 @@ import { ReactComponent as Prev } from '@assets/icon/Prev.svg';
 import { ReactComponent as Loop } from '@assets/icon/Loop.svg';
 import { ReactComponent as Volume } from '@assets/icon/Volume.svg';
 import { ReactComponent as Case } from '@assets/icon/Case.svg';
+import { ReactComponent as Like } from '@assets/icon/Like.svg';
+import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@redux/';
+import { TParams } from '@interface/';
 
 import * as Styled from './AudioPlayer.styled';
 import { ProgressBar } from './ui/Progress-bar';
@@ -37,6 +41,21 @@ export const AudioPlayer = () => {
     currentTrack,
     handlerShuffleClick,
   } = useAudioContext();
+
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(getStateUser);
+  const { id } = useParams<TParams>();
+  const [isLike, setIsLike] = useState(false);
+
+  const handlerClickAddFavorite = async () => {
+    dispatch(postAddFavoriteTrack({ idTrack: currentTrack?.id, idSection: id }));
+    setIsLike(true);
+  };
+
+  const handlerClickRemoveFavorite = async () => {
+    dispatch(postRemoveFavoriteTrack({ idTrack: currentTrack?.id, idSection: id }));
+    setIsLike(false);
+  };
 
 
   const handlerOnChangeValueRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +101,13 @@ export const AudioPlayer = () => {
       audio?.removeEventListener('timeupdate', handlerTimeTrack);
     };
   }, [refAudio]);
+
+
+  useEffect(() => {
+    if (user && currentTrack) {
+      setIsLike(currentTrack.stared_user?.some((itemUser) => itemUser.id === user.id));
+    }
+  }, [user, currentTrack]);
 
   return (
     <Styled.AudioPlayerWrapper $isLoading={ !currentTrack }>
@@ -141,11 +167,16 @@ export const AudioPlayer = () => {
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
 
-          <Styled.AudioPlayerButton>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
-            </svg>
-          </Styled.AudioPlayerButton>
+          { !isLike && (
+            <Styled.AudioPlayerButtonLike onClick={ handlerClickAddFavorite }>
+              <Like />
+            </Styled.AudioPlayerButtonLike>
+          ) }
+          { isLike && (
+            <Styled.AudioPlayerButtonLike $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
+              <Like />
+            </Styled.AudioPlayerButtonLike>
+          ) }
 
         </Styled.AudioPlayerPanel>
       </Styled.AudioPlayerControllerWrapper>
