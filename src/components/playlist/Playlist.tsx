@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { ITrack } from '@interface/';
 
@@ -6,6 +7,10 @@ import * as Styled from './Playlist.styled';
 import { TableItem, TableItemSkeleton } from './table-item';
 import { FilterDropdown } from './ui';
 
+
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
 
 interface IPlaylistProps {
   title: string;
@@ -19,6 +24,7 @@ export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
   const [filter, setFilter] = useState('');
+  const matches = useMatch(routes.favorite);
 
   return (
     <Styled.PlaylistWrapper>
@@ -26,27 +32,29 @@ export const Playlist: FC<IPlaylistProps> = ({
       <Styled.PlaylistTitle>{ title }</Styled.PlaylistTitle>
 
       <Styled.PlaylistTableWrapper>
-        <Styled.PlaylistTableFilter>
-          Искать по:
-          <FilterDropdown
-            dataInfo="performer"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="исполнителю"
-          />
-          <FilterDropdown
-            dataInfo="genre"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="жанру"
-          />
-          <FilterDropdown
-            dataInfo="year"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="году"
-          />
-        </Styled.PlaylistTableFilter>
+        { !matches && (
+          <Styled.PlaylistTableFilter>
+            Искать по:
+            <FilterDropdown
+              dataInfo="performer"
+              filter={ filter }
+              setFilter={ setFilter }
+              textButton="исполнителю"
+            />
+            <FilterDropdown
+              dataInfo="genre"
+              filter={ filter }
+              setFilter={ setFilter }
+              textButton="жанру"
+            />
+            <FilterDropdown
+              dataInfo="year"
+              filter={ filter }
+              setFilter={ setFilter }
+              textButton="году"
+            />
+          </Styled.PlaylistTableFilter>
+        ) }
 
         <Styled.PlaylistTableBox>
           <Styled.PlaylistTable>

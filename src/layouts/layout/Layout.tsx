@@ -10,7 +10,6 @@ import * as Styled from './Layout.styled';
 export const Layout = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-
   return (
     <Styled.LayoutWrapper>
       <Sidebar />
