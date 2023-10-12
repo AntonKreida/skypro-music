@@ -1,7 +1,7 @@
 import {
-  FC, useState, useEffect, MouseEvent
+  FC, useState, useEffect, MouseEvent,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useMatch } from 'react-router-dom';
 
 import { ReactComponent as Like } from '@assets/icon/Like.svg';
 import { ITrack, TParams } from '@interface/';
@@ -12,6 +12,10 @@ import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@re
 import * as Styled from './TableItem.styled';
 
 
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
+
 interface ITableItemProps {
   track: ITrack;
 }
@@ -19,7 +23,8 @@ interface ITableItemProps {
 export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(getStateUser);
-  const { id } = useParams<TParams>();
+  const params = useParams<TParams>();
+  const matches = useMatch(routes.favorite);
 
   const {
     id: idTrack,
@@ -43,12 +48,12 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   const handlerClickAddFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
-    dispatch(postAddFavoriteTrack({ idTrack, idSection: id }));
+    dispatch(postAddFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
   };
 
   const handlerClickRemoveFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
-    dispatch(postRemoveFavoriteTrack({ idTrack, idSection: id }));
+    dispatch(postRemoveFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
   };
 
   useEffect(() => {
@@ -71,9 +76,9 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   useEffect(() => {
     if (user) {
-      setIsLike(userList?.some((itemUser) => itemUser.id === user.id));
+      setIsLike(!!(userList?.some((itemUser) => itemUser.id === user.id) || matches));
     }
-  }, [user, userList]);
+  }, [matches, user, userList]);
 
   return (
     <Styled.TableItemRowWrapper onClick={ () => {
@@ -113,12 +118,12 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
       <Styled.TableItemCell colSpan={ 4 }>
         <Styled.TableItemLastBox>
-          { !isLike && (
+          { !isLike && !matches && (
             <Styled.TableLikeWrapper onClick={ handlerClickAddFavorite }>
               <Like />
             </Styled.TableLikeWrapper>
           ) }
-          { isLike && (
+          { (isLike || matches) && (
             <Styled.TableLikeWrapper $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
               <Like />
             </Styled.TableLikeWrapper>

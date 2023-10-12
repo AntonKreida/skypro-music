@@ -1,6 +1,6 @@
 /* eslint-disable import/max-dependencies */
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
 import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
@@ -17,6 +17,10 @@ import { TParams } from '@interface/';
 import * as Styled from './AudioPlayer.styled';
 import { ProgressBar } from './ui/Progress-bar';
 
+
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
 
 interface ITimeTrack {
   progress: number;
@@ -46,14 +50,15 @@ export const AudioPlayer = () => {
   const { user } = useAppSelector(getStateUser);
   const { id } = useParams<TParams>();
   const [isLike, setIsLike] = useState(false);
+  const matches = useMatch(routes.favorite);
 
   const handlerClickAddFavorite = async () => {
-    dispatch(postAddFavoriteTrack({ idTrack: currentTrack?.id, idSection: id }));
+    dispatch(postAddFavoriteTrack({ idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }));
     setIsLike(true);
   };
 
   const handlerClickRemoveFavorite = async () => {
-    dispatch(postRemoveFavoriteTrack({ idTrack: currentTrack?.id, idSection: id }));
+    dispatch(postRemoveFavoriteTrack({ idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }));
     setIsLike(false);
   };
 

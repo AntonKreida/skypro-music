@@ -44,10 +44,13 @@ export const getSectionTrackList = createAsyncThunk<ITrack[], number | string, {
 );
 
 export const postAddFavoriteTrack = createAsyncThunk<
-ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {rejectValue: string; state: RootState}
+ITrack[], {
+  idTrack: number | string | undefined;
+  idSection?: number | string;
+  isFavorite?: boolean;}, {rejectValue: string; state: RootState}
 >(
   'audioplayer/favorite/add',
-  async ({ idTrack, idSection }, thunkApi) => {
+  async ({ idTrack, idSection, isFavorite }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
@@ -61,6 +64,16 @@ ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {
         const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
 
         return data.items;
+      }
+
+      if (isFavorite) {
+        const { data } = await baseCatalog.get<ITrack[]>('/track/favorite/all/', {
+          headers: {
+            Authorization: `Bearer ${store.user.token?.access}`,
+          },
+        });
+
+        return data;
       }
 
       const { data } = await base.get<ITrack[]>('/catalog/track/all/');
@@ -77,10 +90,14 @@ ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {
 );
 
 export const postRemoveFavoriteTrack = createAsyncThunk<
-ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {rejectValue: string; state: RootState}
+ITrack[], {
+  idTrack: number | string | undefined;
+  idSection?: number | string;
+  isFavorite?: boolean;
+}, {rejectValue: string; state: RootState}
 >(
   'audioplayer/favorite/remove',
-  async ({ idTrack, idSection }, thunkApi) => {
+  async ({ idTrack, idSection, isFavorite }, thunkApi) => {
     try {
       const store = thunkApi.getState();
 
@@ -94,6 +111,16 @@ ITrack[], {idTrack: number | string | undefined; idSection?: number | string}, {
         const { data } = await base.get<ISectionTracks>(`/catalog/selection/${idSection}/`);
 
         return data.items;
+      }
+
+      if (isFavorite) {
+        const { data } = await baseCatalog.get<ITrack[]>('/track/favorite/all/', {
+          headers: {
+            Authorization: `Bearer ${store.user.token?.access}`,
+          },
+        });
+
+        return data;
       }
 
       const { data } = await base.get<ITrack[]>('/catalog/track/all/');
