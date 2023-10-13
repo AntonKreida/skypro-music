@@ -188,6 +188,7 @@ export const sliceAudioPlayer = createSlice({
       state.isLoading = false;
       state.isError = null;
       state.trackList = action.payload;
+      state.currentTrackList = action.payload;
       state.shuffleList = action.payload;
     });
     builder.addCase(getAllFavoriteTrack.pending, (state) => {
