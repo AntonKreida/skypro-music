@@ -13,7 +13,7 @@ import * as Styled from './Main.styled';
 
 export const MainPage = () => {
   const dispatch = useAppDispatch();
-  const { trackList, isError, isLoading } = useAppSelector(getStateAudioPlayer);
+  const { searchTrackList, isError, isLoading } = useAppSelector(getStateAudioPlayer);
 
   const { setIsLoading } = useOutletContext<OutletContext>();
 
@@ -31,7 +31,7 @@ export const MainPage = () => {
         isError={ isError }
         isLoading={ isLoading }
         title="Треки"
-        trackList={ trackList }
+        trackList={ searchTrackList }
       />
     </Styled.MainWrapper>
   );

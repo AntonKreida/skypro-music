@@ -12,6 +12,7 @@ import {
 interface IInitState {
   isPlay: boolean;
   trackList: ITrack[];
+  searchTrackList: ITrack[];
   currentTrackList: ITrack[];
   currentPathnameTrackList: string | null;
   shuffleList: ITrack[];
@@ -25,6 +26,7 @@ interface IInitState {
 const initialState: IInitState = {
   isPlay: false,
   trackList: [],
+  searchTrackList: [],
   currentTrackList: [],
   currentPathnameTrackList: null,
   shuffleList: [],
@@ -42,7 +44,7 @@ export const sliceAudioPlayer = createSlice({
   reducers: {
     handlerCurrentTrack: (store, action: PayloadAction<{track: ITrack; pathname: string}>) => {
       if (store.currentPathnameTrackList !== action.payload.pathname) {
-        store.currentTrackList = store.trackList;
+        store.currentTrackList = store.searchTrackList;
       }
 
       if (action.payload.track.name !== store.currentTrack?.name && !store.isPlay) {
@@ -144,12 +146,22 @@ export const sliceAudioPlayer = createSlice({
         store.shuffleList.unshift(store.currentTrack as ITrack);
       }
     },
+    handlerSearchTrack: (store, action: PayloadAction<string>) => {
+      const listForSearch = [...store.trackList];
+
+      const result = listForSearch.filter((track) => track?.name.toLowerCase().startsWith(action.payload.toLowerCase())
+      || track?.author.toLowerCase().startsWith(action.payload.toLowerCase())
+      || track?.name.toLowerCase().startsWith(action.payload.toLowerCase()));
+
+      store.searchTrackList = result;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getMainTrackList.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = null;
       state.trackList = action.payload;
+      state.searchTrackList = action.payload;
     });
     builder.addCase(getMainTrackList.pending, (state) => {
       state.isLoading = true;
@@ -162,6 +174,7 @@ export const sliceAudioPlayer = createSlice({
       state.isLoading = false;
       state.isError = null;
       state.trackList = action.payload;
+      state.searchTrackList = action.payload;
     });
     builder.addCase(getSectionTrackList.pending, (state) => {
       state.isLoading = true;
@@ -190,6 +203,7 @@ export const sliceAudioPlayer = createSlice({
       state.trackList = action.payload;
       state.currentTrackList = action.payload;
       state.shuffleList = action.payload;
+      state.searchTrackList = action.payload;
     });
     builder.addCase(getAllFavoriteTrack.pending, (state) => {
       state.isLoading = true;
@@ -208,4 +222,5 @@ export const {
   handlerNextTrack,
   handlerEndTrack,
   handlerShuffle,
+  handlerSearchTrack,
 } = sliceAudioPlayer.actions;

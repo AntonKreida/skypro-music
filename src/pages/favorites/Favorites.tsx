@@ -11,7 +11,7 @@ import * as Styled from './Favorites.styled';
 
 export const Favorites = () => {
   const dispatch = useAppDispatch();
-  const { trackList, isError, isLoading } = useAppSelector(getStateAudioPlayer);
+  const { searchTrackList, isError, isLoading } = useAppSelector(getStateAudioPlayer);
 
   const { setIsLoading } = useOutletContext<OutletContext>();
 
@@ -29,7 +29,7 @@ export const Favorites = () => {
         isError={ isError }
         isLoading={ isLoading }
         title="Мои треки"
-        trackList={ trackList }
+        trackList={ searchTrackList }
       />
     </Styled.FavoritesWrapper>
   );
