@@ -1,7 +1,7 @@
 import {
   FC, useState, useEffect, MouseEvent,
 } from 'react';
-import { useParams, useMatch } from 'react-router-dom';
+import { useParams, useMatch, useLocation } from 'react-router-dom';
 
 import { ReactComponent as Like } from '@assets/icon/Like.svg';
 import { ITrack, TParams } from '@interface/';
@@ -25,6 +25,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const { user } = useAppSelector(getStateUser);
   const params = useParams<TParams>();
   const matches = useMatch(routes.favorite);
+  const location = useLocation();
 
   const {
     id: idTrack,
@@ -38,7 +39,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const [isErrorImg, setIsErrorImg] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const {
-    handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio
+    handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio, currentPathnameTrackList
   } = useAudioContext();
   const [currentTime, setTime] = useState('');
 
@@ -82,7 +83,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   return (
     <Styled.TableItemRowWrapper onClick={ () => {
-      handlerClickPlayCurrentTrack(track);
+      handlerClickPlayCurrentTrack(track, location.pathname);
     } }
     >
       <Styled.TableItemCell colSpan={ 1 }>
@@ -90,10 +91,13 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
         <Styled.TableItemBox>
           <Styled.TableItemWrapperImg>
             { !isErrorImg ? <Styled.TableItemImg src={ logo ?? '' } onError={ handlerErrorImg } /> : <Styled.TableItemIconPlug /> }
-            { currentTrack?.id === track.id
+            { currentTrack?.id === track.id && currentPathnameTrackList === location.pathname
               && (
                 <Styled.TableCurrentTrack>
-                  <Styled.TableCurrentTrackPulse $isCurrentTrack={ currentTrack?.id === track.id } $isPlay={ isPlay } />
+                  <Styled.TableCurrentTrackPulse
+                    $isCurrentTrack={ currentTrack?.id === track.id }
+                    $isPlay={ (isPlay && currentPathnameTrackList === location.pathname) }
+                  />
                 </Styled.TableCurrentTrack>
               ) }
           </Styled.TableItemWrapperImg>
@@ -129,9 +133,12 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
             </Styled.TableLikeWrapper>
           ) }
           <Styled.TableItemTextSilenced>
-            { currentTrack?.id !== track.id && formattedTime(time) }
-            { currentTrack?.id === track.id && isPlay && (currentTime ?? time) }
-            { currentTrack?.id === track.id && !isPlay && formattedTime(refAudio?.current?.currentTime || time) }
+            { (currentTrack?.id !== track.id || currentPathnameTrackList !== location.pathname) && formattedTime(time) }
+            { currentTrack?.id === track.id && isPlay
+              && currentPathnameTrackList === location.pathname && (currentTime ?? time) }
+            { currentTrack?.id === track.id && !isPlay
+              && currentPathnameTrackList === location.pathname
+              && formattedTime(refAudio?.current?.currentTime || time) }
           </Styled.TableItemTextSilenced>
         </Styled.TableItemLastBox>
       </Styled.TableItemCell>

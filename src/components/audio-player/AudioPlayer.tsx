@@ -172,12 +172,12 @@ export const AudioPlayer = () => {
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
 
-          { !isLike && (
+          { !isLike && !matches?.pattern.end && (
             <Styled.AudioPlayerButtonLike onClick={ handlerClickAddFavorite }>
               <Like />
             </Styled.AudioPlayerButtonLike>
           ) }
-          { isLike && (
+          { (matches?.pattern.end || isLike) && (
             <Styled.AudioPlayerButtonLike $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
               <Like />
             </Styled.AudioPlayerButtonLike>
