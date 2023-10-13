@@ -47,19 +47,29 @@ export const FilterDropdownMenuBox = styled.div`
     }
 `;
 
-export const FilterDropdownItem = styled.div`
+export const FilterDropdownItem = styled.div<{$isInclined?: boolean}>`
     font-family: "Stratos-Light";
     font-size: 20px;
-    color: ${({ theme }) => theme.colors.default};
+    color: ${({ theme, $isInclined }) => ($isInclined ? theme.colors.heliotropeWhite : theme.colors.default)};
+    text-decoration: ${({ $isInclined }) => ($isInclined ? 'underline' : 'none')};
     transition: all 0.1s linear;
     cursor: pointer;
 
     &:hover {
         color:  ${({ theme }) => theme.colors.mauve};
     }
+`;
 
-    .active {
-        color: ${({ theme }) => theme.colors.heliotropeWhite};;
-        text-decoration: underline;
-    }
+export const FilterDropdownCounter = styled.div`
+    position: absolute;
+    top: -12px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50px;
+    background: ${({ theme }) => theme.colors.heliotrope};
 `;

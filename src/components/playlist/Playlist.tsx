@@ -1,4 +1,6 @@
-import { FC, useState, useMemo } from 'react';
+import {
+  FC, useState, useMemo, useCallback
+} from 'react';
 import { useMatch } from 'react-router-dom';
 
 import { ITrack } from '@interface/';
@@ -21,11 +23,19 @@ interface IPlaylistProps {
   isError?: string | null;
 }
 
+export interface IFilterState {
+  name: string;
+  activeOptions: string[];
+}
+
 
 export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState<IFilterState>({
+    name: '',
+    activeOptions: [],
+  });
   const matches = useMatch(routes.favorite);
   const { trackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
 
@@ -41,6 +51,16 @@ export const Playlist: FC<IPlaylistProps> = ({
     };
   }, [trackListForFilter]);
 
+
+  const handlerClickOption = useCallback((option: string) => {
+    if (filter.activeOptions.includes(option)) {
+      setFilter({ ...filter, activeOptions: filter.activeOptions.filter((item) => item !== option) });
+      return;
+    }
+
+    setFilter({ ...filter, activeOptions: [...filter.activeOptions, option] });
+  }, [filter, setFilter]);
+
   return (
     <Styled.PlaylistWrapper>
 
@@ -53,6 +73,7 @@ export const Playlist: FC<IPlaylistProps> = ({
             <FilterDropdown
               dataInfo="performer"
               filter={ filter }
+              handlerClickOption={ handlerClickOption }
               options={ filterMenusOptions.performerOptions }
               setFilter={ setFilter }
               textButton="исполнителю"
@@ -60,6 +81,7 @@ export const Playlist: FC<IPlaylistProps> = ({
             <FilterDropdown
               dataInfo="genre"
               filter={ filter }
+              handlerClickOption={ handlerClickOption }
               options={ filterMenusOptions.genreOptions }
               setFilter={ setFilter }
               textButton="жанру"
@@ -67,6 +89,7 @@ export const Playlist: FC<IPlaylistProps> = ({
             <FilterDropdown
               dataInfo="year"
               filter={ filter }
+              handlerClickOption={ handlerClickOption }
               options={ filterMenusOptions.yearOptions }
               setFilter={ setFilter }
               textButton="году"
