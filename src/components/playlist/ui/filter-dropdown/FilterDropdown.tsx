@@ -12,11 +12,12 @@ interface IFilterDropdown {
   dataInfo: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
   filter: string;
+  options: string[];
 }
 
 
 export const FilterDropdown: FC<IFilterDropdown> = ({
-  dataInfo, textButton, setFilter, filter
+  dataInfo, textButton, setFilter, filter, options
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const refButton = useRef<HTMLDivElement>(null);
@@ -70,17 +71,9 @@ export const FilterDropdown: FC<IFilterDropdown> = ({
 
           <Styled.FilterDropdownMenuInner>
             <Styled.FilterDropdownMenuBox>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
-              <Styled.FilterDropdownItem>Исполнитель</Styled.FilterDropdownItem>
+              { options.map((option) => (
+                <Styled.FilterDropdownItem key={ option }>{ option }</Styled.FilterDropdownItem>
+              )) }
             </Styled.FilterDropdownMenuBox>
           </Styled.FilterDropdownMenuInner>
 

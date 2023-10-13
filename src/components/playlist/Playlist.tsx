@@ -1,7 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useMatch } from 'react-router-dom';
 
 import { ITrack } from '@interface/';
+import { useAppSelector } from '@hook/';
+import { getStateAudioPlayer } from '@redux/';
 
 import * as Styled from './Playlist.styled';
 import { TableItem, TableItemSkeleton } from './table-item';
@@ -25,6 +27,19 @@ export const Playlist: FC<IPlaylistProps> = ({
 }) => {
   const [filter, setFilter] = useState('');
   const matches = useMatch(routes.favorite);
+  const { trackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
+
+  const filterMenusOptions = useMemo(() => {
+    const genreOptions = Array.from(new Set([...trackListForFilter.map((track) => track.genre)]));
+    const performerOptions = Array.from(new Set([...trackListForFilter.map((track) => track.author)]));
+    const yearOptions = Array.from(new Set([...trackListForFilter.map((track) => track.release_date?.slice(0, 4))]));
+
+    return {
+      genreOptions,
+      performerOptions,
+      yearOptions
+    };
+  }, [trackListForFilter]);
 
   return (
     <Styled.PlaylistWrapper>
@@ -38,18 +53,21 @@ export const Playlist: FC<IPlaylistProps> = ({
             <FilterDropdown
               dataInfo="performer"
               filter={ filter }
+              options={ filterMenusOptions.performerOptions }
               setFilter={ setFilter }
               textButton="исполнителю"
             />
             <FilterDropdown
               dataInfo="genre"
               filter={ filter }
+              options={ filterMenusOptions.genreOptions }
               setFilter={ setFilter }
               textButton="жанру"
             />
             <FilterDropdown
               dataInfo="year"
               filter={ filter }
+              options={ filterMenusOptions.yearOptions }
               setFilter={ setFilter }
               textButton="году"
             />
