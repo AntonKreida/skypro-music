@@ -9,7 +9,7 @@ import { getStateAudioPlayer } from '@redux/';
 
 import * as Styled from './Playlist.styled';
 import { TableItem, TableItemSkeleton } from './table-item';
-import { FilterDropdown } from './ui';
+import { MenuFilterDropdown, MenuSortDropdown } from './ui';
 
 
 const routes = {
@@ -32,22 +32,21 @@ export interface IFilterState {
 export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
+  const [isActiveMenu, setIsActiveMenu] = useState('');
   const [filter, setFilter] = useState<IFilterState>({
     name: '',
     activeOptions: [],
   });
   const matches = useMatch(routes.favorite);
-  const { trackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
+  const { searchTrackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
 
   const filterMenusOptions = useMemo(() => {
     const genreOptions = Array.from(new Set([...trackListForFilter.map((track) => track.genre)]));
     const performerOptions = Array.from(new Set([...trackListForFilter.map((track) => track.author)]));
-    const yearOptions = Array.from(new Set([...trackListForFilter.map((track) => track.release_date?.slice(0, 4))]));
 
     return {
       genreOptions,
       performerOptions,
-      yearOptions
     };
   }, [trackListForFilter]);
 
@@ -70,28 +69,30 @@ export const Playlist: FC<IPlaylistProps> = ({
         { !matches && (
           <Styled.PlaylistTableFilter>
             Искать по:
-            <FilterDropdown
+            <MenuFilterDropdown
               dataInfo="performer"
               filter={ filter }
               handlerClickOption={ handlerClickOption }
+              isActiveMenu={ isActiveMenu }
               options={ filterMenusOptions.performerOptions }
               setFilter={ setFilter }
+              setIsActiveMenu={ setIsActiveMenu }
               textButton="исполнителю"
             />
-            <FilterDropdown
+            <MenuFilterDropdown
               dataInfo="genre"
               filter={ filter }
               handlerClickOption={ handlerClickOption }
+              isActiveMenu={ isActiveMenu }
               options={ filterMenusOptions.genreOptions }
               setFilter={ setFilter }
+              setIsActiveMenu={ setIsActiveMenu }
               textButton="жанру"
             />
-            <FilterDropdown
+            <MenuSortDropdown
               dataInfo="year"
-              filter={ filter }
-              handlerClickOption={ handlerClickOption }
-              options={ filterMenusOptions.yearOptions }
-              setFilter={ setFilter }
+              isActiveMenu={ isActiveMenu }
+              setIsActiveMenu={ setIsActiveMenu }
               textButton="году"
             />
           </Styled.PlaylistTableFilter>

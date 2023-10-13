@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 
-export const FilterDropdownWrapper = styled.div`
+export const MenuDropdownWrapper = styled.div`
     position: relative;
     left: 0;
     top: 0;
     width: fit-content;
 `;
 
-export const FilterDropdownMenuWrapper = styled.div`
+export const MenuDropdownMenuWrapper = styled.div`
     position: absolute;
     left: 0;
     top: 45px;
@@ -18,13 +18,13 @@ export const FilterDropdownMenuWrapper = styled.div`
     background: ${({ theme }) => theme.colors.gray};
 `;
 
-export const FilterDropdownMenuInner = styled.div`
+export const MenuDropdownMenuInner = styled.div`
     width: 100%;
     height: 100%;
     padding: 34px;
 `;
 
-export const FilterDropdownMenuBox = styled.div`
+export const MenuDropdownMenuBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 28px;
@@ -47,7 +47,7 @@ export const FilterDropdownMenuBox = styled.div`
     }
 `;
 
-export const FilterDropdownItem = styled.div<{$isInclined?: boolean}>`
+export const MenuDropdownItem = styled.div<{$isInclined?: boolean}>`
     font-family: "Stratos-Light";
     font-size: 20px;
     color: ${({ theme, $isInclined }) => ($isInclined ? theme.colors.heliotropeWhite : theme.colors.default)};
@@ -60,7 +60,7 @@ export const FilterDropdownItem = styled.div<{$isInclined?: boolean}>`
     }
 `;
 
-export const FilterDropdownCounter = styled.div`
+export const MenuDropdownCounter = styled.div`
     position: absolute;
     top: -12px;
     right: 0;

@@ -2,12 +2,12 @@ import {
   FC, useState, useRef, useEffect,
 } from 'react';
 
-import { ButtonFilter } from '@shared/';
+import { ButtonMenuDropdown } from '@shared/';
 
-import * as Styled from './FilterDropdown.styled';
+import * as Styled from './MenuDropdown.styled';
 
 
-interface IFilterDropdown {
+interface IMenuFilterDropdown {
   textButton: string;
   dataInfo: string;
   setFilter: React.Dispatch<React.SetStateAction<{name: string; activeOptions: string[]}>>;
@@ -15,13 +15,15 @@ interface IFilterDropdown {
     name: string;
     activeOptions: string[];
   };
+  isActiveMenu: string;
+  setIsActiveMenu: React.Dispatch<React.SetStateAction<string>>;
   options: string[];
   handlerClickOption: (option: string) => void;
 }
 
 
-export const FilterDropdown: FC<IFilterDropdown> = ({
-  dataInfo, textButton, setFilter, filter, options, handlerClickOption
+export const MenuFilterDropdown: FC<IMenuFilterDropdown> = ({
+  dataInfo, textButton, setFilter, filter, options, handlerClickOption, isActiveMenu, setIsActiveMenu
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const refButton = useRef<HTMLDivElement>(null);
@@ -29,18 +31,19 @@ export const FilterDropdown: FC<IFilterDropdown> = ({
   const handlerOnClickButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { currentTarget } = event;
 
-    if (currentTarget.closest('button') && isOpen && filter.name === dataInfo) {
+    if (currentTarget.closest('button') && isOpen && isActiveMenu === dataInfo) {
       setIsOpen(false);
       return;
     }
 
     setIsOpen(true);
 
-    if (filter.name === dataInfo) {
+    if (isActiveMenu === dataInfo) {
       setFilter({ name: dataInfo, activeOptions: filter.activeOptions });
       return;
     }
 
+    setIsActiveMenu(dataInfo);
     setFilter({ name: dataInfo, activeOptions: [] });
   };
 
@@ -66,35 +69,35 @@ export const FilterDropdown: FC<IFilterDropdown> = ({
   });
 
   return (
-    <Styled.FilterDropdownWrapper>
-      <ButtonFilter
-        active={ dataInfo === filter.name && isOpen }
+    <Styled.MenuDropdownWrapper>
+      <ButtonMenuDropdown
+        active={ dataInfo === isActiveMenu && isOpen }
         text={ textButton }
         type="button"
         onClick={ handlerOnClickButton }
       />
-      { (filter.name === dataInfo && isOpen) && (
-        <Styled.FilterDropdownMenuWrapper ref={ refButton }>
+      { (isActiveMenu === dataInfo && isOpen) && (
+        <Styled.MenuDropdownMenuWrapper ref={ refButton }>
 
-          <Styled.FilterDropdownMenuInner>
-            <Styled.FilterDropdownMenuBox>
+          <Styled.MenuDropdownMenuInner>
+            <Styled.MenuDropdownMenuBox>
               { options.map((option) => (
-                <Styled.FilterDropdownItem
+                <Styled.MenuDropdownItem
                   key={ option }
                   $isInclined={ filter.activeOptions.includes(option) }
                   onClick={ () => handlerClickOption(option) }
                 >
                   { option }
-                </Styled.FilterDropdownItem>
+                </Styled.MenuDropdownItem>
               )) }
-            </Styled.FilterDropdownMenuBox>
-          </Styled.FilterDropdownMenuInner>
+            </Styled.MenuDropdownMenuBox>
+          </Styled.MenuDropdownMenuInner>
 
-        </Styled.FilterDropdownMenuWrapper>
+        </Styled.MenuDropdownMenuWrapper>
       ) }
-      { isOpen && dataInfo === filter.name && filter.activeOptions.length > 0 && (
-        <Styled.FilterDropdownCounter>{ filter.activeOptions.length }</Styled.FilterDropdownCounter>
+      { dataInfo === isActiveMenu && filter.activeOptions.length > 0 && (
+        <Styled.MenuDropdownCounter>{ filter.activeOptions.length }</Styled.MenuDropdownCounter>
       ) }
-    </Styled.FilterDropdownWrapper>
+    </Styled.MenuDropdownWrapper>
   );
 };
