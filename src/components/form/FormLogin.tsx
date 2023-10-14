@@ -28,9 +28,11 @@ export const FormLogin = () => {
   const submitHandler: SubmitHandler<TSchemaLogin> = async (dataFrom) => {
     const { meta } = await dispatch(postLoginUser(dataFrom));
 
+    console.log(meta.requestStatus);
+
     if (meta.requestStatus === 'fulfilled') {
       await dispatch(postGetToken(dataFrom));
-      navigate('/skypro-music');
+      navigate('/skypro-music', { replace: true });
     }
   };
 
