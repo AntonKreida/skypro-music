@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppAuthContext } from '@hook/';
+import { useAppAuthContext, useAppSelector } from '@hook/';
+import { getStateUser } from '@redux/';
 
 import * as Styled from './Panel.styled';
 
@@ -12,7 +13,8 @@ interface IPanel {
 
 
 export const Panel: FC<IPanel> = ({ isLoading }) => {
-  const { isAuthUser, handlerOffAuthUser } = useAppAuthContext();
+  const { handlerOffAuthUser } = useAppAuthContext();
+  const { user } = useAppSelector(getStateUser);
   const navigate = useNavigate();
 
   const handlerClickOffAuthUser = () => {
@@ -25,7 +27,7 @@ export const Panel: FC<IPanel> = ({ isLoading }) => {
       <Styled.PanelHeader>
 
         <Styled.PanelExitButton onClick={ handlerClickOffAuthUser }>
-          { isAuthUser?.username }
+          { user?.username }
           <Styled.PanelIconExit />
         </Styled.PanelExitButton>
 
