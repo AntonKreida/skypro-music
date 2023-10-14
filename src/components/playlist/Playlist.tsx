@@ -60,8 +60,6 @@ export const Playlist: FC<IPlaylistProps> = ({
     setFilter({ ...filter, activeOptions: [...filter.activeOptions, option] });
   }, [filter, setFilter]);
 
-  console.log(new Date(trackList[5].release_date) < new Date(trackList[0].release_date));
-
   return (
     <Styled.PlaylistWrapper>
 
