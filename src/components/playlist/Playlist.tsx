@@ -33,6 +33,7 @@ export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
   const [isActiveMenu, setIsActiveMenu] = useState('');
+  const [activeSort, setActiveSort] = useState('');
   const [filter, setFilter] = useState<IFilterState>({
     name: '',
     activeOptions: [],
@@ -50,7 +51,6 @@ export const Playlist: FC<IPlaylistProps> = ({
     };
   }, [trackListForFilter]);
 
-
   const handlerClickOption = useCallback((option: string) => {
     if (filter.activeOptions.includes(option)) {
       setFilter({ ...filter, activeOptions: filter.activeOptions.filter((item) => item !== option) });
@@ -59,6 +59,8 @@ export const Playlist: FC<IPlaylistProps> = ({
 
     setFilter({ ...filter, activeOptions: [...filter.activeOptions, option] });
   }, [filter, setFilter]);
+
+  console.log(new Date(trackList[5].release_date) < new Date(trackList[0].release_date));
 
   return (
     <Styled.PlaylistWrapper>
@@ -70,7 +72,7 @@ export const Playlist: FC<IPlaylistProps> = ({
           <Styled.PlaylistTableFilter>
             Искать по:
             <MenuFilterDropdown
-              dataInfo="performer"
+              dataInfo="author"
               filter={ filter }
               handlerClickOption={ handlerClickOption }
               isActiveMenu={ isActiveMenu }
@@ -90,8 +92,10 @@ export const Playlist: FC<IPlaylistProps> = ({
               textButton="жанру"
             />
             <MenuSortDropdown
+              activeSort={ activeSort }
               dataInfo="year"
               isActiveMenu={ isActiveMenu }
+              setActiveSort={ setActiveSort }
               setIsActiveMenu={ setIsActiveMenu }
               textButton="году"
             />
@@ -130,7 +134,24 @@ export const Playlist: FC<IPlaylistProps> = ({
                   <TableItemSkeleton key={ item } />
                 ))
               ) }
-              { (!isLoading && !isError) && trackList?.map((track) => (
+              { (!isLoading && !isError) && trackList?.filter((item) => {
+                if (filter.activeOptions.length === 0) {
+                  return item;
+                }
+
+                return filter.activeOptions.includes(item.genre) || filter.activeOptions.includes(item.author);
+              }).sort((a, b) => {
+                if (activeSort === 'old' && new Date(a.release_date) < new Date(b.release_date)) {
+                  return -1;
+                }
+
+                if (activeSort === 'new' && new Date(a.release_date) > new Date(b.release_date)) {
+                  return -1;
+                }
+
+
+                return 0;
+              }).map((track) => (
                 <TableItem key={ track.id } track={ track } />
               )) }
               { (!isLoading && isError) && (

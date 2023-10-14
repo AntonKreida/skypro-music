@@ -12,11 +12,13 @@ interface IMenuSortDropdown {
   dataInfo: string;
   isActiveMenu: string;
   setIsActiveMenu: React.Dispatch<React.SetStateAction<string>>;
+  setActiveSort: React.Dispatch<React.SetStateAction<string>>;
+  activeSort: string;
 }
 
 
 export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
-  dataInfo, textButton, isActiveMenu, setIsActiveMenu
+  dataInfo, textButton, isActiveMenu, setIsActiveMenu, setActiveSort, activeSort
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const refButton = useRef<HTMLDivElement>(null);
@@ -54,6 +56,15 @@ export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
     );
   });
 
+  const handlerClickOption = (option: string) => {
+    if (option === activeSort) {
+      setActiveSort('');
+      return;
+    }
+
+    setActiveSort(option);
+  };
+
   return (
     <Styled.MenuDropdownWrapper>
       <ButtonMenuDropdown
@@ -67,12 +78,25 @@ export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
 
           <Styled.MenuDropdownMenuInner>
             <Styled.MenuDropdownMenuBox>
-              <Styled.MenuDropdownItem>от новых к более старым</Styled.MenuDropdownItem>
-              <Styled.MenuDropdownItem>от старых к более новым</Styled.MenuDropdownItem>
+              <Styled.MenuDropdownItem
+                $isInclined={ activeSort === 'new' }
+                onClick={ () => handlerClickOption('new') }
+              >
+                от новых к более старым
+              </Styled.MenuDropdownItem>
+              <Styled.MenuDropdownItem
+                $isInclined={ activeSort === 'old' }
+                onClick={ () => handlerClickOption('old') }
+              >от старых к более новым
+              </Styled.MenuDropdownItem>
             </Styled.MenuDropdownMenuBox>
           </Styled.MenuDropdownMenuInner>
 
         </Styled.MenuDropdownMenuWrapper>
+      ) }
+
+      { activeSort && (
+        <Styled.MenuDropdownCounter>{ activeSort }</Styled.MenuDropdownCounter>
       ) }
     </Styled.MenuDropdownWrapper>
   );

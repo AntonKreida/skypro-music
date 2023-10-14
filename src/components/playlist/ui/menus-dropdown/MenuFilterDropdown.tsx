@@ -95,7 +95,7 @@ export const MenuFilterDropdown: FC<IMenuFilterDropdown> = ({
 
         </Styled.MenuDropdownMenuWrapper>
       ) }
-      { dataInfo === isActiveMenu && filter.activeOptions.length > 0 && (
+      { filter.name === dataInfo && filter.activeOptions.length > 0 && (
         <Styled.MenuDropdownCounter>{ filter.activeOptions.length }</Styled.MenuDropdownCounter>
       ) }
     </Styled.MenuDropdownWrapper>

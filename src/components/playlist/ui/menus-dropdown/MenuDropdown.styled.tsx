@@ -68,7 +68,9 @@ export const MenuDropdownCounter = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 26px;
+    padding: 5px;
+    min-width: 26px;
+    width: fit-content;
     height: 26px;
     border-radius: 50px;
     background: ${({ theme }) => theme.colors.heliotrope};
