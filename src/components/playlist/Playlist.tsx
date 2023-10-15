@@ -10,6 +10,7 @@ import { getStateAudioPlayer } from '@redux/';
 import * as Styled from './Playlist.styled';
 import { TableItem, TableItemSkeleton } from './table-item';
 import { MenuFilterDropdown, MenuSortDropdown } from './ui';
+import { filtrationTracks, sortTracks } from './utils';
 
 
 const routes = {
@@ -42,12 +43,18 @@ export const Playlist: FC<IPlaylistProps> = ({
   const { searchTrackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
 
   const filterMenusOptions = useMemo(() => {
+    const performerOptions = Array.from(new Set([...trackListForFilter.map((track) => {
+      if (track.author === '-') {
+        return 'Неизвестный исполнитель';
+      }
+
+      return track.author;
+    })]));
     const genreOptions = Array.from(new Set([...trackListForFilter.map((track) => track.genre)]));
-    const performerOptions = Array.from(new Set([...trackListForFilter.map((track) => track.author)]));
 
     return {
-      genreOptions,
       performerOptions,
+      genreOptions,
     };
   }, [trackListForFilter]);
 
@@ -132,24 +139,7 @@ export const Playlist: FC<IPlaylistProps> = ({
                   <TableItemSkeleton key={ item } />
                 ))
               ) }
-              { (!isLoading && !isError) && trackList?.filter((item) => {
-                if (filter.activeOptions.length === 0) {
-                  return item;
-                }
-
-                return filter.activeOptions.includes(item.genre) || filter.activeOptions.includes(item.author);
-              }).sort((a, b) => {
-                if (activeSort === 'old' && new Date(a.release_date) < new Date(b.release_date)) {
-                  return -1;
-                }
-
-                if (activeSort === 'new' && new Date(a.release_date) > new Date(b.release_date)) {
-                  return -1;
-                }
-
-
-                return 0;
-              }).map((track) => (
+              { (!isLoading && !isError) && sortTracks(filtrationTracks(trackList, filter), activeSort).map((track) => (
                 <TableItem key={ track.id } track={ track } />
               )) }
               { (!isLoading && isError) && (
