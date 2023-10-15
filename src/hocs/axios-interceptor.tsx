@@ -38,7 +38,7 @@ export const AxiosInterceptor: FC<IAxiosInterceptorProps> = ({ children }) => {
           await dispatch(getAllFavoriteTrack());
         }
 
-        return null;
+        return Promise.reject(error);
       }
 
       return Promise.reject(error);
