@@ -1,6 +1,6 @@
 module.exports = {
   processors: ['stylelint-processor-styled-components'],
-  plugins: ['stylelint-order', 'stylelint-красивее '],
+  plugins: ['stylelint-order', 'stylelint-prettier'],
   extends: [
     'stylelint-config-recommended',
     'stylelint-config-standard-scss',
@@ -11,4 +11,5 @@ module.exports = {
   rules: {
     'prettier/prettier': true,
   },
+  configBasedir: __dirname,
 };
