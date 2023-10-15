@@ -20,11 +20,12 @@ interface IAudioContext {
   isPlay: boolean;
   isLoop: boolean;
   isShuffle: boolean;
+  currentPathnameTrackList: string | null;
   currentTrack: ITrack | null | undefined;
   handlerPlayClickTrack: () => void;
   handleLoopTrack: () => void;
   handlerVolumeAudio: (volume: string) => void;
-  handlerClickPlayCurrentTrack: (track: ITrack) => void;
+  handlerClickPlayCurrentTrack: (track: ITrack, pathname: string) => void;
   handlerClickBackTrack: () => void;
   handlerClickNextTrack: () => void;
   handlerShuffleClick: () => void;
@@ -41,6 +42,7 @@ export const AudioContext = createContext<IAudioContext>({
   isLoop: false,
   isShuffle: false,
   currentTrack: null,
+  currentPathnameTrackList: null,
   handlerPlayClickTrack: () => null,
   handleLoopTrack: () => null,
   handlerVolumeAudio: () => null,
@@ -54,11 +56,13 @@ export const AudioContext = createContext<IAudioContext>({
 export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
   const refAudio = useRef<HTMLAudioElement>(null);
   const dispatch = useAppDispatch();
-  const { isPlay, currentTrack, isShuffle } = useAppSelector(getStateAudioPlayer);
+  const {
+    isPlay, currentTrack, isShuffle, currentPathnameTrackList
+  } = useAppSelector(getStateAudioPlayer);
   const [isLoop, setIsLoop] = useState(false);
 
-  const handlerClickPlayCurrentTrack = useCallback((track: ITrack) => {
-    dispatch(handlerCurrentTrack(track));
+  const handlerClickPlayCurrentTrack = useCallback((track: ITrack, pathname: string) => {
+    dispatch(handlerCurrentTrack({ track, pathname }));
   }, [dispatch]);
 
   const handleLoopTrack = () => {
@@ -164,17 +168,19 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
     handlerShuffleClick,
     refAudio,
     currentTrack,
+    currentPathnameTrackList,
   }
   ), [
     isPlay,
     isLoop,
     isShuffle,
-    currentTrack,
     handlerClickPlayCurrentTrack,
     handlerPlayClickTrack,
-    handlerClickNextTrack,
     handlerClickBackTrack,
+    handlerClickNextTrack,
     handlerShuffleClick,
+    currentTrack,
+    currentPathnameTrackList,
   ]);
 
   return (

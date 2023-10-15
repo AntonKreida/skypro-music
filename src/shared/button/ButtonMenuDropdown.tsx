@@ -10,7 +10,7 @@ interface IButtonFilterProps extends HTMLProps<HTMLButtonElement> {
   active?: boolean;
 }
 
-export const ButtonFilter: FC<IButtonFilterProps> = ({
+export const ButtonMenuDropdown: FC<IButtonFilterProps> = ({
   text, type, active, ...props
 }) => (
   <Styled.ButtonWrapper
@@ -18,6 +18,7 @@ export const ButtonFilter: FC<IButtonFilterProps> = ({
     type={ type }
     // eslint-disable-next-line react/jsx-props-no-spreading
     { ...props }
-  >{ text }
+  >
+    <span>{ text }</span>
   </Styled.ButtonWrapper>
 );

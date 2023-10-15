@@ -1,6 +1,8 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useAppAuthContext } from '@hook/';
+import { useAppAuthContext, useAppSelector } from '@hook/';
+import { getStateUser } from '@redux/';
 
 import * as Styled from './Panel.styled';
 
@@ -11,14 +13,21 @@ interface IPanel {
 
 
 export const Panel: FC<IPanel> = ({ isLoading }) => {
-  const { isAuthUser, handlerOffAuthUser } = useAppAuthContext();
+  const { handlerOffAuthUser } = useAppAuthContext();
+  const { user } = useAppSelector(getStateUser);
+  const navigate = useNavigate();
+
+  const handlerClickOffAuthUser = () => {
+    handlerOffAuthUser();
+    navigate('/login');
+  };
 
   return (
     <Styled.PanelWrapper>
       <Styled.PanelHeader>
 
-        <Styled.PanelExitButton onClick={ handlerOffAuthUser }>
-          { isAuthUser?.username }
+        <Styled.PanelExitButton onClick={ handlerClickOffAuthUser }>
+          { user?.username }
           <Styled.PanelIconExit />
         </Styled.PanelExitButton>
 

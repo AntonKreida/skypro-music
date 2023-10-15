@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Input } from '@shared/';
-import { useAppAuthContext } from '@hook/';
-import { errorTitle, IResponseError } from '@interface/';
+import { useAppDispatch, useAppSelector } from '@hook/';
+import { errorTitle } from '@interface/';
+import { getStateUser, postCreateUser } from '@redux/';
 
 import { schemaSignIn, TSchemaSignIn } from './schemas';
 import * as Styled from './Form.styled';
@@ -13,8 +14,8 @@ import * as Styled from './Form.styled';
 
 export const FormSignIn = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState<IResponseError | string | null>(null);
+  const dispatch = useAppDispatch();
+  const { isLoading, isError } = useAppSelector(getStateUser);
 
   const { control, handleSubmit } = useForm<TSchemaSignIn >({
     resolver: zodResolver(schemaSignIn),
@@ -27,20 +28,13 @@ export const FormSignIn = () => {
     }
   });
   const form = useId();
-  const { handlerCreateUser } = useAppAuthContext();
+
 
   const submitHandler: SubmitHandler<TSchemaSignIn> = async (dataForm) => {
-    setIsLoading(true);
+    const { meta } = await dispatch(postCreateUser(dataForm));
 
-    try {
-      await handlerCreateUser(dataForm);
-
-      setIsLoading(false);
-      setIsError(null);
+    if (meta.requestStatus === 'fulfilled') {
       navigate('/login');
-    } catch (error) {
-      setIsLoading(false);
-      setIsError(error as IResponseError | string);
     }
   };
 

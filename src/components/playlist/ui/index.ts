@@ -1,1 +1,1 @@
-export * from './filter-dropdown';
+export * from './menus-dropdown';

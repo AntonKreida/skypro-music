@@ -24,6 +24,6 @@ export const Button: FC<IButtonProps> = ({
     onSubmit={ onSubmit }
     // eslint-disable-next-line react/jsx-props-no-spreading
     { ...props }
-  >{ text }
+  ><span>{ text }</span>
   </Styled.ButtonWrapperDefault>
 );

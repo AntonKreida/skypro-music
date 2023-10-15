@@ -1,11 +1,20 @@
-import { FC, useState } from 'react';
+import {
+  FC, useState, useMemo, useCallback
+} from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { ITrack } from '@interface/';
+import { useAppSelector } from '@hook/';
+import { getStateAudioPlayer } from '@redux/';
 
 import * as Styled from './Playlist.styled';
 import { TableItem, TableItemSkeleton } from './table-item';
-import { FilterDropdown } from './ui';
+import { MenuFilterDropdown, MenuSortDropdown } from './ui';
 
+
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
 
 interface IPlaylistProps {
   title: string;
@@ -14,11 +23,42 @@ interface IPlaylistProps {
   isError?: string | null;
 }
 
+export interface IFilterState {
+  name: string;
+  activeOptions: string[];
+}
+
 
 export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
-  const [filter, setFilter] = useState('');
+  const [isActiveMenu, setIsActiveMenu] = useState('');
+  const [activeSort, setActiveSort] = useState('');
+  const [filter, setFilter] = useState<IFilterState>({
+    name: '',
+    activeOptions: [],
+  });
+  const matches = useMatch(routes.favorite);
+  const { searchTrackList: trackListForFilter } = useAppSelector(getStateAudioPlayer);
+
+  const filterMenusOptions = useMemo(() => {
+    const genreOptions = Array.from(new Set([...trackListForFilter.map((track) => track.genre)]));
+    const performerOptions = Array.from(new Set([...trackListForFilter.map((track) => track.author)]));
+
+    return {
+      genreOptions,
+      performerOptions,
+    };
+  }, [trackListForFilter]);
+
+  const handlerClickOption = useCallback((option: string) => {
+    if (filter.activeOptions.includes(option)) {
+      setFilter({ ...filter, activeOptions: filter.activeOptions.filter((item) => item !== option) });
+      return;
+    }
+
+    setFilter({ ...filter, activeOptions: [...filter.activeOptions, option] });
+  }, [filter, setFilter]);
 
   return (
     <Styled.PlaylistWrapper>
@@ -26,27 +66,39 @@ export const Playlist: FC<IPlaylistProps> = ({
       <Styled.PlaylistTitle>{ title }</Styled.PlaylistTitle>
 
       <Styled.PlaylistTableWrapper>
-        <Styled.PlaylistTableFilter>
-          Искать по:
-          <FilterDropdown
-            dataInfo="performer"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="исполнителю"
-          />
-          <FilterDropdown
-            dataInfo="genre"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="жанру"
-          />
-          <FilterDropdown
-            dataInfo="year"
-            filter={ filter }
-            setFilter={ setFilter }
-            textButton="году"
-          />
-        </Styled.PlaylistTableFilter>
+        { !matches && (
+          <Styled.PlaylistTableFilter>
+            Искать по:
+            <MenuFilterDropdown
+              dataInfo="author"
+              filter={ filter }
+              handlerClickOption={ handlerClickOption }
+              isActiveMenu={ isActiveMenu }
+              options={ filterMenusOptions.performerOptions }
+              setFilter={ setFilter }
+              setIsActiveMenu={ setIsActiveMenu }
+              textButton="исполнителю"
+            />
+            <MenuFilterDropdown
+              dataInfo="genre"
+              filter={ filter }
+              handlerClickOption={ handlerClickOption }
+              isActiveMenu={ isActiveMenu }
+              options={ filterMenusOptions.genreOptions }
+              setFilter={ setFilter }
+              setIsActiveMenu={ setIsActiveMenu }
+              textButton="жанру"
+            />
+            <MenuSortDropdown
+              activeSort={ activeSort }
+              dataInfo="year"
+              isActiveMenu={ isActiveMenu }
+              setActiveSort={ setActiveSort }
+              setIsActiveMenu={ setIsActiveMenu }
+              textButton="году"
+            />
+          </Styled.PlaylistTableFilter>
+        ) }
 
         <Styled.PlaylistTableBox>
           <Styled.PlaylistTable>
@@ -80,7 +132,24 @@ export const Playlist: FC<IPlaylistProps> = ({
                   <TableItemSkeleton key={ item } />
                 ))
               ) }
-              { (!isLoading && !isError) && trackList?.map((track) => (
+              { (!isLoading && !isError) && trackList?.filter((item) => {
+                if (filter.activeOptions.length === 0) {
+                  return item;
+                }
+
+                return filter.activeOptions.includes(item.genre) || filter.activeOptions.includes(item.author);
+              }).sort((a, b) => {
+                if (activeSort === 'old' && new Date(a.release_date) < new Date(b.release_date)) {
+                  return -1;
+                }
+
+                if (activeSort === 'new' && new Date(a.release_date) > new Date(b.release_date)) {
+                  return -1;
+                }
+
+
+                return 0;
+              }).map((track) => (
                 <TableItem key={ track.id } track={ track } />
               )) }
               { (!isLoading && isError) && (

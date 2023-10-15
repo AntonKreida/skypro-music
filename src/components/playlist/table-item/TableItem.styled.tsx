@@ -108,14 +108,17 @@ export const TableItemTextSilenced = styled.p`
     color: ${({ theme }) => theme.colors.tundora};
 `;
 
-export const TableLikeWrapper = styled.div`
+export const TableLikeWrapper = styled.div<{$isLike?: boolean}>`
     width: fit-content;
     height: 100%;
 
     & > svg {
         width: 17px;
         height: 13px;
+        fill: ${({ theme, $isLike }) => ($isLike ? theme.colors.heliotrope : null)};
     }
+
+
 `;
 
 export const TableItemIconSkeleton = styled.div`

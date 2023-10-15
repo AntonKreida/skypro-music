@@ -1,32 +1,60 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC, useState, useEffect, MouseEvent,
+} from 'react';
+import { useParams, useMatch, useLocation } from 'react-router-dom';
 
-import { ITrack } from '@interface/';
+import { ReactComponent as Like } from '@assets/icon/Like.svg';
+import { ITrack, TParams } from '@interface/';
 import { formattedTime } from '@utils/';
-import { useAudioContext } from '@hook/';
+import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
+import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@redux/';
 
 import * as Styled from './TableItem.styled';
 
+
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
 
 interface ITableItemProps {
   track: ITrack;
 }
 
 export const TableItem: FC<ITableItemProps> = ({ track }) => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(getStateUser);
+  const params = useParams<TParams>();
+  const matches = useMatch(routes.favorite);
+  const location = useLocation();
+
   const {
+    id: idTrack,
     name,
     author,
     album,
     logo,
-    duration_in_seconds: time
+    duration_in_seconds: time,
+    stared_user: userList,
   } = track;
   const [isErrorImg, setIsErrorImg] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const {
-    handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio
+    handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio, currentPathnameTrackList
   } = useAudioContext();
   const [currentTime, setTime] = useState('');
 
   const handlerErrorImg = () => {
     setIsErrorImg(true);
+  };
+
+  const handlerClickAddFavorite = async (event: MouseEvent) => {
+    event.stopPropagation();
+    dispatch(postAddFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
+  };
+
+  const handlerClickRemoveFavorite = async (event: MouseEvent) => {
+    event.stopPropagation();
+    dispatch(postRemoveFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
   };
 
   useEffect(() => {
@@ -47,9 +75,15 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     };
   }, [currentTrack?.id, isPlay, refAudio, track.id]);
 
+  useEffect(() => {
+    if (user) {
+      setIsLike(!!(userList?.some((itemUser) => itemUser.id === user.id) || matches));
+    }
+  }, [matches, user, userList]);
+
   return (
     <Styled.TableItemRowWrapper onClick={ () => {
-      handlerClickPlayCurrentTrack(track);
+      handlerClickPlayCurrentTrack(track, location.pathname);
     } }
     >
       <Styled.TableItemCell colSpan={ 1 }>
@@ -57,10 +91,13 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
         <Styled.TableItemBox>
           <Styled.TableItemWrapperImg>
             { !isErrorImg ? <Styled.TableItemImg src={ logo ?? '' } onError={ handlerErrorImg } /> : <Styled.TableItemIconPlug /> }
-            { currentTrack?.id === track.id
+            { currentTrack?.id === track.id && currentPathnameTrackList === location.pathname
               && (
                 <Styled.TableCurrentTrack>
-                  <Styled.TableCurrentTrackPulse $isCurrentTrack={ currentTrack?.id === track.id } $isPlay={ isPlay } />
+                  <Styled.TableCurrentTrackPulse
+                    $isCurrentTrack={ currentTrack?.id === track.id }
+                    $isPlay={ (isPlay && currentPathnameTrackList === location.pathname) }
+                  />
                 </Styled.TableCurrentTrack>
               ) }
           </Styled.TableItemWrapperImg>
@@ -85,15 +122,23 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
       <Styled.TableItemCell colSpan={ 4 }>
         <Styled.TableItemLastBox>
-          <Styled.TableLikeWrapper>
-            <svg>
-              <use href={ `${process.env.PUBLIC_URL}/assets/icon/icons.svg#like` } />
-            </svg>
-          </Styled.TableLikeWrapper>
+          { !isLike && !matches && (
+            <Styled.TableLikeWrapper onClick={ handlerClickAddFavorite }>
+              <Like />
+            </Styled.TableLikeWrapper>
+          ) }
+          { (isLike || matches) && (
+            <Styled.TableLikeWrapper $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
+              <Like />
+            </Styled.TableLikeWrapper>
+          ) }
           <Styled.TableItemTextSilenced>
-            { currentTrack?.id !== track.id && formattedTime(time) }
-            { currentTrack?.id === track.id && isPlay && (currentTime ?? time) }
-            { currentTrack?.id === track.id && !isPlay && formattedTime(refAudio?.current?.currentTime || time) }
+            { (currentTrack?.id !== track.id || currentPathnameTrackList !== location.pathname) && formattedTime(time) }
+            { currentTrack?.id === track.id && isPlay
+              && currentPathnameTrackList === location.pathname && (currentTime ?? time) }
+            { currentTrack?.id === track.id && !isPlay
+              && currentPathnameTrackList === location.pathname
+              && formattedTime(refAudio?.current?.currentTime || time) }
           </Styled.TableItemTextSilenced>
         </Styled.TableItemLastBox>
       </Styled.TableItemCell>

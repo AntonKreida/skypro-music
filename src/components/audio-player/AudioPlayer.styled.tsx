@@ -89,6 +89,23 @@ export const AudioPlayerButton = styled.button`
     }
 `;
 
+export const AudioPlayerButtonLike = styled.button<{$isLike?: boolean}>`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 100%;
+    border: none;
+    background: none;
+
+        & > svg {
+            width: 17px;
+            height: 13px;
+            fill: ${({ theme, $isLike }) => ($isLike ? theme.colors.heliotrope : null)};
+        }
+`;
+
 export const AudioPlayerButtonControl = styled.button<{$isLoop: boolean}>`
     display: flex;
     flex-direction: column;
