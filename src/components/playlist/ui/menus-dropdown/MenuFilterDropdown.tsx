@@ -38,10 +38,12 @@ export const MenuFilterDropdown: FC<IMenuFilterDropdown> = ({
 
     setIsOpen(true);
 
-    if (isActiveMenu === dataInfo) {
+    if (filter.name === dataInfo) {
+      setIsActiveMenu(dataInfo);
       setFilter({ name: dataInfo, activeOptions: filter.activeOptions });
       return;
     }
+
 
     setIsActiveMenu(dataInfo);
     setFilter({ name: dataInfo, activeOptions: [] });
