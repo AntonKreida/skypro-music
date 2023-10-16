@@ -1,11 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { useAppSelector } from '@hook/';
+import { getStateUser } from '@redux/';
+
 
 export const RequireAuth = () => {
-  const checkUserSave = localStorage.getItem('user');
-  const parseUserSave = !!checkUserSave;
+  const { user } = useAppSelector(getStateUser);
 
-  if (!parseUserSave) {
+  if (!user?.username) {
     return <Navigate to="/login" />;
   }
 

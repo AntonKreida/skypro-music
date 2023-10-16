@@ -62,7 +62,6 @@ export const sliceUser = createSlice({
       state.isLoading = false;
       state.isError = null;
       state.user = { ...action.payload };
-      localStorage.setItem('user', JSON.stringify({ ...action.payload }));
     });
     builder.addCase(postLoginUser.pending, (state) => {
       state.isLoading = true;
@@ -74,7 +73,6 @@ export const sliceUser = createSlice({
     builder.addCase(postGetToken.fulfilled, (state, action: PayloadAction<ITokenResponse>) => {
       state.isError = null;
       state.token = { ...action.payload };
-      localStorage.setItem('token', JSON.stringify({ ...action.payload }));
     });
     builder.addCase(postRefreshToken.fulfilled, (state, action) => {
       state.token = { ...state.token, access: action.payload.access };

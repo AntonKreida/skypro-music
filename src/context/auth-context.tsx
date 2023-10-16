@@ -24,7 +24,6 @@ export const AppContext: FC<IAppContext> = ({ children }) => {
 
   const handlerOffAuthUser = useCallback(() => {
     dispatch(clearUser());
-    localStorage.removeItem('user');
   }, [dispatch]);
 
   const context: IAuthContext = useMemo(() => ({
