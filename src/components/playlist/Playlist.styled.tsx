@@ -125,7 +125,7 @@ export const PlaylistLikeWrapper = styled.div`
     }
 `;
 
-export const PlaylistErrorHolder = styled.div`
+export const PlaylistErrorHolder = styled.tr`
     display: flex;
     width: 100%;
     height: 100%;

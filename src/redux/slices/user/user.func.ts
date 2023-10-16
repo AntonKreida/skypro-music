@@ -92,7 +92,7 @@ ITokenRefreshResponse, undefined, {rejectValue: string; state: RootState}>(
       return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        return thunkApi.rejectWithValue(error.response?.data);
+        return thunkApi.rejectWithValue(error.response?.data.detail ?? 'Что-то пошло не так попробуйте позже :(');
       }
 
       return thunkApi.rejectWithValue('Что-то пошло не так попробуйте позже :(');

@@ -151,7 +151,7 @@ export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {reject
       return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        return thunkApi.rejectWithValue(error.response?.data);
+        return thunkApi.rejectWithValue(error.response?.data.detail);
       }
 
       return thunkApi.rejectWithValue('Что-то пошло не так :(');
