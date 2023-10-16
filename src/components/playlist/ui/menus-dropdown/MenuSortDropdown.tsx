@@ -57,11 +57,6 @@ export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
   });
 
   const handlerClickOption = (option: string) => {
-    if (option === activeSort) {
-      setActiveSort('');
-      return;
-    }
-
     setActiveSort(option);
   };
 
@@ -79,15 +74,22 @@ export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
           <Styled.MenuDropdownMenuInner>
             <Styled.MenuDropdownMenuBox>
               <Styled.MenuDropdownItem
+                $isInclined={ activeSort === 'default' }
+                onClick={ () => handlerClickOption('default') }
+              >
+                По умолчанию
+              </Styled.MenuDropdownItem>
+
+              <Styled.MenuDropdownItem
                 $isInclined={ activeSort === 'new' }
                 onClick={ () => handlerClickOption('new') }
               >
-                от новых к более старым
+                Сначала новые
               </Styled.MenuDropdownItem>
               <Styled.MenuDropdownItem
                 $isInclined={ activeSort === 'old' }
                 onClick={ () => handlerClickOption('old') }
-              >от старых к более новым
+              >Сначала старые
               </Styled.MenuDropdownItem>
             </Styled.MenuDropdownMenuBox>
           </Styled.MenuDropdownMenuInner>
@@ -95,7 +97,7 @@ export const MenuSortDropdown: FC<IMenuSortDropdown> = ({
         </Styled.MenuDropdownMenuWrapper>
       ) }
 
-      { activeSort && (
+      { activeSort && activeSort !== 'default' && (
         <Styled.MenuDropdownCounter>{ activeSort }</Styled.MenuDropdownCounter>
       ) }
     </Styled.MenuDropdownWrapper>

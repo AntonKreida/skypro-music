@@ -34,7 +34,7 @@ export const Playlist: FC<IPlaylistProps> = ({
   trackList, title, isLoading, isError
 }) => {
   const [isActiveMenu, setIsActiveMenu] = useState('');
-  const [activeSort, setActiveSort] = useState('');
+  const [activeSort, setActiveSort] = useState('default');
   const [filter, setFilter] = useState<IFilterState>({
     name: '',
     activeOptions: [],
