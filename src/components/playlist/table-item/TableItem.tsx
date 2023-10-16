@@ -36,7 +36,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
     duration_in_seconds: time,
     stared_user: userList,
   } = track;
-  const [isErrorImg, setIsErrorImg] = useState(false);
+  const [isErrorImg, setIsErrorImg] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const {
     handlerClickPlayCurrentTrack, currentTrack, isPlay, refAudio, currentPathnameTrackList
@@ -44,7 +44,7 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
   const [currentTime, setTime] = useState('');
 
   const handlerErrorImg = () => {
-    setIsErrorImg(true);
+    setIsErrorImg(false);
   };
 
   const handlerClickAddFavorite = async (event: MouseEvent) => {
