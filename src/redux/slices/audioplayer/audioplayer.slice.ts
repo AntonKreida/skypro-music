@@ -195,6 +195,10 @@ export const sliceAudioPlayer = createSlice({
     builder.addCase(postAddFavoriteTrack.rejected, (state, action) => {
       state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
     });
+    builder.addCase(postAddFavoriteTrack.pending, (state) => {
+      state.isErrorAddFavorite = null;
+      state.isError = null;
+    });
     builder.addCase(postRemoveFavoriteTrack.fulfilled, (state, action) => {
       state.trackList = action.payload;
       state.isErrorAddFavorite = null;
@@ -203,6 +207,10 @@ export const sliceAudioPlayer = createSlice({
       const result = listTrackForSearch.filter((track) => state.searchTrackList.find((item) => item.id === track.id));
 
       state.searchTrackList = result;
+    });
+    builder.addCase(postRemoveFavoriteTrack.pending, (state) => {
+      state.isErrorAddFavorite = null;
+      state.isError = null;
     });
     builder.addCase(postRemoveFavoriteTrack.rejected, (state, action) => {
       state.isErrorAddFavorite = action.payload ?? 'Что-то пошло не так :(';
@@ -216,6 +224,7 @@ export const sliceAudioPlayer = createSlice({
       state.searchTrackList = action.payload;
     });
     builder.addCase(getAllFavoriteTrack.pending, (state) => {
+      state.isError = null;
       state.isLoading = true;
     });
     builder.addCase(getAllFavoriteTrack.rejected, (state, action) => {
