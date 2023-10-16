@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { isAxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 
 import { base, baseCatalog } from '@api/';
 import {
@@ -136,17 +136,22 @@ ITrack[], {
   }
 );
 
-export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {rejectValue: string | 401; state: RootState}>(
+export const getAllFavoriteTrack = createAsyncThunk<
+AxiosError | ITrack[], undefined, {rejectValue: string | 401; state: RootState}>(
   'audioplayer/favorite/all',
   async (_, thunkApi) => {
     const store = thunkApi.getState();
 
     try {
-      const { data } = await baseCatalog.get<ITrack[]>('/track/favorite/all/', {
+      const { data, status } = await baseCatalog.get<AxiosError | ITrack[]>('/track/favorite/all/', {
         headers: {
           Authorization: `Bearer ${store.user.token?.access}`,
         },
       });
+
+      if (status === 401) {
+        throw Error('error!');
+      }
 
       return data;
     } catch (error) {

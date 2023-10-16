@@ -217,11 +217,16 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getAllFavoriteTrack.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.isError = null;
-      state.trackList = action.payload;
-      state.currentTrackList = action.payload;
-      state.shuffleList = action.payload;
-      state.searchTrackList = action.payload;
+      if (Array.isArray(action.payload)) {
+        state.isError = null;
+        state.trackList = action.payload;
+        state.currentTrackList = action.payload;
+        state.shuffleList = action.payload;
+        state.searchTrackList = action.payload;
+        return;
+      }
+
+      state.isError = 'Что-то пошло не так :(';
     });
     builder.addCase(getAllFavoriteTrack.pending, (state) => {
       state.isError = null;
