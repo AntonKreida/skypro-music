@@ -24,6 +24,7 @@ export const AxiosInterceptor: FC<IAxiosInterceptorProps> = ({ children }) => {
       if (error.response?.status === 401) {
         const idTrack = error.config?.url?.split('/')[2];
 
+
         await dispatch(postRefreshToken());
 
         if (error.config?.method === 'post') {
@@ -34,11 +35,12 @@ export const AxiosInterceptor: FC<IAxiosInterceptorProps> = ({ children }) => {
           await dispatch(postRemoveFavoriteTrack({ idTrack: Number(idTrack) }));
         }
 
+
         if (error.config?.method === 'get') {
           await dispatch(getAllFavoriteTrack());
         }
 
-        return Promise.reject(error);
+        return null;
       }
 
       return Promise.reject(error);

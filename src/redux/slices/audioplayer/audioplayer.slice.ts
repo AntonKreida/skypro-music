@@ -229,6 +229,12 @@ export const sliceAudioPlayer = createSlice({
     });
     builder.addCase(getAllFavoriteTrack.rejected, (state, action) => {
       state.isLoading = false;
+
+      if (action.payload === 401) {
+        state.isError = null;
+        return;
+      }
+
       state.isError = action.payload ?? 'Что-то пошло не так :(';
     });
   },

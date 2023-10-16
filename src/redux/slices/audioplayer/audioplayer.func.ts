@@ -136,7 +136,7 @@ ITrack[], {
   }
 );
 
-export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {rejectValue: string; state: RootState}>(
+export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {rejectValue: string | 401; state: RootState}>(
   'audioplayer/favorite/all',
   async (_, thunkApi) => {
     const store = thunkApi.getState();
@@ -151,6 +151,10 @@ export const getAllFavoriteTrack = createAsyncThunk<ITrack[], undefined, {reject
       return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
+        if (error.response?.status === 401) {
+          return thunkApi.rejectWithValue(401);
+        }
+
         return thunkApi.rejectWithValue(error.response?.data.detail);
       }
 
