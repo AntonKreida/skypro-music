@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useId } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -90,8 +90,17 @@ export const FormSignIn = () => {
         ) }
 
       </Styled.FormPanelWrapper>
+
       <Styled.FormButtonPanel>
-        <Button color="purple" disabled={ isLoading } form={ form } text="Войти" type="submit" />
+
+        <Styled.FormButtonPanel>
+          <Button disabled={ isLoading } form={ form } text="Зарегистрироваться" type="submit" />
+        </Styled.FormButtonPanel>
+
+        <NavLink to="/login">
+          <Button color="purple" disabled={ isLoading } text="Вернуться назад" type="button" />
+        </NavLink>
+
       </Styled.FormButtonPanel>
 
     </Styled.FormWrapper>
