@@ -30,7 +30,7 @@ export const FormLogin = () => {
 
     if (meta.requestStatus === 'fulfilled') {
       await dispatch(postGetToken(dataFrom));
-      navigate('/skypro-music', { replace: true });
+      navigate('/skypro-music');
     }
   };
 
