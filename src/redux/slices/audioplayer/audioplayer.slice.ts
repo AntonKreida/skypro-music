@@ -5,7 +5,7 @@ import { ITrack } from '@interface/';
 
 import {
   getAllFavoriteTrack,
-  getMainTrackList, getSectionTrackList, postAddFavoriteTrack, postRemoveFavoriteTrack,
+  getMainTrackList, getSectionTrackList, postAddFavoriteTrack, postGetTrackId, postRemoveFavoriteTrack,
 } from './audioplayer.func';
 
 
@@ -187,6 +187,11 @@ export const sliceAudioPlayer = createSlice({
       state.trackList = action.payload;
       state.isErrorAddFavorite = null;
 
+      if (!action.payload[0].stared_user) {
+        state.searchTrackList = action.payload;
+        return;
+      }
+
       const listTrackForSearch = action.payload;
       const result = listTrackForSearch.filter((track) => state.searchTrackList.find((item) => item.id === track.id));
 
@@ -202,6 +207,11 @@ export const sliceAudioPlayer = createSlice({
     builder.addCase(postRemoveFavoriteTrack.fulfilled, (state, action) => {
       state.trackList = action.payload;
       state.isErrorAddFavorite = null;
+
+      if (!action.payload[0].stared_user) {
+        state.searchTrackList = action.payload;
+        return;
+      }
 
       const listTrackForSearch = action.payload;
       const result = listTrackForSearch.filter((track) => state.searchTrackList.find((item) => item.id === track.id));
@@ -241,6 +251,9 @@ export const sliceAudioPlayer = createSlice({
       }
 
       state.isError = action.payload ?? 'Что-то пошло не так :(';
+    });
+    builder.addCase(postGetTrackId.fulfilled, (state, action) => {
+      state.currentTrack = action.payload;
     });
   },
 });

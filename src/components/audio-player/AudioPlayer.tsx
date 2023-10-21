@@ -1,8 +1,8 @@
 /* eslint-disable import/max-dependencies */
 import { useEffect, useState } from 'react';
-// import { useMatch, useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 
-import { useAudioContext } from '@hook/';
+import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
 import { ReactComponent as Pause } from '@assets/icon/Pause.svg';
 import { ReactComponent as Play } from '@assets/icon/Play.svg';
 import { ReactComponent as Next } from '@assets/icon/Next.svg';
@@ -10,22 +10,24 @@ import { ReactComponent as Prev } from '@assets/icon/Prev.svg';
 import { ReactComponent as Loop } from '@assets/icon/Loop.svg';
 import { ReactComponent as Volume } from '@assets/icon/Volume.svg';
 import { ReactComponent as Case } from '@assets/icon/Case.svg';
-// import { ReactComponent as Like } from '@assets/icon/Like.svg';
-// import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@redux/';
-// import { TParams } from '@interface/';
+import { ReactComponent as Like } from '@assets/icon/Like.svg';
+import {
+  getStateUser, postAddFavoriteTrack, postGetTrackId, postRemoveFavoriteTrack
+} from '@redux/';
+import { TParams } from '@interface/';
 
 import * as Styled from './AudioPlayer.styled';
 import { ProgressBar } from './ui/Progress-bar';
 
 
-// const routes = {
-//  favorite: '/skypro-music/favorites',
-// };
-
 interface ITimeTrack {
   progress: number;
   length: number;
 }
+
+const routes = {
+  favorite: '/skypro-music/favorites',
+};
 
 
 export const AudioPlayer = () => {
@@ -46,21 +48,27 @@ export const AudioPlayer = () => {
     handlerShuffleClick,
   } = useAudioContext();
 
-  // const dispatch = useAppDispatch();
-  // const { user } = useAppSelector(getStateUser);
-  // const { id } = useParams<TParams>();
-  // const [isLike, setIsLike] = useState(false);
-  // const matches = useMatch(routes.favorite);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(getStateUser);
+  const [isLike, setIsLike] = useState(false);
+  const { id } = useParams<TParams>();
+  const matches = useMatch(routes.favorite);
 
-  // const handlerClickAddFavorite = async () => {
-  // dispatch(postAddFavoriteTrack({ idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }));
-  // setIsLike(true);
-  // };
-  //
-  // const handlerClickRemoveFavorite = async () => {
-  // dispatch(postRemoveFavoriteTrack({ idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }));
-  // setIsLike(false);
-  // };
+  const handlerClickAddFavorite = async () => {
+    await dispatch(postAddFavoriteTrack(
+      { idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }
+    ));
+    await dispatch(postGetTrackId(currentTrack?.id));
+    setIsLike(true);
+  };
+
+  const handlerClickRemoveFavorite = async () => {
+    await dispatch(postRemoveFavoriteTrack(
+      { idTrack: currentTrack?.id, idSection: id, isFavorite: matches?.pattern.end }
+    ));
+    await dispatch(postGetTrackId(currentTrack?.id));
+    setIsLike(false);
+  };
 
 
   const handlerOnChangeValueRange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,11 +116,11 @@ export const AudioPlayer = () => {
   }, [refAudio]);
 
 
-  // useEffect(() => {
-  //  if (user && currentTrack) {
-  //    setIsLike(currentTrack.stared_user?.some((itemUser) => itemUser.id === user.id));
-  //  }
-  // }, [user, currentTrack]);
+  useEffect(() => {
+    if (user && currentTrack) {
+      setIsLike(currentTrack.stared_user?.some((itemUser) => itemUser.id === user.id));
+    }
+  }, [user, currentTrack?.stared_user, currentTrack]);
 
   return (
     <Styled.AudioPlayerWrapper $isLoading={ !currentTrack }>
@@ -172,16 +180,16 @@ export const AudioPlayer = () => {
             </Styled.AudioPlayerInfoTextWrapper>
           </Styled.AudioPlayerInfoWrapper>
 
-          { /* { !isLike && !matches?.pattern.end && (
+          { !isLike && (
             <Styled.AudioPlayerButtonLike onClick={ handlerClickAddFavorite }>
               <Like />
             </Styled.AudioPlayerButtonLike>
           ) }
-          { (matches?.pattern.end || isLike) && (
+          { isLike && (
             <Styled.AudioPlayerButtonLike $isLike={ isLike } onClick={ handlerClickRemoveFavorite }>
               <Like />
             </Styled.AudioPlayerButtonLike>
-          ) } */ }
+          ) }
 
         </Styled.AudioPlayerPanel>
       </Styled.AudioPlayerControllerWrapper>
