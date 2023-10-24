@@ -1,6 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IResponseError, ITokenResponse, IUserLoginResponse } from '@interface/';
+import {
+  IResponseError, ITokenResponse, IUser, IUserLoginResponse
+} from '@interface/';
 
 import {
   postCreateUser, postLoginUser, postGetToken, postRefreshToken
@@ -8,13 +10,7 @@ import {
 
 
 interface IInitState {
-  user: {
-    id: number;
-    username: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-  } | null;
+  user: IUser | null;
   isLoading: boolean;
   isError: IResponseError | string | null;
   token: {

@@ -10,7 +10,8 @@ import {
   handlerBackTrack,
   handlerNextTrack,
   handlerEndTrack,
-  handlerShuffle
+  handlerShuffle,
+  postGetTrackId
 } from '@redux/';
 
 import { useAppDispatch, useAppSelector } from '../hook/use-app-dispatch-and-selector';
@@ -62,7 +63,11 @@ export const AppAudioContext: FC<IAppAudioContext> = ({ children }) => {
   const [isLoop, setIsLoop] = useState(false);
 
   const handlerClickPlayCurrentTrack = useCallback((track: ITrack, pathname: string) => {
-    dispatch(handlerCurrentTrack({ track, pathname }));
+    const { payload } = dispatch(handlerCurrentTrack({ track, pathname }));
+
+    if (!payload.track.stared_user) {
+      dispatch(postGetTrackId(track.id));
+    }
   }, [dispatch]);
 
   const handleLoopTrack = () => {

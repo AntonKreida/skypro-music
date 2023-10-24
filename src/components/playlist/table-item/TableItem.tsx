@@ -7,7 +7,9 @@ import { ReactComponent as Like } from '@assets/icon/Like.svg';
 import { ITrack, TParams } from '@interface/';
 import { formattedTime } from '@utils/';
 import { useAppDispatch, useAppSelector, useAudioContext } from '@hook/';
-import { getStateUser, postAddFavoriteTrack, postRemoveFavoriteTrack } from '@redux/';
+import {
+  getStateUser, postAddFavoriteTrack, postGetTrackId, postRemoveFavoriteTrack
+} from '@redux/';
 
 import * as Styled from './TableItem.styled';
 
@@ -49,12 +51,14 @@ export const TableItem: FC<ITableItemProps> = ({ track }) => {
 
   const handlerClickAddFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
-    dispatch(postAddFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
+    await dispatch(postAddFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
+    await dispatch(postGetTrackId(track.id));
   };
 
   const handlerClickRemoveFavorite = async (event: MouseEvent) => {
     event.stopPropagation();
-    dispatch(postRemoveFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
+    await dispatch(postRemoveFavoriteTrack({ idTrack, idSection: params?.id, isFavorite: matches?.pattern.end }));
+    await dispatch(postGetTrackId(track.id));
   };
 
   useEffect(() => {
